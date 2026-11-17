@@ -9,7 +9,7 @@ import LeitorPlanta from './components/LeitorPlanta'
 import Licitacoes from './licitacoes/Licitacoes'
 import { uid } from './lib/uid'
 
-const VERSAO = 'v21'
+const VERSAO = 'v22'
 const obraVazia = (): Obra => ({ nome: '', tipo: 'Residencial', alturaParede: 2.8, unidadeAltura: 'm', pavimentos: 1, terreno: 'plano', desnivel: false, movimentoTerra: 'nenhum' })
 
 export default function App() {

@@ -25,3 +25,6 @@ Localmente, use `npx vercel dev` com um arquivo `.env.local` para testar o leito
 
 ## Leitura de PDF e fotos de atas/contratos (módulo de licitações)
 A rota `api/ler-licitacao.ts` usa a mesma `ANTHROPIC_API_KEY` do leitor de plantas. O PDF é dividido no navegador em blocos de 4 páginas (máx. 60 páginas por importação), cada bloco é lido pela IA e tudo vai para a tela de conferência antes de cadastrar. Há limite de 60 requisições/hora por IP e o uso pode gerar custos.
+
+## Verificação de tipos
+`npm run typecheck` confere o projeto inteiro, inclusive os testes (usado no GitHub Actions). `npm run build` confere só o código do aplicativo (`tsconfig.build.json`), para que um problema de tipos nos testes nunca impeça o deploy.
