@@ -12,6 +12,9 @@
   "functions": {
     "api/ler-planta.ts": {
       "maxDuration": 60
+    },
+    "api/ler-licitacao.ts": {
+      "maxDuration": 60
     }
   }
 }

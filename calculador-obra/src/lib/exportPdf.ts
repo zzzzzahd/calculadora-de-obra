@@ -38,5 +38,7 @@ export function gerarPdf(obra: Obra, ambientes: Ambiente[], itens: Item[], preco
     doc.text(`Custo total estimado: R$ ${n2(total)}${area1 > 0 ? `  |  R$ ${n2(total / (area1 * obra.pavimentos))}/m²` : ''}`, 14, y); y += 8
   }
   doc.setFontSize(9); doc.text(doc.splitTextToSize(`Limitações e alertas: ${AVISOS.join(' ')}`, 180), 14, y)
+  autoTable(doc, { startY: y + 20, head: [['Memória de cálculo', 'Fórmula', 'Dimensões', 'Coeficiente', 'Perda %']], headStyles: { fillColor: [217, 119, 6] }, styles: { fontSize: 7 },
+    body: itens.map((i) => [`${i.etapa}: ${i.material}`, i.formula, i.dimensoes, i.coef, String(i.perda)]) })
   return doc.output('arraybuffer')
 }

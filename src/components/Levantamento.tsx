@@ -3,6 +3,7 @@ import type { Ambiente, Obra } from '../types'
 import { areaAmbiente, areaParedeBruta, perimetroAmbiente } from '../lib/geometry'
 import { toMetros } from '../lib/units'
 import Medida from './Medida'
+import { uid } from '../lib/uid'
 
 interface Props {
   obra: Obra; ambientes: Ambiente[]
@@ -10,7 +11,7 @@ interface Props {
 }
 
 const fmt = (n: number) => n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-const novoAmbiente = (n: number): Ambiente => ({ id: crypto.randomUUID(), nome: `Ambiente ${n}`, comprimento: 0, largura: 0, unidade: 'm' })
+const novoAmbiente = (n: number): Ambiente => ({ id: uid(), nome: `Ambiente ${n}`, comprimento: 0, largura: 0, unidade: 'm' })
 
 export default function Levantamento({ obra, ambientes, setObra, setAmbientes }: Props) {
   const alturaM = toMetros(obra.alturaParede, obra.unidadeAltura)

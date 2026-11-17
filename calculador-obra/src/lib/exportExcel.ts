@@ -21,18 +21,30 @@ function tabela(ws: ExcelJS.Worksheet, cab: string[], linhas: (string | number)[
   ws.pageSetup = { orientation: 'landscape', paperSize: 9, fitToPage: true, fitToWidth: 1, fitToHeight: 0, printTitlesRow: '1:1' }
 }
 
-const listaCompras = (wb: ExcelJS.Workbook, itens: Item[]) => {
+type Precos = Record<string, number>
+const preco = (p: Precos, material: string, unidade: string) => p[`${material}|${unidade}`] || 0
+
+const listaCompras = (wb: ExcelJS.Workbook, itens: Item[], precos: Precos) => {
   const ws = wb.addWorksheet('Lista geral de compras')
-  tabela(ws, ['Material', 'Quantidade', 'Unidade', 'Etapas', 'Observações'],
-    consolidar(itens).map((l) => [l.material, l.final, l.unidade, l.etapas, l.etapas.includes(',') ? 'Total consolidado de várias etapas' : '']),
-    [34, 14, 12, 40, 36], [2])
+  const lista = consolidar(itens)
+  const comPreco = lista.some((l) => preco(precos, l.material, l.unidade) > 0)
+  const cab = ['Material', 'Quantidade', 'Unidade', 'Etapas', 'Observações', ...(comPreco ? ['Preço unitário (R$)', 'Custo (R$)'] : [])]
+  tabela(ws, cab,
+    lista.map((l) => [l.material, l.final, l.unidade, l.etapas, l.etapas.includes(',') ? 'Total consolidado de várias etapas' : '',
+      ...(comPreco ? [preco(precos, l.material, l.unidade), l.final * preco(precos, l.material, l.unidade)] : [])]),
+    [34, 14, 12, 40, 36, 20, 16], comPreco ? [2, 6, 7] : [2])
+  if (comPreco) {
+    ws.addRow([])
+    const t = ws.addRow(['Custo total estimado (R$)', '', '', '', '', '', lista.reduce((s, l) => s + l.final * preco(precos, l.material, l.unidade), 0)])
+    t.font = { bold: true }
+  }
 }
 
 /** Gera o .xlsx. `completo = false` gera somente a lista geral de compras. */
-export async function gerarXlsx(obra: Obra, ambientes: Ambiente[], itens: Item[], completo: boolean): Promise<ArrayBuffer> {
+export async function gerarXlsx(obra: Obra, ambientes: Ambiente[], itens: Item[], completo: boolean, precos: Precos = {}): Promise<ArrayBuffer> {
   const wb = new ExcelJS.Workbook()
   wb.created = new Date()
-  if (!completo) { listaCompras(wb, itens); return (await wb.xlsx.writeBuffer()) as ArrayBuffer }
+  if (!completo) { listaCompras(wb, itens, precos); return (await wb.xlsx.writeBuffer()) as ArrayBuffer }
 
   const h = toMetros(obra.alturaParede, obra.unidadeAltura)
   const area1 = ambientes.reduce((s, a) => s + areaAmbiente(a), 0)
@@ -44,6 +56,14 @@ export async function gerarXlsx(obra: Obra, ambientes: Ambiente[], itens: Item[]
     .forEach((l) => ws0(r, l))
   r.addRow([]); r.addRow(['Ambientes', 'Comprimento (m)', 'Largura (m)', 'Área (m²)']).font = { bold: true }
   ambientes.forEach((a) => r.addRow([a.nome, toMetros(a.comprimento, a.unidade), toMetros(a.largura, a.unidade), areaAmbiente(a)]))
+  const porEtapa = [...new Set(itens.map((i) => i.etapa))].map((e) => [e, itens.filter((i) => i.etapa === e).reduce((s, i) => s + i.bruto * preco(precos, i.material, i.unidade), 0)] as [string, number])
+  const custoTotal = porEtapa.reduce((s, [, v]) => s + v, 0)
+  if (custoTotal > 0) {
+    r.addRow([]); r.addRow(['Custo por etapa (R$)', 'Proporcional à quantidade antes de arredondar']).font = { bold: true }
+    porEtapa.filter(([, v]) => v > 0).forEach(([e, v]) => r.addRow([e, v]))
+    r.addRow(['Custo total estimado (R$)', custoTotal]).font = { bold: true }
+    if (area1 > 0) r.addRow(['Custo estimado por m² (R$)', custoTotal / (area1 * obra.pavimentos)])
+  }
   r.getColumn(1).width = 36; r.getColumn(2).width = 40; r.getColumn(3).width = 14; r.getColumn(4).width = 14
   r.getCell('B10').alignment = { wrapText: true }
 
@@ -52,7 +72,7 @@ export async function gerarXlsx(obra: Obra, ambientes: Ambiente[], itens: Item[]
       itens.filter((i) => i.etapa === etapa).map((i) => [i.material, i.bruto, i.final, i.unidade, i.tipo, `Perda ${i.perda}%`]),
       [32, 20, 22, 12, 28, 18], [2, 3])
   }
-  listaCompras(wb, itens)
+  listaCompras(wb, itens, precos)
   tabela(wb.addWorksheet('Memória de cálculo'),
     ['Etapa', 'Material', 'Fórmula', 'Dimensões consideradas', 'Coeficiente', 'Perda (%)', 'Antes de arredondar', 'Compra', 'Unidade', 'Tipo'],
     itens.map((i) => [i.etapa, i.material, i.formula, i.dimensoes, i.coef, i.perda, i.bruto, i.final, i.unidade, i.tipo]),

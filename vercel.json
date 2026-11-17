@@ -3,5 +3,18 @@
   "installCommand": "npm ci",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "rewrites": [{ "source": "/((?!api/).*)", "destination": "/index.html" }]
+  "rewrites": [
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
+    }
+  ],
+  "functions": {
+    "api/ler-planta.ts": {
+      "maxDuration": 60
+    },
+    "api/ler-licitacao.ts": {
+      "maxDuration": 60
+    }
+  }
 }

@@ -20,4 +20,12 @@ describe('exportação Excel', () => {
     const linhas = wb.worksheets[0].getSheetValues().map((v) => (Array.isArray(v) ? v[1] : undefined))
     expect(linhas.filter((m) => m === 'Cimento')).toHaveLength(1)
   })
+  it('com preços: lista com custo e resumo com custo por etapa, total e por m²', async () => {
+    const wb = await abrir(await gerarXlsx(obra, amb, itens, true, { 'Bloco|un': 2, 'Tinta|lata': 300 }))
+    const cab = wb.getWorksheet('Lista geral de compras')!.getRow(1).values as unknown[]
+    expect(cab).toContain('Custo (R$)')
+    const r: unknown[] = []
+    wb.getWorksheet('Resumo geral')!.eachRow((row) => r.push((row.values as unknown[])[1]))
+    expect(r).toEqual(expect.arrayContaining(['Custo por etapa (R$)', 'Custo total estimado (R$)', 'Custo estimado por m² (R$)']))
+  })
 })

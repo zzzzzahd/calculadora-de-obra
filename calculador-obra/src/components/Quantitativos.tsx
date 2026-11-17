@@ -4,34 +4,58 @@ import type { Ambiente, Obra } from '../types'
 import { calcular, consolidar, PARAMS_PADRAO, type Abertura, type Params } from '../lib/engine'
 import { carregarParams, exportarConfig, importarConfig, salvarParams } from '../lib/config'
 import { areaAmbiente } from '../lib/geometry'
+import { BLOCOS, PISOS, TELHAS } from '../lib/presets'
+import { aplicarFlags, campoVisivel, flagsIniciais, grupoVisivel, PERGUNTAS, type Flags } from '../lib/assistente'
 
-type Num = Exclude<keyof Params, 'aberturas'>
+type Num = Exclude<keyof Params, 'aberturas' | 'composicoes'>
 const GRUPOS: { titulo: string; campos: [Num, string][] }[] = [
-  { titulo: 'Alvenaria', campos: [['blocoC', 'Bloco: comprimento (m)'], ['blocoA', 'Bloco: altura (m)'], ['perdaBloco', 'Perda de blocos (%)'], ['argM3m2', 'Argamassa (m³/m²)'], ['argCimentoKg', 'Cimento na argamassa (kg/m³)'], ['argAreiaM3', 'Areia na argamassa (m³/m³)'], ['perdaArg', 'Perda de argamassa (%)']] },
+  { titulo: 'Alvenaria', campos: [['blocoC', 'Bloco: comprimento (m)'], ['blocoA', 'Bloco: altura (m)'], ['perdaBloco', 'Perda de blocos (%)'], ['argM3m2', 'Argamassa (m³/m²)'], ['argCimentoKg', 'Cimento na argamassa (kg/m³)'], ['argAreiaM3', 'Areia na argamassa (m³/m³)'], ['perdaArg', 'Perda de argamassa (%)'], ['calKgM3', 'Cal na argamassa (kg/m³, 0 = não)'], ['calSacoKg', 'Kg por saco de cal']] },
+  { titulo: 'Vergas e contravergas (usa as portas e janelas)', campos: [['vergas', 'Calcular vergas (1 = sim, 0 = não)'], ['vergaApoio', 'Apoio de cada lado (m)'], ['vergaL', 'Largura = espessura da parede (m)'], ['vergaH', 'Altura da verga (m)']] },
   { titulo: 'Contrapiso e piso', campos: [['espContrapisoCm', 'Espessura do contrapiso (cm)'], ['ctCimentoKg', 'Cimento (kg/m³)'], ['ctAreiaM3', 'Areia (m³/m³)'], ['ctBritaM3', 'Brita (m³/m³)'], ['perdaConcreto', 'Perda do concreto (%)'], ['pisoC', 'Peça: comprimento (m)'], ['pisoL', 'Peça: largura (m)'], ['perdaPiso', 'Perda do piso (%)']] },
-  { titulo: 'Terreno (0 = não calcular)', campos: [['aterroH', 'Altura média do aterro (m)'], ['escavH', 'Profundidade da escavação (m)'], ['perdaAterro', 'Empolamento/compactação (%)']] },
-  { titulo: 'Fundação (só com dimensões)', campos: [['fundComp', 'Comprimento total (m)'], ['fundLarg', 'Largura (m)'], ['fundAlt', 'Altura (m)']] },
+  { titulo: 'Terreno (0 = não calcular)', campos: [['aterroH', 'Altura média do aterro (m)'], ['escavH', 'Profundidade da escavação (m)'], ['perdaAterro', 'Empolamento/compactação (%)'], ['transporte', 'Transporte de terra (1 = sim)'], ['caminhaoM3', 'Capacidade do caminhão (m³)']] },
+  { titulo: 'Fundação (só com dimensões)', campos: [['fundComp', 'Comprimento total (m)'], ['fundLarg', 'Largura (m)'], ['fundAlt', 'Altura (m)'], ['radierArea', 'Radier: área (m²)'], ['radierEsp', 'Radier: espessura (m)'], ['fundPerim', 'Radier: perímetro das bordas (m)'], ['radierTela', 'Radier: tela soldada (1 = sim)'], ['sapN', 'Sapatas isoladas (qtd.)'], ['sapL', 'Sapata: comprimento (m)'], ['sapB', 'Sapata: largura (m)'], ['sapH', 'Sapata: altura (m)'], ['estN', 'Estacas (qtd.)'], ['estDiam', 'Estaca: diâmetro (m)'], ['estProf', 'Estaca: profundidade (m)']] },
   { titulo: 'Estrutura (só com dimensões)', campos: [['pilarN', 'Pilares (qtd.)'], ['pilarL', 'Pilar: lado A (m)'], ['pilarB', 'Pilar: lado B (m)'], ['vigaComp', 'Vigas: comprimento total (m)'], ['vigaL', 'Viga: largura (m)'], ['vigaH', 'Viga: altura (m)'], ['estCimentoKg', 'Cimento (kg/m³)'], ['estAreiaM3', 'Areia (m³/m³)'], ['estBritaM3', 'Brita (m³/m³)'], ['acoKgM3', 'Aço do projeto (kg/m³, 0 = não)']] },
   { titulo: 'Revestimentos e forro', campos: [['revFaces', 'Faces revestidas'], ['espChapCm', 'Chapisco: espessura (cm)'], ['chapCimentoKg', 'Chapisco: cimento (kg/m³)'], ['chapAreiaM3', 'Chapisco: areia (m³/m³)'], ['espEmbCm', 'Emboço/reboco: espessura (cm)'], ['embCimentoKg', 'Emboço: cimento (kg/m³)'], ['embAreiaM3', 'Emboço: areia (m³/m³)'], ['perdaRev', 'Perda de revestimento (%)'], ['cerArea', 'Cerâmica de parede (m², 0 = não)'], ['forro', 'Forro (1 = sim, 0 = não)'], ['perdaForro', 'Perda do forro (%)'], ['espPerfil', 'Espaç. perfis do forro (m)'], ['barraPerfilM', 'Barra de perfil (m)']] },
-  { titulo: 'Cobertura (informe comprimento e largura)', campos: [['roofC', 'Comprimento do telhado (m)'], ['roofL', 'Largura no sentido do caimento (m)'], ['aguas', 'Águas (1 ou 2)'], ['inclinacao', 'Inclinação (%)'], ['beiral', 'Beiral (m)'], ['telhaRend', 'Telhas por m²'], ['perdaTelha', 'Perda de telhas (%)'], ['espTerca', 'Espaç. terças (m)'], ['espCaibro', 'Espaç. caibros (m)'], ['espRipa', 'Espaç. ripas (m)'], ['tesouras', 'Tesouras (qtd.)'], ['barraM', 'Barra de madeira (m)'], ['perdaMadeira', 'Perda de madeira (%)'], ['cumeeiraM', 'Peça de cumeeira (m)']] },
-  { titulo: 'Pintura e compra', campos: [['faces', 'Faces a pintar'], ['demaos', 'Número de demãos'], ['rendTinta', 'Rendimento (m²/L/demão)'], ['latL', 'Litros por lata'], ['sacoKg', 'Kg por saco de cimento']] },
+  { titulo: 'Esquadrias (usa as portas e janelas)', campos: [['esquadrias', 'Listar portas e janelas para compra (1 = sim)']] },
+  { titulo: 'Muro', campos: [['muroComp', 'Comprimento do muro (m)'], ['muroAlt', 'Altura (m)'], ['muroFundL', 'Fundação: largura (m)'], ['muroFundH', 'Fundação: altura (m)'], ['muroPilarEsp', 'Espaçamento dos pilaretes (m)'], ['muroPilarSec', 'Pilarete: lado (m)']] },
+  { titulo: 'Calçada e áreas externas', campos: [['calcArea', 'Área (m²)'], ['calcEsp', 'Espessura do concreto (cm)'], ['calcLastroCm', 'Lastro de brita (cm)'], ['calcTela', 'Tela soldada (1 = sim)']] },
+  { titulo: 'Escada de concreto', campos: [['escLarg', 'Largura (m)'], ['escAlt', 'Altura a vencer (m)'], ['escEspelho', 'Altura do espelho (m)'], ['escPiso', 'Profundidade do piso (m)'], ['escEspLaje', 'Espessura da laje (m)'], ['escFolga', 'Vão central da escada em U (m)']] },
+  { titulo: 'Gesso e drywall', campos: [['dwComp', 'Paredes: comprimento total (m)'], ['dwAlt', 'Paredes: altura (m)'], ['dwFaces', 'Faces com chapa (1 ou 2)'], ['dwEspMont', 'Espaçamento dos montantes (m)'], ['dwBarraM', 'Barra de perfil (m)'], ['perdaDw', 'Perda (%)'], ['dwChapaC', 'Chapa: comprimento (m)'], ['dwChapaL', 'Chapa: largura (m)'], ['dwForroArea', 'Forro de gesso: área (m²)'], ['dwForroPerfilM2', 'Perfil do forro (m/m²)'], ['dwPendM2', 'Penduras (un/m²)'], ['dwParafM2', 'Parafusos (un/m² de chapa)'], ['dwFitaMM2', 'Fita (m/m² de chapa)'], ['dwMassaKgM2', 'Massa de junta (kg/m²)']] },
+  { titulo: 'Estrutura metálica (perfis informados)', campos: [['metComp', 'Comprimento total de perfis (m)'], ['metKgM', 'Peso do perfil (kg/m, do projeto)'], ['metBarraM', 'Barra comercial (m)'], ['perdaMet', 'Perda (%)'], ['metSupM', 'Superfície (m² por metro de perfil)'], ['metDemaos', 'Demãos de fundo'], ['metRend', 'Rendimento do fundo (m²/L/demão)'], ['metSoldaKgKg', 'Eletrodo (kg por kg de aço)']] },
+  { titulo: 'Estrutura de madeira (peças informadas)', campos: [['madComp', 'Comprimento total de peças (m)'], ['madBarraM', 'Barra comercial (m)'], ['madPregoKgM', 'Pregos/parafusos (kg por m)']] },
+  { titulo: 'Laje pré-moldada', campos: [['preLajeArea', 'Área da laje (m²)'], ['preInter', 'Intereixo (m)'], ['preLajotaC', 'Comprimento da lajota/EPS (m)'], ['preCapEsp', 'Capeamento (cm)'], ['preTela', 'Tela soldada (1 = sim)']] },
+  { titulo: 'Fossa séptica e sumidouro', campos: [['fosCompr', 'Fossa: comprimento interno (m)'], ['fosLarg', 'Fossa: largura interna (m)'], ['fosProf', 'Fossa: profundidade (m)'], ['fosEsp', 'Fossa: parede (m)'], ['sumDiam', 'Sumidouro: diâmetro interno (m)'], ['sumProf', 'Sumidouro: profundidade (m)'], ['sumEsp', 'Sumidouro: parede (m)'], ['sumBritaFundo', 'Brita no fundo (m)']] },
+  { titulo: 'Piscina', campos: [['pisC', 'Comprimento interno (m)'], ['pisL', 'Largura interna (m)'], ['pisProf', 'Profundidade média (m)'], ['pisEsp', 'Espessura de fundo e paredes (m)'], ['pisFolga', 'Folga de escavação (m por lado)']] },
+  { titulo: 'Laje', campos: [['lajeArea', 'Área da laje (m²)'], ['lajeEsp', 'Espessura (cm)'], ['escorasPorM2', 'Escoras por m²']] },
+  { titulo: 'Formas e escoramento', campos: [['reusoForma', 'Reaproveitamentos da forma'], ['sarrafoMPorM2', 'Sarrafo (m por m² de forma)']] },
+  { titulo: 'Impermeabilização', campos: [['imperArea', 'Área a impermeabilizar (m²)'], ['imperBaldrame', 'Incluir baldrame (1 = sim)'], ['imperKgM2', 'Consumo (kg/m², com demãos)']] },
+  { titulo: 'Piso: acessórios', campos: [['rodape', 'Rodapé (1 = sim, 0 = não)'], ['rodapeBarraM', 'Peça de rodapé (m)'], ['perdaRodape', 'Perda do rodapé (%)'], ['rejunteKgM2', 'Rejunte (kg/m²)'], ['espPorPeca', 'Espaçadores por peça'], ['colanteKgM2', 'Argamassa colante (kg/m²)'], ['colanteSacoKg', 'Kg por saco de colante']] },
+  { titulo: 'Instalações elétricas (pontos)', campos: [['eltTomadas', 'Tomadas (qtd.)'], ['eltInterruptores', 'Interruptores (qtd.)'], ['eltPontosLuz', 'Pontos de iluminação'], ['eltDisjuntores', 'Disjuntores (qtd. do projeto)'], ['eltMPorPonto', 'Eletroduto (m por ponto)'], ['eltCaboMPorPonto', 'Cabo (m por ponto)'], ['barraEletrodutoM', 'Barra de eletroduto (m)'], ['perdaInst', 'Perda das instalações (%)']] },
+  { titulo: 'Hidráulica e sanitária (pontos)', campos: [['hidPontosAgua', 'Pontos de água'], ['sanPontos', 'Pontos de esgoto'], ['hidRegistros', 'Registros'], ['caixasSifonadas', 'Caixas sifonadas'], ['ralos', 'Ralos'], ['caixasInspecao', 'Caixas de inspeção'], ['vasos', 'Vasos sanitários'], ['lavatorios', 'Lavatórios'], ['pias', 'Pias'], ['chuveiros', 'Chuveiros'], ['reservatorios', 'Reservatórios'], ['hidMPorPonto', 'Tubo de água (m por ponto)'], ['sanMPorPonto', 'Tubo de esgoto (m por ponto)'], ['conexPorPonto', 'Conexões por ponto'], ['barraTuboM', 'Barra de tubo (m)']] },
+  { titulo: 'Drenagem', campos: [['drenTuboM', 'Tubo de drenagem (m)'], ['drenCaixas', 'Caixas'], ['drenRalos', 'Ralos'], ['canaletaM', 'Canaletas (m)'], ['drenBritaM3m', 'Brita de envelopamento (m³/m)']] },
+  { titulo: 'Cobertura (informe comprimento e largura)', campos: [['roofC', 'Comprimento do telhado (m)'], ['roofL', 'Largura no sentido do caimento (m)'], ['aguas', 'Águas (1, 2 ou 4)'], ['inclinacao', 'Inclinação (%)'], ['beiral', 'Beiral (m)'], ['telhaRend', 'Telhas por m²'], ['perdaTelha', 'Perda de telhas (%)'], ['espTerca', 'Espaç. terças (m)'], ['espCaibro', 'Espaç. caibros (m)'], ['espRipa', 'Espaç. ripas (m)'], ['tesouras', 'Tesouras (qtd.)'], ['barraM', 'Barra de madeira (m)'], ['perdaMadeira', 'Perda de madeira (%)'], ['cumeeiraM', 'Peça de cumeeira (m)'], ['calha', 'Calha (1 = sim, 0 = não)'], ['calhaBarraM', 'Barra de calha (m)'], ['condutorN', 'Condutores (qtd.)'], ['condutorAltM', 'Altura de cada condutor (m)'], ['condutorBarraM', 'Barra de condutor (m)'], ['rufoM', 'Rufo (m)'], ['espigaoExtraM', 'Espigões/rincões informados (m)'], ['fixPorM2', 'Fixação do telhado (un/m²)'], ['mantaCob', 'Manta de subcobertura (1 = sim)'], ['telhaMetalica', 'Telha metálica (1 = sim; escolha acima)'], ['sobreMetal', 'Sobreposição da telha metálica (%)']] },
+  { titulo: 'Pintura', campos: [['faces', 'Faces a pintar'], ['massaTipo', 'Massa: 0 = não, 1 = PVA, 2 = acrílica'], ['massaPct', '% da área com massa'], ['demaosMassa', 'Demãos de massa'], ['rendMassa', 'Massa (m²/lata/demão)'], ['seladorPct', '% da área com selador'], ['demaosSelador', 'Demãos de selador'], ['rendSelador', 'Selador (m²/L/demão)'], ['latSeladorL', 'Litros por lata de selador'], ['demaos', 'Demãos de tinta'], ['rendTinta', 'Tinta (m²/L/demão)'], ['latL', 'Litros por lata de tinta'], ['cor2Pct', '% da área na 2ª cor (0 = cor única)'], ['lixaM2', 'Lixa (m² por folha)'], ['roloM2', 'Rolo (m² por rolo)'], ['pincelM2', 'Pincel (m² por pincel)'], ['fitaM', 'Fita crepe (m por rolo)']] },
+  { titulo: 'Compra', campos: [['sacoKg', 'Kg por saco de cimento']] },
 ]
 const fmt = (n: number) => n.toLocaleString('pt-BR', { maximumFractionDigits: 3 })
 
 export default function Quantitativos({ obra, ambientes, aberturasIniciais = [] }: { obra: Obra; ambientes: Ambiente[]; aberturasIniciais?: Abertura[] }) {
   const [p, setP] = useState<Params>(() => ({ ...carregarParams(), aberturas: aberturasIniciais }))
+  const [flags, setFlags] = useState<Flags>(() => flagsIniciais(p))
+  const pe = useMemo(() => aplicarFlags(p, flags), [p, flags])
+  const [esc, setEsc] = useState({ telha: -1, bloco: -1, piso: -1 })
   const [precos, setPrecos] = useState<Record<string, number>>({})
   const arq = useRef<HTMLInputElement>(null)
   useEffect(() => salvarParams(p), [p])
   const backup = () => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([exportarConfig(p)], { type: 'application/json' })); a.download = 'configuracoes-calculadora.json'; a.click() }
   const importar = async (f?: File) => { if (!f) return; try { setP({ ...importarConfig(await f.text()), aberturas: p.aberturas }) } catch (e) { alert((e as Error).message) } }
-  const itens = useMemo(() => calcular(obra, ambientes, p), [obra, ambientes, p])
+  const itens = useMemo(() => calcular(obra, ambientes, pe), [obra, ambientes, pe])
   const lista = useMemo(() => consolidar(itens), [itens])
   const etapas = [...new Set(itens.map((i) => i.etapa))]
   const exportar = async (completo: boolean) => {
     const { gerarXlsx, baixar } = await import('../lib/exportExcel')
     const base = (obra.nome || 'levantamento').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'levantamento'
-    baixar(await gerarXlsx(obra, ambientes, itens, completo), `${base}-${completo ? 'completo' : 'lista-de-compras'}-${new Date().toISOString().slice(0, 10)}.xlsx`)
+    baixar(await gerarXlsx(obra, ambientes, itens, completo, precos), `${base}-${completo ? 'completo' : 'lista-de-compras'}-${new Date().toISOString().slice(0, 10)}.xlsx`)
   }
   const exportarPdf = async () => {
     const { gerarPdf } = await import('../lib/exportPdf'); const { baixar } = await import('../lib/exportExcel')
@@ -43,6 +67,45 @@ export default function Quantitativos({ obra, ambientes, aberturasIniciais = [] 
 
   return (
     <div className="mt-6 space-y-4">
+      <section className="cartao">
+        <h2 className="mb-1 font-semibold">Assistente: o que a obra terá?</h2>
+        <p className="mb-3 text-xs text-slate-500 dark:text-slate-400">As respostas definem quais campos aparecem e o que entra no cálculo. Perguntas novas surgem conforme você responde.</p>
+        <div className="space-y-2">
+          {PERGUNTAS.filter((q) => !q.quando || q.quando(flags)).map((q) => (
+            <div key={q.k} className="flex items-center justify-between gap-3 text-sm">
+              <span>{q.texto}</span>
+              <span className="flex shrink-0 gap-1">
+                <button className={`btn !px-3 !py-1 ${flags[q.k] ? 'btn-primario' : 'btn-sec'}`} onClick={() => setFlags({ ...flags, [q.k]: true })}>Sim</button>
+                <button className={`btn !px-3 !py-1 ${!flags[q.k] ? 'btn-primario' : 'btn-sec'}`} onClick={() => setFlags({ ...flags, [q.k]: false })}>Não</button>
+              </span>
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+          {([['Tipo de bloco', BLOCOS, 'bloco'], ['Tipo de telha', TELHAS, 'telha'], ['Tamanho da peça de piso', PISOS, 'piso']] as const).map(([rot, lista, k]) => (
+            <div key={k}><label className="rotulo">{rot}</label>
+              <select className="campo" value={esc[k]} onChange={(e) => { const i = parseInt(e.target.value); setEsc({ ...esc, [k]: i }); if (i >= 0) { const { nome: _nome, ...campos } = lista[i]; setP({ ...p, ...campos }) } }}>
+                <option value={-1}>Escolher (preenche os parâmetros)</option>
+                {lista.map((x, i) => <option key={x.nome} value={i}>{x.nome}</option>)}
+              </select></div>
+          ))}
+        </div>
+        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Rendimentos e dimensões são valores usuais de exemplo: confira com o fabricante e ajuste nos campos.</p>
+        {flags.fundacao && (
+          <div className="mt-4 sm:w-1/2"><label className="rotulo">Tipo de fundação</label>
+            <select className="campo" value={p.fundTipo} onChange={(e) => setP({ ...p, fundTipo: parseInt(e.target.value) })}>
+              <option value={0}>Baldrame / sapata corrida</option><option value={1}>Radier</option><option value={2}>Sapatas isoladas</option><option value={3}>Estacas</option>
+            </select></div>
+        )}
+        {flags.escada && (
+          <div className="mt-4 sm:w-1/2"><label className="rotulo">Tipo de escada</label>
+            <select className="campo" value={p.escTipo} onChange={(e) => setP({ ...p, escTipo: parseInt(e.target.value) })}>
+              <option value={0}>Reta</option><option value={1}>Em L com patamar</option><option value={2}>Em U com patamar</option><option value={3}>Em L com leque (estimativa)</option>
+            </select></div>
+        )}
+        {obra.movimentoTerra === 'nenhum' && <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">Terreno: para informar aterro ou escavação, escolha a opção em "Aterro ou escavação" nos dados da obra.</p>}
+      </section>
+
       <section className="cartao">
         <div className="mb-3 flex items-center justify-between">
           <h2 className="font-semibold">Portas e janelas (descontadas da alvenaria)</h2>
@@ -60,13 +123,24 @@ export default function Quantitativos({ obra, ambientes, aberturasIniciais = [] 
         <p className="text-xs text-slate-500 dark:text-slate-400">Colunas: tipo · largura (m) · altura (m) · quantidade.</p>
       </section>
 
+      {flags.cobertura && <section className="cartao border-amber-500">
+        <h2 className="mb-1 font-semibold">Cobertura / telhado</h2>
+        <p className="mb-3 text-xs text-slate-500 dark:text-slate-400">Preencha comprimento e largura do telhado para calcular telhas, terças, caibros, ripas e cumeeira.</p>
+        <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-4">
+          {GRUPOS.filter((g) => g.titulo.startsWith('Cobertura')).flatMap((g) => g.campos).filter(([k]) => campoVisivel(k, flags, p)).map(([k, rot]) => (
+            <div key={k}><label className="rotulo">{rot}</label>
+              <input className="campo" type="number" step="any" min={0} value={p[k]} onChange={(e) => setP({ ...p, [k]: parseFloat(e.target.value) || 0 })} /></div>
+          ))}
+        </div>
+      </section>}
+
       <section className="cartao">
         <h2 className="mb-3 font-semibold">Parâmetros técnicos (editáveis)</h2>
         <div className="grid gap-4 md:grid-cols-3">
-          {GRUPOS.map((g) => (
+          {GRUPOS.filter((g) => !g.titulo.startsWith('Cobertura') && grupoVisivel(g.titulo, flags, obra)).map((g) => (
             <div key={g.titulo} className="space-y-2">
               <h3 className="text-sm font-medium text-amber-600">{g.titulo}</h3>
-              {g.campos.map(([k, rot]) => (
+              {g.campos.filter(([k]) => campoVisivel(k, flags, p)).map(([k, rot]) => (
                 <div key={k}><label className="rotulo">{rot}</label>
                   <input className="campo" type="number" step="any" min={0} value={p[k]} onChange={(e) => setP({ ...p, [k]: parseFloat(e.target.value) || 0 })} /></div>
               ))}
@@ -79,7 +153,32 @@ export default function Quantitativos({ obra, ambientes, aberturasIniciais = [] 
           <button className="btn btn-sec" onClick={() => setP({ ...PARAMS_PADRAO, aberturas: p.aberturas })}><RotateCcw size={16} /> Restaurar padrão</button>
           <input ref={arq} type="file" accept="application/json" className="hidden" onChange={(e) => { importar(e.target.files?.[0]); e.target.value = '' }} />
         </div>
-        <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">Os parâmetros ficam salvos neste navegador. Valores iniciais são exemplos de composição: confira com a sua realidade antes de comprar.</p>
+        <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">Os parâmetros ficam salvos neste navegador. Instalações: contagem por quantidades informadas; circuitos, bitolas e diâmetros exigem projeto e profissional habilitado. Valores iniciais são exemplos de composição: confira com a sua realidade antes de comprar.</p>
+      </section>
+
+      <section className="cartao">
+        <div className="mb-2 flex items-center justify-between">
+          <h2 className="font-semibold">Biblioteca técnica: composições próprias</h2>
+          <button className="btn btn-sec" onClick={() => setP({ ...p, composicoes: [...p.composicoes, { id: crypto.randomUUID(), nome: 'Novo material', etapa: 'Outros', unidade: 'un', base: 'area', coef: 0, perda: 0 }] })}><Plus size={16} /> Adicionar</button>
+        </div>
+        <p className="mb-3 text-xs text-slate-500 dark:text-slate-400">Crie materiais próprios: quantidade = base × coeficiente × (1 + perda). Ficam salvos no navegador e entram no backup JSON. Colunas: nome · etapa · unidade de compra · base · coeficiente · perda (%).</p>
+        {p.composicoes.map((c) => {
+          const up = (d: Partial<typeof c>) => setP({ ...p, composicoes: p.composicoes.map((x) => (x.id === c.id ? { ...x, ...d } : x)) })
+          return (
+            <div key={c.id} className="mb-2 grid grid-cols-2 gap-2 sm:grid-cols-7">
+              <input className="campo sm:col-span-2" value={c.nome} onChange={(e) => up({ nome: e.target.value })} title="Nome do material" />
+              <input className="campo" value={c.etapa} onChange={(e) => up({ etapa: e.target.value })} title="Etapa" />
+              <input className="campo" value={c.unidade} onChange={(e) => up({ unidade: e.target.value })} title="Unidade de compra" />
+              <select className="campo" value={c.base} onChange={(e) => up({ base: e.target.value as typeof c.base })} title="Base de cálculo">
+                <option value="area">Área construída</option><option value="parede">Área de parede</option><option value="fixa">Quantidade fixa</option></select>
+              <input className="campo" type="number" step="any" min={0} value={c.coef} onChange={(e) => up({ coef: parseFloat(e.target.value) || 0 })} title="Coeficiente" />
+              <div className="flex gap-1">
+                <input className="campo" type="number" step="any" min={0} value={c.perda} onChange={(e) => up({ perda: parseFloat(e.target.value) || 0 })} title="Perda (%)" />
+                <button className="btn btn-sec" aria-label="Excluir" onClick={() => setP({ ...p, composicoes: p.composicoes.filter((x) => x.id !== c.id) })}><Trash2 size={16} /></button>
+              </div>
+            </div>
+          )
+        })}
       </section>
 
       {itens.length === 0 ? (

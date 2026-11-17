@@ -1,17 +1,19 @@
 import { useState } from 'react'
-import { FileUp, HardHat, Moon, PencilRuler, RotateCcw, Sun } from 'lucide-react'
+import { FileUp, HardHat, Landmark, Moon, PencilRuler, RotateCcw, Sun } from 'lucide-react'
 import type { Ambiente, Obra } from './types'
 import type { Abertura } from './lib/engine'
 import { useTema } from './lib/useTema'
 import Levantamento from './components/Levantamento'
 import Quantitativos from './components/Quantitativos'
 import LeitorPlanta from './components/LeitorPlanta'
+import Licitacoes from './licitacoes/Licitacoes'
 
+const VERSAO = 'v20'
 const obraVazia = (): Obra => ({ nome: '', tipo: 'Residencial', alturaParede: 2.8, unidadeAltura: 'm', pavimentos: 1, terreno: 'plano', desnivel: false, movimentoTerra: 'nenhum' })
 
 export default function App() {
   const { escuro, alternar } = useTema()
-  const [modo, setModo] = useState<null | 'manual' | 'planta'>(null)
+  const [modo, setModo] = useState<null | 'manual' | 'planta' | 'licitacoes'>(null)
   const [obra, setObra] = useState<Obra>(obraVazia)
   const [ambientes, setAmbientes] = useState<Ambiente[]>([])
   const [aberturas, setAberturas] = useState<Abertura[]>([])
@@ -24,7 +26,7 @@ export default function App() {
       <header className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-2 text-lg font-bold"><HardHat className="text-amber-600" /> Calculadora de Obras</div>
         <div className="flex gap-2">
-          {modo && <button className="btn btn-sec" onClick={novo}><RotateCcw size={16} /> Novo levantamento</button>}
+          {modo && <button className="btn btn-sec" onClick={novo}><RotateCcw size={16} /> {modo === 'licitacoes' ? 'Início' : 'Novo levantamento'}</button>}
           <button className="btn btn-sec" onClick={alternar} aria-label="Alternar tema">{escuro ? <Sun size={16} /> : <Moon size={16} />}{escuro ? 'Claro' : 'Escuro'}</button>
         </div>
       </header>
@@ -39,8 +41,14 @@ export default function App() {
             <FileUp className="mb-2 text-amber-600" /><div className="font-semibold">Importar planta ou croqui</div>
             <p className="text-sm text-slate-500 dark:text-slate-400">A IA lê as medidas e você confere antes de calcular.</p>
           </button>
+          <button className="cartao text-left hover:border-amber-500 sm:col-span-2" onClick={() => setModo('licitacoes')}>
+            <Landmark className="mb-2 text-amber-600" /><div className="font-semibold">Materiais licitados</div>
+            <p className="text-sm text-slate-500 dark:text-slate-400">Cadastre atas, contratos e materiais da Prefeitura e acompanhe os saldos. Não precisa iniciar uma obra.</p>
+          </button>
         </div>
       )}
+
+      {modo === 'licitacoes' && <Licitacoes />}
 
       {modo === 'planta' && (
         <LeitorPlanta onConfirmar={(c) => {
@@ -56,6 +64,7 @@ export default function App() {
           <Quantitativos key={chave} obra={obra} ambientes={ambientes} aberturasIniciais={aberturas} />
         </>
       )}
+      <footer className="mt-8 text-center text-xs text-slate-400">Calculadora de Obras · versão {VERSAO}</footer>
     </div>
   )
 }
