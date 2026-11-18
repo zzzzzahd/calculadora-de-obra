@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { AlertTriangle, ArrowLeftRight, Pencil, Plus, Trash2 } from 'lucide-react'
+import { AlertTriangle, ArrowLeft, ArrowLeftRight, Pencil, Plus, Trash2 } from 'lucide-react'
 import { CATEGORIAS, type Material, type Processo } from './tipos'
 import { excluir, iniciar, listar, salvar, salvarLote } from './db'
 import ImportarPlanilha from './ImportarPlanilha'
@@ -57,6 +57,9 @@ export default function Licitacoes() {
   const [edM, setEdM] = useState<Material | null>(null)
   const [filtros, setFiltros] = useState<Filtros>(FILTROS_VAZIOS)
   const hoje = new Date().toISOString().slice(0, 10)
+  const [hist, setHist] = useState<(typeof aba)[]>([])
+  const ir = (a: typeof aba) => { if (a !== aba) { setHist([...hist, aba]); setAba(a) } }
+  const voltar = () => { const h = [...hist]; setAba(h.pop() ?? 'painel'); setHist(h) }
 
   useEffect(() => {
     (async () => {
@@ -124,11 +127,11 @@ export default function Licitacoes() {
     { k: 'precoUnitario', rotulo: 'Preço unitário licitado (R$)', tipo: 'number' }, { k: 'quantidadeRegistrada', rotulo: 'Quantidade registrada/contratada', tipo: 'number' },
     { k: 'observacoes', rotulo: 'Observações', tipo: 'textarea' },
   ]
-  const abaBtn = (k: typeof aba, t: string) => <button className={`btn ${aba === k ? 'btn-primario' : 'btn-sec'}`} onClick={() => setAba(k)}>{t}</button>
+  const abaBtn = (k: typeof aba, t: string) => <button className={`btn ${aba === k ? 'btn-primario' : 'btn-sec'}`} onClick={() => ir(k)}>{t}</button>
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap gap-2">{abaBtn('painel', 'Painel')}{abaBtn('processos', `Processos (${processos.length})`)}{abaBtn('materiais', `Materiais (${materiais.length})`)}{abaBtn('importar', 'Importar planilha')}{abaBtn('movimentacoes', 'Movimentações')}</div>
+      <div className="flex flex-wrap gap-2">{aba !== 'painel' && <button className="btn btn-sec" onClick={voltar}><ArrowLeft size={16} /> Voltar</button>}{abaBtn('painel', 'Painel')}{abaBtn('processos', `Processos (${processos.length})`)}{abaBtn('materiais', `Materiais (${materiais.length})`)}{abaBtn('importar', 'Importar planilha')}{abaBtn('movimentacoes', 'Movimentações')}</div>
       {erro && <p className="cartao text-sm text-red-600">{erro}</p>}
 
       {aba === 'painel' && (
@@ -184,7 +187,7 @@ export default function Licitacoes() {
               <tr key={m.id} className="border-t border-slate-200 align-top dark:border-slate-700"><td className="py-1">{m.nomePadronizado}<div className="text-xs text-slate-500">{m.unidadeFornecimento || 'unidade pendente'}</div></td><td>{m.categoria || 'pendente'}</td><td className="text-xs">{rotuloProc(proc.get(m.processoId))}</td>
                 <td className="text-right">{fmt(m.precoUnitario)}</td><td className="text-right">{fmt(m.quantidadeRegistrada)}</td><td className="text-right">{fmt(s.saldoASolicitar)}</td><td className="text-right">{fmt(s.disponivel)}</td><td className="text-right">{fmt(s.aReceber)}</td>
                 <td className={`text-xs ${sit === 'vencida' ? 'font-semibold text-red-600' : sit === 'a-vencer' ? 'text-amber-600' : ''}`}>{ROTULO_SITUACAO[sit]}</td>
-                <td className="whitespace-nowrap text-right"><button className="btn btn-sec !px-2 !py-1" aria-label="Editar" onClick={() => setEdM(materiais.find((x) => x.id === m.id) ?? m)}><Pencil size={14} /></button> <button className="btn btn-sec !px-2 !py-1" aria-label="Movimentar" onClick={() => { setSelMat(m.id); setAba('movimentacoes') }}><ArrowLeftRight size={14} /></button> <button className="btn btn-sec !px-2 !py-1" aria-label="Excluir" onClick={() => apagarMaterial(m)}><Trash2 size={14} /></button></td></tr>) })}</tbody></table></div>
+                <td className="whitespace-nowrap text-right"><button className="btn btn-sec !px-2 !py-1" aria-label="Editar" onClick={() => setEdM(materiais.find((x) => x.id === m.id) ?? m)}><Pencil size={14} /></button> <button className="btn btn-sec !px-2 !py-1" aria-label="Movimentar" onClick={() => { setSelMat(m.id); ir('movimentacoes') }}><ArrowLeftRight size={14} /></button> <button className="btn btn-sec !px-2 !py-1" aria-label="Excluir" onClick={() => apagarMaterial(m)}><Trash2 size={14} /></button></td></tr>) })}</tbody></table></div>
           {lista.length === 0 && <p className="text-sm text-slate-500">Nenhum material encontrado.</p>}
         </section>
       ))}

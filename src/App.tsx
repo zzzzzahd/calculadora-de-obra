@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { FileUp, HardHat, Landmark, Moon, PencilRuler, RotateCcw, Sun } from 'lucide-react'
+import { ArrowLeft, FileUp, HardHat, Landmark, Moon, PencilRuler, RotateCcw, Sun } from 'lucide-react'
 import type { Ambiente, Obra } from './types'
 import type { Abertura } from './lib/engine'
 import { useTema } from './lib/useTema'
@@ -9,7 +9,7 @@ import LeitorPlanta from './components/LeitorPlanta'
 import Licitacoes from './licitacoes/Licitacoes'
 import { uid } from './lib/uid'
 
-const VERSAO = 'v22'
+const VERSAO = 'v23'
 const obraVazia = (): Obra => ({ nome: '', tipo: 'Residencial', alturaParede: 2.8, unidadeAltura: 'm', pavimentos: 1, terreno: 'plano', desnivel: false, movimentoTerra: 'nenhum' })
 
 export default function App() {
@@ -19,23 +19,25 @@ export default function App() {
   const [ambientes, setAmbientes] = useState<Ambiente[]>([])
   const [aberturas, setAberturas] = useState<Abertura[]>([])
   const [chave, setChave] = useState(0)
+  const [iniciado, setIniciado] = useState(false) // levantamento já começado (permanece ao voltar ao menu)
 
-  const novo = () => { setModo(null); setObra(obraVazia()); setAmbientes([]); setAberturas([]); setChave((c) => c + 1) }
+  const novo = () => { setModo(null); setObra(obraVazia()); setAmbientes([]); setAberturas([]); setIniciado(false); setChave((c) => c + 1) }
 
   return (
     <div className="mx-auto min-h-screen max-w-6xl p-4">
       <header className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-2 text-lg font-bold"><HardHat className="text-amber-600" /> Calculadora de Obras</div>
         <div className="flex gap-2">
-          {modo && <button className="btn btn-sec" onClick={novo}><RotateCcw size={16} /> {modo === 'licitacoes' ? 'Início' : 'Novo levantamento'}</button>}
+          {modo && <button className="btn btn-sec" onClick={() => setModo(null)}><ArrowLeft size={16} /> Menu</button>}
+          {modo && modo !== 'licitacoes' && <button className="btn btn-sec" onClick={novo}><RotateCcw size={16} /> Novo levantamento</button>}
           <button className="btn btn-sec" onClick={alternar} aria-label="Alternar tema">{escuro ? <Sun size={16} /> : <Moon size={16} />}{escuro ? 'Claro' : 'Escuro'}</button>
         </div>
       </header>
 
       {!modo && (
         <div className="mx-auto grid max-w-2xl gap-4 sm:grid-cols-2">
-          <button className="cartao text-left hover:border-amber-500" onClick={() => { setModo('manual'); setAmbientes([{ id: uid(), nome: 'Ambiente 1', comprimento: 0, largura: 0, unidade: 'm' }]) }}>
-            <PencilRuler className="mb-2 text-amber-600" /><div className="font-semibold">Inserir dimensões</div>
+          <button className="cartao text-left hover:border-amber-500" onClick={() => { setModo('manual'); setIniciado(true); if (ambientes.length === 0) setAmbientes([{ id: uid(), nome: 'Ambiente 1', comprimento: 0, largura: 0, unidade: 'm' }]) }}>
+            <PencilRuler className="mb-2 text-amber-600" /><div className="font-semibold">{iniciado ? 'Continuar levantamento' : 'Inserir dimensões'}</div>
             <p className="text-sm text-slate-500 dark:text-slate-400">Informe comprimento, largura e demais dados manualmente.</p>
           </button>
           <button className="cartao text-left hover:border-amber-500" onClick={() => setModo('planta')}>
@@ -55,15 +57,15 @@ export default function App() {
         <LeitorPlanta onConfirmar={(c) => {
           setAmbientes(c.ambientes); setAberturas(c.aberturas)
           if (c.altura) setObra({ ...obra, alturaParede: c.altura, unidadeAltura: 'm' })
-          setModo('manual')
+          setIniciado(true); setModo('manual')
         }} />
       )}
 
-      {modo === 'manual' && (
-        <>
+      {iniciado && (
+        <div className={modo === 'manual' ? '' : 'hidden'}>
           <Levantamento obra={obra} ambientes={ambientes} setObra={setObra} setAmbientes={setAmbientes} />
           <Quantitativos key={chave} obra={obra} ambientes={ambientes} aberturasIniciais={aberturas} />
-        </>
+        </div>
       )}
       <footer className="mt-8 text-center text-xs text-slate-400">Calculadora de Obras · versão {VERSAO}</footer>
     </div>

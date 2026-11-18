@@ -5,6 +5,7 @@ import { calcular, consolidar, PARAMS_PADRAO, type Abertura, type Params } from 
 import { carregarParams, exportarConfig, importarConfig, salvarParams } from '../lib/config'
 import { areaAmbiente } from '../lib/geometry'
 import { BLOCOS, PISOS, TELHAS } from '../lib/presets'
+import { ADITIVOS, TRACOS } from '../lib/tracos'
 import { aplicarFlags, campoVisivel, flagsIniciais, grupoVisivel, PERGUNTAS, type Flags } from '../lib/assistente'
 import { uid } from '../lib/uid'
 
@@ -38,6 +39,24 @@ const GRUPOS: { titulo: string; campos: [Num, string][] }[] = [
   { titulo: 'Pintura', campos: [['faces', 'Faces a pintar'], ['massaTipo', 'Massa: 0 = não, 1 = PVA, 2 = acrílica'], ['massaPct', '% da área com massa'], ['demaosMassa', 'Demãos de massa'], ['rendMassa', 'Massa (m²/lata/demão)'], ['seladorPct', '% da área com selador'], ['demaosSelador', 'Demãos de selador'], ['rendSelador', 'Selador (m²/L/demão)'], ['latSeladorL', 'Litros por lata de selador'], ['demaos', 'Demãos de tinta'], ['rendTinta', 'Tinta (m²/L/demão)'], ['latL', 'Litros por lata de tinta'], ['cor2Pct', '% da área na 2ª cor (0 = cor única)'], ['lixaM2', 'Lixa (m² por folha)'], ['roloM2', 'Rolo (m² por rolo)'], ['pincelM2', 'Pincel (m² por pincel)'], ['fitaM', 'Fita crepe (m por rolo)']] },
   { titulo: 'Compra', campos: [['sacoKg', 'Kg por saco de cimento']] },
 ]
+const BOOLS = new Set<string>(['esquadrias', 'vergas', 'radierTela', 'preTela', 'imperBaldrame', 'calcTela', 'mantaCob', 'telhaMetalica', 'transporte', 'rodape'])
+const ESCOLHAS: Record<string, [number, string][]> = {
+  massaTipo: [[0, 'Não'], [1, 'Massa corrida PVA'], [2, 'Massa acrílica']], aguas: [[1, 'Uma água'], [2, 'Duas águas'], [4, 'Quatro águas']], dwFaces: [[1, 'Uma face'], [2, 'Duas faces']],
+}
+const limpaRotulo = (r: string) => r.replace(/\s*\(1 = sim[^)]*\)/, '').replace(/: 0 = não, 1 = PVA, 2 = acrílica/, '').replace(/\s*\(1, 2 ou 4\)/, '').replace(/\s*\(1 ou 2\)/, '')
+
+/** Campo de parâmetro: Sim/Não, lista de opções ou número. */
+function CampoParam({ k, rot, p, setP }: { k: Num; rot: string; p: Params; setP: (x: Params) => void }) {
+  const set = (v: number) => setP({ ...p, [k]: v })
+  return (
+    <div><label className="rotulo">{limpaRotulo(rot)}</label>
+      {BOOLS.has(k) ? <select className="campo" value={p[k] > 0 ? 1 : 0} onChange={(e) => set(parseInt(e.target.value))}><option value={1}>Sim</option><option value={0}>Não</option></select>
+        : ESCOLHAS[k] ? <select className="campo" value={p[k]} onChange={(e) => set(parseInt(e.target.value))}>{ESCOLHAS[k].map(([v, t]) => <option key={v} value={v}>{t}</option>)}</select>
+        : <input className="campo" type="number" step="any" min={0} value={p[k]} onChange={(e) => set(parseFloat(e.target.value) || 0)} />}
+    </div>
+  )
+}
+
 const fmt = (n: number) => n.toLocaleString('pt-BR', { maximumFractionDigits: 3 })
 
 export default function Quantitativos({ obra, ambientes, aberturasIniciais = [] }: { obra: Obra; ambientes: Ambiente[]; aberturasIniciais?: Abertura[] }) {
@@ -45,6 +64,7 @@ export default function Quantitativos({ obra, ambientes, aberturasIniciais = [] 
   const [flags, setFlags] = useState<Flags>(() => flagsIniciais(p))
   const pe = useMemo(() => aplicarFlags(p, flags), [p, flags])
   const [esc, setEsc] = useState({ telha: -1, bloco: -1, piso: -1 })
+  const [tr, setTr] = useState<Record<string, number>>({})
   const [precos, setPrecos] = useState<Record<string, number>>({})
   const arq = useRef<HTMLInputElement>(null)
   useEffect(() => salvarParams(p), [p])
@@ -129,8 +149,7 @@ export default function Quantitativos({ obra, ambientes, aberturasIniciais = [] 
         <p className="mb-3 text-xs text-slate-500 dark:text-slate-400">Preencha comprimento e largura do telhado para calcular telhas, terças, caibros, ripas e cumeeira.</p>
         <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-4">
           {GRUPOS.filter((g) => g.titulo.startsWith('Cobertura')).flatMap((g) => g.campos).filter(([k]) => campoVisivel(k, flags, p)).map(([k, rot]) => (
-            <div key={k}><label className="rotulo">{rot}</label>
-              <input className="campo" type="number" step="any" min={0} value={p[k]} onChange={(e) => setP({ ...p, [k]: parseFloat(e.target.value) || 0 })} /></div>
+            <CampoParam key={k} k={k} rot={rot} p={p} setP={setP} />
           ))}
         </div>
       </section>}
@@ -142,8 +161,7 @@ export default function Quantitativos({ obra, ambientes, aberturasIniciais = [] 
             <div key={g.titulo} className="space-y-2">
               <h3 className="text-sm font-medium text-amber-600">{g.titulo}</h3>
               {g.campos.filter(([k]) => campoVisivel(k, flags, p)).map(([k, rot]) => (
-                <div key={k}><label className="rotulo">{rot}</label>
-                  <input className="campo" type="number" step="any" min={0} value={p[k]} onChange={(e) => setP({ ...p, [k]: parseFloat(e.target.value) || 0 })} /></div>
+                <CampoParam key={k} k={k} rot={rot} p={p} setP={setP} />
               ))}
             </div>
           ))}
@@ -180,6 +198,30 @@ export default function Quantitativos({ obra, ambientes, aberturasIniciais = [] 
             </div>
           )
         })}
+      </section>
+
+      <section className="cartao space-y-3">
+        <h2 className="font-semibold">Traços e aditivos</h2>
+        <p className="text-xs text-slate-500 dark:text-slate-400">Escolha um traço pré-definido (em volume) para preencher os consumos. Eles são estimados a partir do traço e continuam editáveis nos parâmetros; confira com a prática da sua obra.</p>
+        <div className="grid gap-3 sm:grid-cols-2">
+          {TRACOS.map((g) => (
+            <div key={g.chave}><label className="rotulo">{g.rotulo}</label>
+              <select className="campo" value={tr[g.chave] ?? -1} onChange={(e) => { const i = parseInt(e.target.value); setTr({ ...tr, [g.chave]: i }); if (i >= 0) { const { nome: _nome, ...campos } = g.lista[i]; setP({ ...p, ...campos }) } }}>
+                <option value={-1}>Escolher traço…</option>{g.lista.map((x, i) => <option key={x.nome} value={i}>{x.nome}</option>)}
+              </select>
+              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{g.resumo(p)}</p></div>
+          ))}
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2">
+          {([['Aditivo no concreto', 'aditivoConc', 'aditivoConcPct'], ['Aditivo nas argamassas', 'aditivoArg', 'aditivoArgPct']] as const).map(([rot, k, kp]) => (
+            <div key={k}><label className="rotulo">{rot}</label>
+              <div className="flex gap-1">
+                <select className="campo" value={p[k]} onChange={(e) => { const cod = parseInt(e.target.value); setP({ ...p, [k]: cod, [kp]: ADITIVOS[cod].pct }) }}>{ADITIVOS.map((a) => <option key={a.cod} value={a.cod}>{a.nome}</option>)}</select>
+                {p[k] > 0 && <input className="campo !w-24" type="number" step="any" min={0} title="% do peso do cimento" value={p[kp]} onChange={(e) => setP({ ...p, [kp]: parseFloat(e.target.value) || 0 })} />}
+              </div>
+              {p[k] > 0 && <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">% do peso do cimento (valor usual): siga a bula do fabricante.</p>}</div>
+          ))}
+        </div>
       </section>
 
       {itens.length === 0 ? (

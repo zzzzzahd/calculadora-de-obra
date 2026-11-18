@@ -71,6 +71,8 @@ export interface Params {
   metComp: number; metKgM: number; metBarraM: number; perdaMet: number; metSupM: number; metDemaos: number; metRend: number; metSoldaKgKg: number
   madComp: number; madBarraM: number; madPregoKgM: number
   escTipo: number; escFolga: number // escada: 0 reta, 1 em L com patamar, 2 em U com patamar, 3 em L com leque
+  // Traços e aditivos (aditivo: 0 nenhum, 1 plastificante, 2 impermeabilizante, 3 adesivo PVA; % do peso do cimento)
+  chapCalKgM3: number; embCalKgM3: number; aditivoConc: number; aditivoConcPct: number; aditivoArg: number; aditivoArgPct: number
   // Biblioteca técnica: composições criadas pelo usuário
   composicoes: Composicao[]
   // Compra
@@ -120,6 +122,7 @@ export const PARAMS_PADRAO: Params = {
   metComp: 0, metKgM: 0, metBarraM: 6, perdaMet: 5, metSupM: 0.5, metDemaos: 2, metRend: 8, metSoldaKgKg: 0.01,
   madComp: 0, madBarraM: 3, madPregoKgM: 0.02,
   escTipo: 0, escFolga: 0.1,
+  chapCalKgM3: 0, embCalKgM3: 0, aditivoConc: 0, aditivoConcPct: 0, aditivoArg: 0, aditivoArgPct: 0,
   composicoes: [],
   sacoKg: 50,
 }
@@ -152,7 +155,12 @@ export function calcular(obra: Obra, ambientes: Ambiente[], p: Params): Item[] {
   const aberturas = areaAberturas(p)
   const liq = Math.max(0, brutaParede - aberturas)
   const itens: Item[] = []
-  const add = (i: Omit<Item, 'final'>) => { if (i.bruto > 0) itens.push({ ...i, final: fim(i.bruto) }) }
+  let cimConcKg = 0, cimArgKg = 0 // cimento por escopo, para os aditivos
+  const add = (i: Omit<Item, 'final'>) => {
+    if (!(i.bruto > 0)) return
+    if (i.material === 'Cimento' && i.unidade === 'saco') { const kg = i.bruto * p.sacoKg; if (i.etapa === 'Revestimentos' || /argamassa/.test(i.formula)) cimArgKg += kg; else cimConcKg += kg }
+    itens.push({ ...i, final: fim(i.bruto) })
+  }
   if (area1 <= 0) return itens
 
   // PREPARAÇÃO DO TERRENO
@@ -450,14 +458,15 @@ export function calcular(obra: Obra, ambientes: Ambiente[], p: Params): Item[] {
   // REVESTIMENTOS E FORRO
   if (liq > 0) {
     const R = 'Revestimentos', aR = liq * p.revFaces, dR = `área líquida ${f2(liq)} m² × ${p.revFaces} face(s) = ${f2(aR)} m²`
-    const arg = (nome: string, esp: number, cim: number, are: number) => {
+    const arg = (nome: string, esp: number, cim: number, are: number, cal: number) => {
       const v = com((aR * esp) / 100, p.perdaRev)
       add({ etapa: R, material: nome, unidade: 'm²', tipo: 'Geométrico', formula: 'área líquida × faces', dimensoes: dR, coef: '—', perda: 0, bruto: aR })
       add({ etapa: R, material: 'Cimento', unidade: 'saco', tipo: 'Estimativa por composição', formula: `área × espessura ${esp} cm × (1 + perda) × kg/m³ ÷ kg/saco (${nome})`, dimensoes: `${dR}; argamassa ${f2(v)} m³`, coef: `${cim} kg/m³`, perda: p.perdaRev, bruto: (v * cim) / p.sacoKg })
       add({ etapa: R, material: 'Areia', unidade: 'm³', tipo: 'Estimativa por composição', formula: `argamassa (${nome}) × m³ de areia/m³`, dimensoes: `argamassa ${f2(v)} m³`, coef: `${are} m³/m³`, perda: p.perdaRev, bruto: v * are })
+      add({ etapa: R, material: 'Cal hidratada', unidade: 'saco', tipo: 'Estimativa por composição', formula: `argamassa (${nome}) × kg de cal/m³ ÷ kg por saco`, dimensoes: `argamassa ${f2(v)} m³`, coef: `${cal} kg/m³; saco ${p.calSacoKg} kg`, perda: p.perdaRev, bruto: p.calSacoKg > 0 ? (v * cal) / p.calSacoKg : 0 })
     }
-    arg('Chapisco', p.espChapCm, p.chapCimentoKg, p.chapAreiaM3)
-    arg('Emboço/reboco', p.espEmbCm, p.embCimentoKg, p.embAreiaM3)
+    arg('Chapisco', p.espChapCm, p.chapCimentoKg, p.chapAreiaM3, p.chapCalKgM3)
+    arg('Emboço/reboco', p.espEmbCm, p.embCimentoKg, p.embAreiaM3, p.embCalKgM3)
   }
   if (p.cerArea > 0)
     add({ etapa: 'Revestimentos', material: 'Revestimento cerâmico de parede', unidade: 'm²', tipo: 'Geométrico', formula: 'área informada × (1 + perda)', dimensoes: `${f2(p.cerArea)} m²`, coef: '—', perda: p.perdaRev, bruto: com(p.cerArea, p.perdaRev) })
@@ -574,6 +583,13 @@ export function calcular(obra: Obra, ambientes: Ambiente[], p: Params): Item[] {
     if (p.rufoM > 0)
       add({ etapa: E, material: 'Rufo', unidade: 'm', tipo: 'Geométrico', formula: 'metros informados × (1 + perda)', dimensoes: `${p.rufoM} m`, coef: '—', perda: p.perdaTelha, bruto: com(p.rufoM, p.perdaTelha) })
   }
+
+  // ADITIVOS — % do peso do cimento, separando concreto e argamassas (siga a bula do fabricante)
+  const NOME_ADIT = ['', 'Plastificante / redutor de água', 'Impermeabilizante (hidrófugo)', 'Adesivo PVA / resina para argamassa']
+  const aditivo = (cod: number, pct: number, kg: number, escopo: string) => {
+    if (cod > 0 && pct > 0) add({ etapa: 'Aditivos', material: `${NOME_ADIT[cod] ?? 'Aditivo'} (${escopo})`, unidade: 'kg', tipo: 'Estimativa por composição', formula: 'cimento do escopo × % do aditivo', dimensoes: `${f2(kg)} kg de cimento × ${pct}%`, coef: `${pct}% do peso do cimento (conferir a bula)`, perda: 0, bruto: (kg * pct) / 100 })
+  }
+  aditivo(p.aditivoConc, p.aditivoConcPct, cimConcKg, 'concreto'); aditivo(p.aditivoArg, p.aditivoArgPct, cimArgKg, 'argamassas')
 
   // COMPOSIÇÕES PRÓPRIAS (biblioteca técnica): quantidade = base × coeficiente × (1 + perda)
   const bases = { area: [area1, 'área construída (m²)'], parede: [liq, 'área líquida de parede (m²)'], fixa: [1, 'quantidade fixa'] } as const

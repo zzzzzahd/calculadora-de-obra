@@ -157,7 +157,8 @@ export default function ImportarPlanilha({ processos, materiais, onConcluir }: P
             {duplicados > 0 && <>
               <p className="flex gap-2 text-sm text-amber-600"><AlertTriangle size={16} className="shrink-0" />{duplicados} item(ns) parecem já estar cadastrados (mesmo código e fornecedor). Escolha o que fazer:</p>
               <select className="campo sm:w-1/2" value={estrategia} onChange={(e) => setEstrategia(e.target.value as Estrategia)}>{(Object.keys(rotulos) as Estrategia[]).map((k) => <option key={k} value={k}>{rotulos[k]}</option>)}</select></>}
-            <button className="btn btn-primario" disabled={salvando} onClick={confirmar}><Upload size={16} /> {estrategia === 'ignorar' ? 'Descartar importação' : 'Confirmar e cadastrar'}</button>
+            <div className="flex flex-wrap gap-2"><button className="btn btn-primario" disabled={salvando} onClick={confirmar}><Upload size={16} /> {estrategia === 'ignorar' ? 'Descartar importação' : 'Confirmar e cadastrar'}</button>
+              <button className="btn btn-sec" onClick={() => { setItens([]); setAbas([]); setAvisos([]) }}>Cancelar importação</button></div>
           </section>
         </>
       )}
