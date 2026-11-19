@@ -3,6 +3,8 @@
  * nunca chegue ao navegador. A chave vem de ANTHROPIC_API_KEY (variável protegida da Vercel).
  * A planta é enviada só para esta requisição e não é armazenada. O uso pode gerar custos na sua conta da API.
  */
+import { verificarAcesso } from './_seguranca.js'
+
 declare const process: { env: Record<string, string | undefined> }
 
 const MAX_BASE64 = 6_000_000
@@ -21,6 +23,8 @@ Regras obrigatórias: 1) NÃO invente medidas ilegíveis: use null. 2) Use orige
 const json = (corpo: unknown, status = 200) => new Response(JSON.stringify(corpo), { status, headers: { 'content-type': 'application/json' } })
 
 export async function POST(request: Request): Promise<Response> {
+  const negado = verificarAcesso(request)
+  if (negado) return negado
   const chave = process.env.ANTHROPIC_API_KEY
   if (!chave) return json({ erro: 'Leitor de plantas não configurado: defina ANTHROPIC_API_KEY nas variáveis de ambiente da Vercel.' }, 503)
 

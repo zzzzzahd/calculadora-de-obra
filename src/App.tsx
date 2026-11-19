@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { ArrowLeft, FileUp, HardHat, Landmark, Moon, PencilRuler, RotateCcw, Sun } from 'lucide-react'
 import type { Ambiente, Obra } from './types'
 import type { Abertura } from './lib/engine'
@@ -6,10 +6,10 @@ import { useTema } from './lib/useTema'
 import Levantamento from './components/Levantamento'
 import Quantitativos from './components/Quantitativos'
 import LeitorPlanta from './components/LeitorPlanta'
-import Licitacoes from './licitacoes/Licitacoes'
+const Licitacoes = lazy(() => import('./licitacoes/Licitacoes')) // módulo pesado (planilhas e PDF): carrega só quando aberto
 import { uid } from './lib/uid'
 
-const VERSAO = 'v23'
+const VERSAO = 'v24'
 const obraVazia = (): Obra => ({ nome: '', tipo: 'Residencial', alturaParede: 2.8, unidadeAltura: 'm', pavimentos: 1, terreno: 'plano', desnivel: false, movimentoTerra: 'nenhum' })
 
 export default function App() {
@@ -51,7 +51,7 @@ export default function App() {
         </div>
       )}
 
-      {modo === 'licitacoes' && <Licitacoes />}
+      {modo === 'licitacoes' && <Suspense fallback={<p className="text-sm">Carregando módulo…</p>}><Licitacoes /></Suspense>}
 
       {modo === 'planta' && (
         <LeitorPlanta onConfirmar={(c) => {

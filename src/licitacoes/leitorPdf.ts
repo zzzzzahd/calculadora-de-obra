@@ -2,6 +2,7 @@ import { PDFDocument } from 'pdf-lib'
 import { avaliar, chaveItem, numero, type ItemImportado } from './importacao'
 import type { Processo } from './tipos'
 import { uid } from '../lib/uid'
+import { postarIA } from '../lib/acesso'
 
 export const PAGINAS_POR_BLOCO = 4
 export const MAX_PAGINAS = 60
@@ -88,9 +89,9 @@ function finalizar(itens: ItemImportado[], metadados: Metadados, avisos: string[
 function mesclar(base: Metadados, novo: Metadados) { for (const [k, v] of Object.entries(novo)) if (!(k in base)) (base as Record<string, unknown>)[k] = v }
 
 export const chamarApi: Chamar = async (corpo) => {
-  const r = await fetch('/api/ler-licitacao', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(corpo) })
+  const r = await postarIA('/api/ler-licitacao', corpo)
   const j = (await r.json().catch(() => ({}))) as { texto?: string; truncado?: boolean; erro?: string }
-  if (!r.ok || j.texto === undefined) { const m = j.erro ?? `Erro ao ler o documento (HTTP ${r.status}).`; throw r.status === 503 || r.status === 429 ? new ErroFatal(m) : new Error(m) }
+  if (!r.ok || j.texto === undefined) { const m = j.erro ?? `Erro ao ler o documento (HTTP ${r.status}).`; throw [401, 403, 429, 503].includes(r.status) ? new ErroFatal(m) : new Error(m) }
   return { texto: j.texto, truncado: j.truncado }
 }
 

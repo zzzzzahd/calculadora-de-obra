@@ -32,8 +32,8 @@ export function sanear(bruto: unknown): Params {
 export function carregarParams(): Params {
   try { return sanear(JSON.parse(localStorage.getItem(CHAVE) ?? 'null')) } catch { return sanear(null) }
 }
-export function salvarParams(p: Params) {
-  try { localStorage.setItem(CHAVE, JSON.stringify({ ...p, aberturas: undefined })) } catch { /* indisponível */ }
+export function salvarParams(p: Params): boolean {
+  try { localStorage.setItem(CHAVE, JSON.stringify({ ...p, aberturas: undefined })); return true } catch { return false }
 }
 
 export const exportarConfig = (p: Params) => JSON.stringify({ versao: 1, parametros: { ...p, aberturas: undefined } }, null, 2)

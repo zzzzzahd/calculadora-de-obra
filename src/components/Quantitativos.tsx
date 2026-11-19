@@ -67,7 +67,8 @@ export default function Quantitativos({ obra, ambientes, aberturasIniciais = [] 
   const [tr, setTr] = useState<Record<string, number>>({})
   const [precos, setPrecos] = useState<Record<string, number>>({})
   const arq = useRef<HTMLInputElement>(null)
-  useEffect(() => salvarParams(p), [p])
+  const [falhaSalvar, setFalhaSalvar] = useState(false)
+  useEffect(() => setFalhaSalvar(!salvarParams(p)), [p])
   const backup = () => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([exportarConfig(p)], { type: 'application/json' })); a.download = 'configuracoes-calculadora.json'; a.click() }
   const importar = async (f?: File) => { if (!f) return; try { setP({ ...importarConfig(await f.text()), aberturas: p.aberturas }) } catch (e) { alert((e as Error).message) } }
   const itens = useMemo(() => calcular(obra, ambientes, pe), [obra, ambientes, pe])
@@ -172,7 +173,7 @@ export default function Quantitativos({ obra, ambientes, aberturasIniciais = [] 
           <button className="btn btn-sec" onClick={() => setP({ ...PARAMS_PADRAO, aberturas: p.aberturas })}><RotateCcw size={16} /> Restaurar padrão</button>
           <input ref={arq} type="file" accept="application/json" className="hidden" onChange={(e) => { importar(e.target.files?.[0]); e.target.value = '' }} />
         </div>
-        <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">Os parâmetros ficam salvos neste navegador. Instalações: contagem por quantidades informadas; circuitos, bitolas e diâmetros exigem projeto e profissional habilitado. Valores iniciais são exemplos de composição: confira com a sua realidade antes de comprar.</p>
+        <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">{falhaSalvar ? <strong className="text-red-600">Atenção: não foi possível salvar os parâmetros neste navegador; eles serão perdidos ao fechar a página. Exporte a configuração em JSON.</strong> : 'Os parâmetros ficam salvos neste navegador.'} Instalações: contagem por quantidades informadas; circuitos, bitolas e diâmetros exigem projeto e profissional habilitado. Valores iniciais são exemplos de composição: confira com a sua realidade antes de comprar.</p>
       </section>
 
       <section className="cartao">

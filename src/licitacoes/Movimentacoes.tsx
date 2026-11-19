@@ -4,7 +4,7 @@ import type { Material } from './tipos'
 import { aplicarMovimentos, cancelar, corrigir, INFORMATIVOS, movimentoVazio, reservadoPorObra, ROTULO_MOV, validarMovimento, type Movimento, type TipoMov } from './movimentos'
 import { saldos } from './regras'
 
-interface Props { materiais: Material[]; movimentos: Movimento[]; inicial: string; onSalvar: (movs: Movimento[]) => Promise<void> }
+interface Props { materiais: Material[]; movimentos: Movimento[]; inicial: string; onSalvar: (movs: Movimento[]) => Promise<boolean> }
 const TIPOS = (Object.keys(ROTULO_MOV) as TipoMov[]).filter((t) => !INFORMATIVOS.includes(t))
 const f = (n: number) => n.toLocaleString('pt-BR', { maximumFractionDigits: 3 })
 
@@ -33,7 +33,7 @@ export default function Movimentacoes({ materiais, movimentos, inicial, onSalvar
     const v = validarMovimento(base, corrigindo ? ativos.filter((x) => x.id !== corrigindo.id) : ativos, novo)
     setErros(v.erros); setAvisos(v.avisos)
     if (v.erros.length || (v.avisos.length && !just.trim())) return // com alerta, só salva com justificativa escrita
-    await onSalvar(corrigindo ? corrigir(corrigindo, novo) : [novo]); limpar()
+    if (await onSalvar(corrigindo ? corrigir(corrigindo, novo) : [novo])) limpar() // só limpa o formulário se a gravação deu certo
   }
   const iniciarCorrecao = (m: Movimento) => {
     setCorrigindo(m); setTipo(m.tipo); setQtd(String(m.quantidade)); setData(m.data); setObra(m.obra); setDoc(m.documento); setObs(m.observacoes); setConv(m.converteReserva); setJust(''); setAvisos([]); setErros([])

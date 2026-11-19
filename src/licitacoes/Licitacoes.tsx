@@ -4,6 +4,7 @@ import { CATEGORIAS, type Material, type Processo } from './tipos'
 import { excluir, iniciar, listar, salvar, salvarLote } from './db'
 import ImportarPlanilha from './ImportarPlanilha'
 import Movimentacoes from './Movimentacoes'
+import { gravarSeguro } from './gravar'
 import { aplicarMovimentos, movimentoVazio, type Movimento } from './movimentos'
 import { FILTROS_VAZIOS, filtrar, indicadores, ROTULO_SITUACAO, saldos, situacao, type Filtros } from './regras'
 import { uid } from '../lib/uid'
@@ -76,41 +77,53 @@ export default function Licitacoes() {
   const fornecedores = [...new Set([...processos.map((p) => p.fornecedor), ...materiais.map((m) => m.fornecedor)].filter(Boolean))]
   const upsert = <T extends { id: string }>(arr: T[], x: T) => (arr.some((a) => a.id === x.id) ? arr.map((a) => (a.id === x.id ? x : a)) : [...arr, x])
 
-  const registrar = async (movs: Movimento[]) => {
-    await salvarLote('movimentos', movs)
+  /** Executa a gravação; se falhar, mostra aviso claro e NÃO altera a tela como se tivesse salvo. */
+  const protegido = async (fn: () => Promise<unknown>): Promise<boolean> => {
+    const r = await gravarSeguro(fn)
+    setErro(r.ok ? '' : r.mensagem)
+    return r.ok
+  }
+  const mesclarMovs = (movs: Movimento[]) => {
     const ids = new Set(movs.map((m) => m.id)), por = new Map(movs.map((m) => [m.id, m]))
     setMovimentos((atual) => [...atual.map((m) => (ids.has(m.id) ? por.get(m.id)! : m)), ...movs.filter((m) => !atual.some((x) => x.id === m.id))])
+  }
+  const registrar = async (movs: Movimento[]): Promise<boolean> => {
+    if (!(await protegido(() => salvarLote('movimentos', movs)))) return false
+    mesclarMovs(movs); return true
   }
   const gravarProcesso = async () => {
     if (!edP) return
     if (!edP.numeroProcesso.trim()) return alert('Informe o número do processo licitatório.')
-    await salvar('processos', edP); setProcessos(upsert(processos, edP)); setEdP(null)
+    if (await protegido(() => salvar('processos', edP))) { setProcessos(upsert(processos, edP)); setEdP(null) }
   }
   const gravarMaterial = async () => {
     if (!edM) return
     if (!edM.processoId || !edM.nomePadronizado.trim()) return alert('Escolha o processo e informe o nome padronizado.')
     const novo = !materiais.some((m) => m.id === edM.id)
-    await salvar('materiais', edM); setMateriais(upsert(materiais, edM))
-    if (novo) await registrar([{ ...movimentoVazio(edM.id, edM.unidadeFornecimento, 'cadastro-inicial'), quantidade: edM.quantidadeRegistrada ?? 0, observacoes: 'Cadastro manual' }])
+    const mov = { ...movimentoVazio(edM.id, edM.unidadeFornecimento, 'cadastro-inicial'), quantidade: edM.quantidadeRegistrada ?? 0, observacoes: 'Cadastro manual' }
+    const ok = await protegido(async () => { await salvar('materiais', edM); if (novo) await salvarLote('movimentos', [mov]) })
+    if (!ok) return
+    setMateriais(upsert(materiais, edM)); if (novo) mesclarMovs([mov])
     setEdM(null)
   }
-  const concluirImportacao = async (novosProc: Processo[], mats: Material[]) => {
-    await salvarLote('processos', novosProc); await salvarLote('materiais', mats)
-    await registrar(mats.map((m) => ({ ...movimentoVazio(m.id, m.unidadeFornecimento, materiais.some((x) => x.id === m.id) ? 'atualizacao' : 'cadastro-inicial'), quantidade: m.quantidadeRegistrada ?? 0, observacoes: m.observacoes })))
-    setProcessos([...processos, ...novosProc])
+  const concluirImportacao = async (novosProc: Processo[], mats: Material[]): Promise<boolean> => {
+    const movs = mats.map((m) => ({ ...movimentoVazio(m.id, m.unidadeFornecimento, materiais.some((x) => x.id === m.id) ? 'atualizacao' : 'cadastro-inicial'), quantidade: m.quantidadeRegistrada ?? 0, observacoes: m.observacoes }))
+    const ok = await protegido(async () => { await salvarLote('processos', novosProc); await salvarLote('materiais', mats); await salvarLote('movimentos', movs) })
+    if (!ok) return false
+    mesclarMovs(movs); setProcessos([...processos, ...novosProc])
     const ids = new Map(mats.map((m) => [m.id, m]))
     setMateriais([...materiais.map((m) => ids.get(m.id) ?? m), ...mats.filter((m) => !materiais.some((x) => x.id === m.id))])
-    setAba('materiais')
+    setAba('materiais'); return true
   }
   const apagarProcesso = async (p: Processo) => {
     if (materiais.some((m) => m.processoId === p.id)) return alert('Este processo tem materiais cadastrados. Exclua os materiais antes.')
     if (!confirm('Excluir este processo?')) return
-    await excluir('processos', p.id); setProcessos(processos.filter((x) => x.id !== p.id))
+    if (await protegido(() => excluir('processos', p.id))) setProcessos(processos.filter((x) => x.id !== p.id))
   }
   const apagarMaterial = async (m: Material) => {
     if (!confirm(`Excluir "${m.nomePadronizado}"?`)) return
-    for (const mv of movimentos.filter((x) => x.materialId === m.id)) await excluir('movimentos', mv.id)
-    await excluir('materiais', m.id); setMateriais(materiais.filter((x) => x.id !== m.id)); setMovimentos(movimentos.filter((x) => x.materialId !== m.id))
+    const ok = await protegido(async () => { for (const mv of movimentos.filter((x) => x.materialId === m.id)) await excluir('movimentos', mv.id); await excluir('materiais', m.id) })
+    if (ok) { setMateriais(materiais.filter((x) => x.id !== m.id)); setMovimentos(movimentos.filter((x) => x.materialId !== m.id)) }
   }
 
   if (!pronto) return <p className="text-sm">Abrindo armazenamento local…</p>
@@ -132,7 +145,7 @@ export default function Licitacoes() {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap gap-2">{aba !== 'painel' && <button className="btn btn-sec" onClick={voltar}><ArrowLeft size={16} /> Voltar</button>}{abaBtn('painel', 'Painel')}{abaBtn('processos', `Processos (${processos.length})`)}{abaBtn('materiais', `Materiais (${materiais.length})`)}{abaBtn('importar', 'Importar planilha')}{abaBtn('movimentacoes', 'Movimentações')}</div>
-      {erro && <p className="cartao text-sm text-red-600">{erro}</p>}
+      {erro && <p role="alert" className="cartao text-sm font-medium text-red-600">{erro}</p>}
 
       {aba === 'painel' && (
         <>

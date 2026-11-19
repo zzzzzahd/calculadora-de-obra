@@ -1,5 +1,6 @@
 import type { Abertura } from './engine'
 import { uid } from './uid'
+import { postarIA } from './acesso'
 
 export interface AmbienteLido { id: string; nome: string; comprimento: number; largura: number; origem: 'cota' | 'estimada'; confianca: number; observacao: string }
 export interface Leitura { ambientes: AmbienteLido[]; alturaParede: number | null; aberturas: Abertura[]; avisos: string[] }
@@ -47,7 +48,7 @@ export async function prepararArquivo(file: File): Promise<{ dados: string; tipo
 
 export async function lerPlanta(file: File): Promise<Leitura> {
   const corpo = await prepararArquivo(file)
-  const r = await fetch('/api/ler-planta', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(corpo) })
+  const r = await postarIA('/api/ler-planta', corpo)
   const j = (await r.json().catch(() => ({}))) as { texto?: string; erro?: string }
   if (!r.ok || !j.texto) throw new Error(j.erro ?? `Erro ao interpretar a planta (HTTP ${r.status}).`)
   return validarLeitura(j.texto)

@@ -3,6 +3,8 @@
  * com a API da Anthropic e devolve os itens em JSON. A chave fica só em ANTHROPIC_API_KEY (variável protegida).
  * O documento é enviado apenas para esta requisição e não é armazenado. O uso pode gerar custos na sua conta da API.
  */
+import { verificarAcesso } from './_seguranca.js'
+
 declare const process: { env: Record<string, string | undefined> }
 
 const MAX_BASE64 = 4_300_000 // limite de corpo da Vercel: ~4,5 MB
@@ -19,6 +21,8 @@ Regras obrigatórias: 1) NÃO invente: use null para dado ausente ou ilegível. 
 const json = (corpo: unknown, status = 200) => new Response(JSON.stringify(corpo), { status, headers: { 'content-type': 'application/json' } })
 
 export async function POST(request: Request): Promise<Response> {
+  const negado = verificarAcesso(request)
+  if (negado) return negado
   const chave = process.env.ANTHROPIC_API_KEY
   if (!chave) return json({ erro: 'Leitura por IA não configurada: defina ANTHROPIC_API_KEY nas variáveis de ambiente da Vercel.' }, 503)
 

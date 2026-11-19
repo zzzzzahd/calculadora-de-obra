@@ -7,7 +7,7 @@ import { aplicarImportacao, avaliar, chaveItem, indexarExistentes, lerCsv, lerXl
 import { uid } from '../lib/uid'
 
 interface Vinculo { modo: 'existente' | 'novo'; processoId: string; numeroProcesso: string; vigenciaInicio: string; vigenciaFim: string; extra?: Partial<Processo> }
-interface Props { processos: Processo[]; materiais: Material[]; onConcluir: (novosProcessos: Processo[], materiais: Material[]) => Promise<void> }
+interface Props { processos: Processo[]; materiais: Material[]; onConcluir: (novosProcessos: Processo[], materiais: Material[]) => Promise<boolean> }
 
 const POR_PAGINA = 40
 const rotulos: Record<Estrategia, string> = {
@@ -92,9 +92,8 @@ export default function ImportarPlanilha({ processos, materiais, onConcluir }: P
     const r = aplicarImportacao(itens, existentes, mapa, estrategia)
     setSalvando(true)
     try {
-      await onConcluir(novos.filter((p) => r.salvar.some((m) => m.processoId === p.id)), r.salvar)
-      alert(`Importação concluída: ${r.novos} novo(s), ${r.atualizados} atualizado(s), ${r.ignorados} ignorado(s).`)
-      setItens([]); setAbas([])
+      const ok = await onConcluir(novos.filter((p) => r.salvar.some((m) => m.processoId === p.id)), r.salvar)
+      if (ok) { alert(`Importação concluída: ${r.novos} novo(s), ${r.atualizados} atualizado(s), ${r.ignorados} ignorado(s).`); setItens([]); setAbas([]) }
     } finally { setSalvando(false) }
   }
 
