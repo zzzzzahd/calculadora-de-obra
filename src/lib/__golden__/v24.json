@@ -1,0 +1,4842 @@
+{
+ "salaSimples": {
+  "itens": [
+   {
+    "etapa": "Preparação do terreno",
+    "material": "Limpeza do terreno",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área construída (1 pavimento)",
+    "dimensoes": "35 m²",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 35,
+    "final": 35
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Bloco",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "área líquida ÷ (comprimento × altura do bloco) × (1 + perda)",
+    "dimensoes": "parede bruta 67,2 m² − aberturas 0 m² = 67,2 m²; bloco 0.39×0.19 m",
+    "coef": "13,495 un/m²",
+    "perda": 5,
+    "bruto": 952.2267206477732,
+    "final": 953
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Argamassa de assentamento",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "área líquida × consumo × (1 + perda)",
+    "dimensoes": "parede bruta 67,2 m² − aberturas 0 m² = 67,2 m²; consumo 0.012 m³/m²",
+    "coef": "0.012 m³/m²",
+    "perda": 10,
+    "bruto": 0.8870399999999999,
+    "final": 1
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de argamassa × kg de cimento/m³ ÷ kg por saco",
+    "dimensoes": "argamassa 0,887 m³",
+    "coef": "250 kg/m³; saco 50 kg",
+    "perda": 10,
+    "bruto": 4.4352,
+    "final": 5
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de argamassa × m³ de areia/m³",
+    "dimensoes": "argamassa 0,887 m³",
+    "coef": "1.1 m³/m³",
+    "perda": 10,
+    "bruto": 0.9757440000000001,
+    "final": 1
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Concreto do contrapiso",
+    "unidade": "m³",
+    "tipo": "Geométrico",
+    "formula": "área × espessura × (1 + perda)",
+    "dimensoes": "área 35 m² × espessura 5 cm",
+    "coef": "—",
+    "perda": 5,
+    "bruto": 1.8375000000000001,
+    "final": 2
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "volume × kg de cimento/m³ ÷ kg por saco",
+    "dimensoes": "concreto 1,838 m³",
+    "coef": "300 kg/m³; saco 50 kg",
+    "perda": 5,
+    "bruto": 11.025,
+    "final": 12
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume × m³ de areia/m³",
+    "dimensoes": "concreto 1,838 m³",
+    "coef": "0.65 m³/m³",
+    "perda": 5,
+    "bruto": 1.1943750000000002,
+    "final": 2
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Brita",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume × m³ de brita/m³",
+    "dimensoes": "concreto 1,838 m³",
+    "coef": "0.85 m³/m³",
+    "perda": 5,
+    "bruto": 1.5618750000000001,
+    "final": 2
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Piso (área)",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área × (1 + perda)",
+    "dimensoes": "área 35 m²",
+    "coef": "—",
+    "perda": 10,
+    "bruto": 38.5,
+    "final": 39
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Piso (peças)",
+    "unidade": "un",
+    "tipo": "Geométrico",
+    "formula": "área com perda ÷ (comprimento × largura da peça)",
+    "dimensoes": "área 38,5 m²; peça 0.6×0.6 m",
+    "coef": "2,778 un/m²",
+    "perda": 10,
+    "bruto": 106.94444444444444,
+    "final": 107
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Rodapé (peças)",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "(perímetro − largura das portas) ÷ peça × (1 + perda)",
+    "dimensoes": "perímetro 24 m − portas 0 m",
+    "coef": "peça 2.4 m",
+    "perda": 10,
+    "bruto": 11,
+    "final": 11
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Rejunte",
+    "unidade": "kg",
+    "tipo": "Estimativa por composição",
+    "formula": "área × consumo",
+    "dimensoes": "área 35 m²",
+    "coef": "0.5 kg/m²",
+    "perda": 0,
+    "bruto": 17.5,
+    "final": 18
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Espaçadores",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "peças × espaçadores por peça",
+    "dimensoes": "106,944 peças",
+    "coef": "4 un/peça",
+    "perda": 0,
+    "bruto": 427.77777777777777,
+    "final": 428
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Argamassa colante",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "área × consumo ÷ kg por saco",
+    "dimensoes": "área 35 m²",
+    "coef": "4.5 kg/m²; saco 20 kg",
+    "perda": 0,
+    "bruto": 7.875,
+    "final": 8
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Chapisco",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área líquida × faces",
+    "dimensoes": "área líquida 67,2 m² × 2 face(s) = 134,4 m²",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 134.39999999999998,
+    "final": 135
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "área × espessura 0.5 cm × (1 + perda) × kg/m³ ÷ kg/saco (Chapisco)",
+    "dimensoes": "área líquida 67,2 m² × 2 face(s) = 134,4 m²; argamassa 0,739 m³",
+    "coef": "500 kg/m³",
+    "perda": 10,
+    "bruto": 7.3919999999999995,
+    "final": 8
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "argamassa (Chapisco) × m³ de areia/m³",
+    "dimensoes": "argamassa 0,739 m³",
+    "coef": "1 m³/m³",
+    "perda": 10,
+    "bruto": 0.7392,
+    "final": 1
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Emboço/reboco",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área líquida × faces",
+    "dimensoes": "área líquida 67,2 m² × 2 face(s) = 134,4 m²",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 134.39999999999998,
+    "final": 135
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "área × espessura 2.5 cm × (1 + perda) × kg/m³ ÷ kg/saco (Emboço/reboco)",
+    "dimensoes": "área líquida 67,2 m² × 2 face(s) = 134,4 m²; argamassa 3,696 m³",
+    "coef": "250 kg/m³",
+    "perda": 10,
+    "bruto": 18.479999999999997,
+    "final": 19
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "argamassa (Emboço/reboco) × m³ de areia/m³",
+    "dimensoes": "argamassa 3,696 m³",
+    "coef": "1.1 m³/m³",
+    "perda": 10,
+    "bruto": 4.0656,
+    "final": 5
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Massa corrida PVA",
+    "unidade": "lata",
+    "tipo": "Estimativa por composição",
+    "formula": "área com massa × demãos ÷ rendimento por lata",
+    "dimensoes": "área líquida 67,2 m² × 1 face(s) = 67,2 m²; 100% com massa = 67,2 m²; 2 demão(s)",
+    "coef": "50 m²/lata/demão",
+    "perda": 0,
+    "bruto": 2.6879999999999997,
+    "final": 3
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Selador",
+    "unidade": "lata",
+    "tipo": "Estimativa por composição",
+    "formula": "área × demãos ÷ rendimento ÷ litros da lata",
+    "dimensoes": "área líquida 67,2 m² × 1 face(s) = 67,2 m²; 100% com selador; 1 demão(s)",
+    "coef": "12 m²/L/demão; lata 18 L",
+    "perda": 0,
+    "bruto": 0.31111111111111106,
+    "final": 1
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Tinta",
+    "unidade": "lata",
+    "tipo": "Estimativa por composição",
+    "formula": "área × demãos ÷ rendimento ÷ litros da lata",
+    "dimensoes": "área líquida 67,2 m² × 1 face(s) = 67,2 m²; área desta cor 67,2 m²; 2 demão(s)",
+    "coef": "10 m²/L/demão; lata 18 L",
+    "perda": 0,
+    "bruto": 0.7466666666666666,
+    "final": 1
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Lixa",
+    "unidade": "folha",
+    "tipo": "Estimativa por composição",
+    "formula": "(área × demãos de massa + área a pintar) ÷ área por folha",
+    "dimensoes": "área líquida 67,2 m² × 1 face(s) = 67,2 m²",
+    "coef": "15 m²/folha",
+    "perda": 0,
+    "bruto": 13.439999999999998,
+    "final": 14
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Rolo de pintura",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "maior entre nº de cores e (área × demãos ÷ m² por rolo)",
+    "dimensoes": "área líquida 67,2 m² × 1 face(s) = 67,2 m²",
+    "coef": "100 m²/rolo",
+    "perda": 0,
+    "bruto": 1.3439999999999999,
+    "final": 2
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Pincel",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "maior entre nº de cores e (área ÷ m² por pincel)",
+    "dimensoes": "área líquida 67,2 m² × 1 face(s) = 67,2 m²",
+    "coef": "200 m²/pincel",
+    "perda": 0,
+    "bruto": 1,
+    "final": 1
+   }
+  ],
+  "consolidado": [
+   {
+    "material": "Limpeza do terreno",
+    "unidade": "m²",
+    "etapas": "Preparação do terreno",
+    "bruto": 35,
+    "final": 35
+   },
+   {
+    "material": "Bloco",
+    "unidade": "un",
+    "etapas": "Alvenaria",
+    "bruto": 952.2267206477732,
+    "final": 953
+   },
+   {
+    "material": "Argamassa de assentamento",
+    "unidade": "m³",
+    "etapas": "Alvenaria",
+    "bruto": 0.8870399999999999,
+    "final": 1
+   },
+   {
+    "material": "Cimento",
+    "unidade": "saco",
+    "etapas": "Alvenaria, Contrapiso e piso, Revestimentos",
+    "bruto": 41.3322,
+    "final": 42
+   },
+   {
+    "material": "Areia",
+    "unidade": "m³",
+    "etapas": "Alvenaria, Contrapiso e piso, Revestimentos",
+    "bruto": 6.974919,
+    "final": 7
+   },
+   {
+    "material": "Concreto do contrapiso",
+    "unidade": "m³",
+    "etapas": "Contrapiso e piso",
+    "bruto": 1.8375000000000001,
+    "final": 2
+   },
+   {
+    "material": "Brita",
+    "unidade": "m³",
+    "etapas": "Contrapiso e piso",
+    "bruto": 1.5618750000000001,
+    "final": 2
+   },
+   {
+    "material": "Piso (área)",
+    "unidade": "m²",
+    "etapas": "Contrapiso e piso",
+    "bruto": 38.5,
+    "final": 39
+   },
+   {
+    "material": "Piso (peças)",
+    "unidade": "un",
+    "etapas": "Contrapiso e piso",
+    "bruto": 106.94444444444444,
+    "final": 107
+   },
+   {
+    "material": "Rodapé (peças)",
+    "unidade": "un",
+    "etapas": "Contrapiso e piso",
+    "bruto": 11,
+    "final": 11
+   },
+   {
+    "material": "Rejunte",
+    "unidade": "kg",
+    "etapas": "Contrapiso e piso",
+    "bruto": 17.5,
+    "final": 18
+   },
+   {
+    "material": "Espaçadores",
+    "unidade": "un",
+    "etapas": "Contrapiso e piso",
+    "bruto": 427.77777777777777,
+    "final": 428
+   },
+   {
+    "material": "Argamassa colante",
+    "unidade": "saco",
+    "etapas": "Contrapiso e piso",
+    "bruto": 7.875,
+    "final": 8
+   },
+   {
+    "material": "Chapisco",
+    "unidade": "m²",
+    "etapas": "Revestimentos",
+    "bruto": 134.39999999999998,
+    "final": 135
+   },
+   {
+    "material": "Emboço/reboco",
+    "unidade": "m²",
+    "etapas": "Revestimentos",
+    "bruto": 134.39999999999998,
+    "final": 135
+   },
+   {
+    "material": "Massa corrida PVA",
+    "unidade": "lata",
+    "etapas": "Pintura",
+    "bruto": 2.6879999999999997,
+    "final": 3
+   },
+   {
+    "material": "Selador",
+    "unidade": "lata",
+    "etapas": "Pintura",
+    "bruto": 0.31111111111111106,
+    "final": 1
+   },
+   {
+    "material": "Tinta",
+    "unidade": "lata",
+    "etapas": "Pintura",
+    "bruto": 0.7466666666666666,
+    "final": 1
+   },
+   {
+    "material": "Lixa",
+    "unidade": "folha",
+    "etapas": "Pintura",
+    "bruto": 13.439999999999998,
+    "final": 14
+   },
+   {
+    "material": "Rolo de pintura",
+    "unidade": "un",
+    "etapas": "Pintura",
+    "bruto": 1.3439999999999999,
+    "final": 2
+   },
+   {
+    "material": "Pincel",
+    "unidade": "un",
+    "etapas": "Pintura",
+    "bruto": 1,
+    "final": 1
+   }
+  ]
+ },
+ "duasSalas7x7SemAberturas": {
+  "itens": [
+   {
+    "etapa": "Preparação do terreno",
+    "material": "Limpeza do terreno",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área construída (1 pavimento)",
+    "dimensoes": "98 m²",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 98,
+    "final": 98
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Bloco",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "área líquida ÷ (comprimento × altura do bloco) × (1 + perda)",
+    "dimensoes": "parede bruta 168 m² − aberturas 0 m² = 168 m²; bloco 0.39×0.19 m",
+    "coef": "13,495 un/m²",
+    "perda": 5,
+    "bruto": 2380.5668016194336,
+    "final": 2381
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Argamassa de assentamento",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "área líquida × consumo × (1 + perda)",
+    "dimensoes": "parede bruta 168 m² − aberturas 0 m² = 168 m²; consumo 0.012 m³/m²",
+    "coef": "0.012 m³/m²",
+    "perda": 10,
+    "bruto": 2.2176,
+    "final": 3
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de argamassa × kg de cimento/m³ ÷ kg por saco",
+    "dimensoes": "argamassa 2,218 m³",
+    "coef": "250 kg/m³; saco 50 kg",
+    "perda": 10,
+    "bruto": 11.088,
+    "final": 12
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de argamassa × m³ de areia/m³",
+    "dimensoes": "argamassa 2,218 m³",
+    "coef": "1.1 m³/m³",
+    "perda": 10,
+    "bruto": 2.43936,
+    "final": 3
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Concreto do contrapiso",
+    "unidade": "m³",
+    "tipo": "Geométrico",
+    "formula": "área × espessura × (1 + perda)",
+    "dimensoes": "área 98 m² × espessura 5 cm",
+    "coef": "—",
+    "perda": 5,
+    "bruto": 5.1450000000000005,
+    "final": 6
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "volume × kg de cimento/m³ ÷ kg por saco",
+    "dimensoes": "concreto 5,145 m³",
+    "coef": "300 kg/m³; saco 50 kg",
+    "perda": 5,
+    "bruto": 30.870000000000005,
+    "final": 31
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume × m³ de areia/m³",
+    "dimensoes": "concreto 5,145 m³",
+    "coef": "0.65 m³/m³",
+    "perda": 5,
+    "bruto": 3.3442500000000006,
+    "final": 4
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Brita",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume × m³ de brita/m³",
+    "dimensoes": "concreto 5,145 m³",
+    "coef": "0.85 m³/m³",
+    "perda": 5,
+    "bruto": 4.3732500000000005,
+    "final": 5
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Piso (área)",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área × (1 + perda)",
+    "dimensoes": "área 98 m²",
+    "coef": "—",
+    "perda": 10,
+    "bruto": 107.80000000000001,
+    "final": 108
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Piso (peças)",
+    "unidade": "un",
+    "tipo": "Geométrico",
+    "formula": "área com perda ÷ (comprimento × largura da peça)",
+    "dimensoes": "área 107,8 m²; peça 0.6×0.6 m",
+    "coef": "2,778 un/m²",
+    "perda": 10,
+    "bruto": 299.4444444444445,
+    "final": 300
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Rodapé (peças)",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "(perímetro − largura das portas) ÷ peça × (1 + perda)",
+    "dimensoes": "perímetro 56 m − portas 0 m",
+    "coef": "peça 2.4 m",
+    "perda": 10,
+    "bruto": 25.66666666666667,
+    "final": 26
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Rejunte",
+    "unidade": "kg",
+    "tipo": "Estimativa por composição",
+    "formula": "área × consumo",
+    "dimensoes": "área 98 m²",
+    "coef": "0.5 kg/m²",
+    "perda": 0,
+    "bruto": 49,
+    "final": 49
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Espaçadores",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "peças × espaçadores por peça",
+    "dimensoes": "299,444 peças",
+    "coef": "4 un/peça",
+    "perda": 0,
+    "bruto": 1197.777777777778,
+    "final": 1198
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Argamassa colante",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "área × consumo ÷ kg por saco",
+    "dimensoes": "área 98 m²",
+    "coef": "4.5 kg/m²; saco 20 kg",
+    "perda": 0,
+    "bruto": 22.05,
+    "final": 23
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Chapisco",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área líquida × faces",
+    "dimensoes": "área líquida 168 m² × 2 face(s) = 336 m²",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 336,
+    "final": 336
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "área × espessura 0.5 cm × (1 + perda) × kg/m³ ÷ kg/saco (Chapisco)",
+    "dimensoes": "área líquida 168 m² × 2 face(s) = 336 m²; argamassa 1,848 m³",
+    "coef": "500 kg/m³",
+    "perda": 10,
+    "bruto": 18.48,
+    "final": 19
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "argamassa (Chapisco) × m³ de areia/m³",
+    "dimensoes": "argamassa 1,848 m³",
+    "coef": "1 m³/m³",
+    "perda": 10,
+    "bruto": 1.848,
+    "final": 2
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Emboço/reboco",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área líquida × faces",
+    "dimensoes": "área líquida 168 m² × 2 face(s) = 336 m²",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 336,
+    "final": 336
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "área × espessura 2.5 cm × (1 + perda) × kg/m³ ÷ kg/saco (Emboço/reboco)",
+    "dimensoes": "área líquida 168 m² × 2 face(s) = 336 m²; argamassa 9,24 m³",
+    "coef": "250 kg/m³",
+    "perda": 10,
+    "bruto": 46.20000000000001,
+    "final": 47
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "argamassa (Emboço/reboco) × m³ de areia/m³",
+    "dimensoes": "argamassa 9,24 m³",
+    "coef": "1.1 m³/m³",
+    "perda": 10,
+    "bruto": 10.164000000000003,
+    "final": 11
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Massa corrida PVA",
+    "unidade": "lata",
+    "tipo": "Estimativa por composição",
+    "formula": "área com massa × demãos ÷ rendimento por lata",
+    "dimensoes": "área líquida 168 m² × 1 face(s) = 168 m²; 100% com massa = 168 m²; 2 demão(s)",
+    "coef": "50 m²/lata/demão",
+    "perda": 0,
+    "bruto": 6.72,
+    "final": 7
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Selador",
+    "unidade": "lata",
+    "tipo": "Estimativa por composição",
+    "formula": "área × demãos ÷ rendimento ÷ litros da lata",
+    "dimensoes": "área líquida 168 m² × 1 face(s) = 168 m²; 100% com selador; 1 demão(s)",
+    "coef": "12 m²/L/demão; lata 18 L",
+    "perda": 0,
+    "bruto": 0.7777777777777778,
+    "final": 1
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Tinta",
+    "unidade": "lata",
+    "tipo": "Estimativa por composição",
+    "formula": "área × demãos ÷ rendimento ÷ litros da lata",
+    "dimensoes": "área líquida 168 m² × 1 face(s) = 168 m²; área desta cor 168 m²; 2 demão(s)",
+    "coef": "10 m²/L/demão; lata 18 L",
+    "perda": 0,
+    "bruto": 1.8666666666666667,
+    "final": 2
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Lixa",
+    "unidade": "folha",
+    "tipo": "Estimativa por composição",
+    "formula": "(área × demãos de massa + área a pintar) ÷ área por folha",
+    "dimensoes": "área líquida 168 m² × 1 face(s) = 168 m²",
+    "coef": "15 m²/folha",
+    "perda": 0,
+    "bruto": 33.6,
+    "final": 34
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Rolo de pintura",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "maior entre nº de cores e (área × demãos ÷ m² por rolo)",
+    "dimensoes": "área líquida 168 m² × 1 face(s) = 168 m²",
+    "coef": "100 m²/rolo",
+    "perda": 0,
+    "bruto": 3.36,
+    "final": 4
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Pincel",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "maior entre nº de cores e (área ÷ m² por pincel)",
+    "dimensoes": "área líquida 168 m² × 1 face(s) = 168 m²",
+    "coef": "200 m²/pincel",
+    "perda": 0,
+    "bruto": 1,
+    "final": 1
+   }
+  ],
+  "consolidado": [
+   {
+    "material": "Limpeza do terreno",
+    "unidade": "m²",
+    "etapas": "Preparação do terreno",
+    "bruto": 98,
+    "final": 98
+   },
+   {
+    "material": "Bloco",
+    "unidade": "un",
+    "etapas": "Alvenaria",
+    "bruto": 2380.5668016194336,
+    "final": 2381
+   },
+   {
+    "material": "Argamassa de assentamento",
+    "unidade": "m³",
+    "etapas": "Alvenaria",
+    "bruto": 2.2176,
+    "final": 3
+   },
+   {
+    "material": "Cimento",
+    "unidade": "saco",
+    "etapas": "Alvenaria, Contrapiso e piso, Revestimentos",
+    "bruto": 106.638,
+    "final": 107
+   },
+   {
+    "material": "Areia",
+    "unidade": "m³",
+    "etapas": "Alvenaria, Contrapiso e piso, Revestimentos",
+    "bruto": 17.795610000000003,
+    "final": 18
+   },
+   {
+    "material": "Concreto do contrapiso",
+    "unidade": "m³",
+    "etapas": "Contrapiso e piso",
+    "bruto": 5.1450000000000005,
+    "final": 6
+   },
+   {
+    "material": "Brita",
+    "unidade": "m³",
+    "etapas": "Contrapiso e piso",
+    "bruto": 4.3732500000000005,
+    "final": 5
+   },
+   {
+    "material": "Piso (área)",
+    "unidade": "m²",
+    "etapas": "Contrapiso e piso",
+    "bruto": 107.80000000000001,
+    "final": 108
+   },
+   {
+    "material": "Piso (peças)",
+    "unidade": "un",
+    "etapas": "Contrapiso e piso",
+    "bruto": 299.4444444444445,
+    "final": 300
+   },
+   {
+    "material": "Rodapé (peças)",
+    "unidade": "un",
+    "etapas": "Contrapiso e piso",
+    "bruto": 25.66666666666667,
+    "final": 26
+   },
+   {
+    "material": "Rejunte",
+    "unidade": "kg",
+    "etapas": "Contrapiso e piso",
+    "bruto": 49,
+    "final": 49
+   },
+   {
+    "material": "Espaçadores",
+    "unidade": "un",
+    "etapas": "Contrapiso e piso",
+    "bruto": 1197.777777777778,
+    "final": 1198
+   },
+   {
+    "material": "Argamassa colante",
+    "unidade": "saco",
+    "etapas": "Contrapiso e piso",
+    "bruto": 22.05,
+    "final": 23
+   },
+   {
+    "material": "Chapisco",
+    "unidade": "m²",
+    "etapas": "Revestimentos",
+    "bruto": 336,
+    "final": 336
+   },
+   {
+    "material": "Emboço/reboco",
+    "unidade": "m²",
+    "etapas": "Revestimentos",
+    "bruto": 336,
+    "final": 336
+   },
+   {
+    "material": "Massa corrida PVA",
+    "unidade": "lata",
+    "etapas": "Pintura",
+    "bruto": 6.72,
+    "final": 7
+   },
+   {
+    "material": "Selador",
+    "unidade": "lata",
+    "etapas": "Pintura",
+    "bruto": 0.7777777777777778,
+    "final": 1
+   },
+   {
+    "material": "Tinta",
+    "unidade": "lata",
+    "etapas": "Pintura",
+    "bruto": 1.8666666666666667,
+    "final": 2
+   },
+   {
+    "material": "Lixa",
+    "unidade": "folha",
+    "etapas": "Pintura",
+    "bruto": 33.6,
+    "final": 34
+   },
+   {
+    "material": "Rolo de pintura",
+    "unidade": "un",
+    "etapas": "Pintura",
+    "bruto": 3.36,
+    "final": 4
+   },
+   {
+    "material": "Pincel",
+    "unidade": "un",
+    "etapas": "Pintura",
+    "bruto": 1,
+    "final": 1
+   }
+  ]
+ },
+ "duasSalas7x7Completo": {
+  "itens": [
+   {
+    "etapa": "Preparação do terreno",
+    "material": "Limpeza do terreno",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área construída (1 pavimento)",
+    "dimensoes": "98 m²",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 98,
+    "final": 98
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Bloco",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "área líquida ÷ (comprimento × altura do bloco) × (1 + perda)",
+    "dimensoes": "parede bruta 168 m² − aberturas 8,16 m² = 159,84 m²; bloco 0.39×0.19 m",
+    "coef": "13,495 un/m²",
+    "perda": 5,
+    "bruto": 2264.939271255061,
+    "final": 2265
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Argamassa de assentamento",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "área líquida × consumo × (1 + perda)",
+    "dimensoes": "parede bruta 168 m² − aberturas 8,16 m² = 159,84 m²; consumo 0.012 m³/m²",
+    "coef": "0.012 m³/m²",
+    "perda": 10,
+    "bruto": 2.109888,
+    "final": 3
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de argamassa × kg de cimento/m³ ÷ kg por saco",
+    "dimensoes": "argamassa 2,11 m³",
+    "coef": "250 kg/m³; saco 50 kg",
+    "perda": 10,
+    "bruto": 10.549440000000002,
+    "final": 11
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de argamassa × m³ de areia/m³",
+    "dimensoes": "argamassa 2,11 m³",
+    "coef": "1.1 m³/m³",
+    "perda": 10,
+    "bruto": 2.3208768000000006,
+    "final": 3
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Concreto de vergas e contravergas",
+    "unidade": "m³",
+    "tipo": "Geométrico",
+    "formula": "volume das peças × (1 + perda)",
+    "dimensoes": "17,2 m de peças × 0.14 × 0.1 m (apoio 0.3 m por lado)",
+    "coef": "—",
+    "perda": 5,
+    "bruto": 0.25284,
+    "final": 1
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 350 kg/m³ ÷ 50 kg/saco",
+    "dimensoes": "17,2 m de peças × 0.14 × 0.1 m (apoio 0.3 m por lado); concreto com perda 0,253 m³",
+    "coef": "350 kg/m³ ÷ 50 kg/saco",
+    "perda": 5,
+    "bruto": 1.76988,
+    "final": 2
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 0.62 m³/m³",
+    "dimensoes": "17,2 m de peças × 0.14 × 0.1 m (apoio 0.3 m por lado); concreto com perda 0,253 m³",
+    "coef": "0.62 m³/m³",
+    "perda": 5,
+    "bruto": 0.1567608,
+    "final": 1
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Brita",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 0.8 m³/m³",
+    "dimensoes": "17,2 m de peças × 0.14 × 0.1 m (apoio 0.3 m por lado); concreto com perda 0,253 m³",
+    "coef": "0.8 m³/m³",
+    "perda": 5,
+    "bruto": 0.202272,
+    "final": 1
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Concreto do contrapiso",
+    "unidade": "m³",
+    "tipo": "Geométrico",
+    "formula": "área × espessura × (1 + perda)",
+    "dimensoes": "área 98 m² × espessura 5 cm",
+    "coef": "—",
+    "perda": 5,
+    "bruto": 5.1450000000000005,
+    "final": 6
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "volume × kg de cimento/m³ ÷ kg por saco",
+    "dimensoes": "concreto 5,145 m³",
+    "coef": "300 kg/m³; saco 50 kg",
+    "perda": 5,
+    "bruto": 30.870000000000005,
+    "final": 31
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume × m³ de areia/m³",
+    "dimensoes": "concreto 5,145 m³",
+    "coef": "0.65 m³/m³",
+    "perda": 5,
+    "bruto": 3.3442500000000006,
+    "final": 4
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Brita",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume × m³ de brita/m³",
+    "dimensoes": "concreto 5,145 m³",
+    "coef": "0.85 m³/m³",
+    "perda": 5,
+    "bruto": 4.3732500000000005,
+    "final": 5
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Piso (área)",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área × (1 + perda)",
+    "dimensoes": "área 98 m²",
+    "coef": "—",
+    "perda": 10,
+    "bruto": 107.80000000000001,
+    "final": 108
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Piso (peças)",
+    "unidade": "un",
+    "tipo": "Geométrico",
+    "formula": "área com perda ÷ (comprimento × largura da peça)",
+    "dimensoes": "área 107,8 m²; peça 0.6×0.6 m",
+    "coef": "2,778 un/m²",
+    "perda": 10,
+    "bruto": 299.4444444444445,
+    "final": 300
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Rodapé (peças)",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "(perímetro − largura das portas) ÷ peça × (1 + perda)",
+    "dimensoes": "perímetro 56 m − portas 1,6 m",
+    "coef": "peça 2.4 m",
+    "perda": 10,
+    "bruto": 24.933333333333337,
+    "final": 25
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Rejunte",
+    "unidade": "kg",
+    "tipo": "Estimativa por composição",
+    "formula": "área × consumo",
+    "dimensoes": "área 98 m²",
+    "coef": "0.5 kg/m²",
+    "perda": 0,
+    "bruto": 49,
+    "final": 49
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Espaçadores",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "peças × espaçadores por peça",
+    "dimensoes": "299,444 peças",
+    "coef": "4 un/peça",
+    "perda": 0,
+    "bruto": 1197.777777777778,
+    "final": 1198
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Argamassa colante",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "área × consumo ÷ kg por saco",
+    "dimensoes": "área 98 m²",
+    "coef": "4.5 kg/m²; saco 20 kg",
+    "perda": 0,
+    "bruto": 22.05,
+    "final": 23
+   },
+   {
+    "etapa": "Esquadrias",
+    "material": "Porta 0,8 × 2,1 m",
+    "unidade": "un",
+    "tipo": "Geométrico",
+    "formula": "quantidade cadastrada",
+    "dimensoes": "2 un",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 2,
+    "final": 2
+   },
+   {
+    "etapa": "Esquadrias",
+    "material": "Janela 1,2 × 1 m",
+    "unidade": "un",
+    "tipo": "Geométrico",
+    "formula": "quantidade cadastrada",
+    "dimensoes": "4 un",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 4,
+    "final": 4
+   },
+   {
+    "etapa": "Esquadrias",
+    "material": "Fechadura e dobradiças (jogo)",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "1 jogo por porta",
+    "dimensoes": "2 porta(s)",
+    "coef": "1 jogo/porta",
+    "perda": 0,
+    "bruto": 2,
+    "final": 2
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Chapisco",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área líquida × faces",
+    "dimensoes": "área líquida 159,84 m² × 2 face(s) = 319,68 m²",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 319.68,
+    "final": 320
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "área × espessura 0.5 cm × (1 + perda) × kg/m³ ÷ kg/saco (Chapisco)",
+    "dimensoes": "área líquida 159,84 m² × 2 face(s) = 319,68 m²; argamassa 1,758 m³",
+    "coef": "500 kg/m³",
+    "perda": 10,
+    "bruto": 17.582400000000003,
+    "final": 18
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "argamassa (Chapisco) × m³ de areia/m³",
+    "dimensoes": "argamassa 1,758 m³",
+    "coef": "1 m³/m³",
+    "perda": 10,
+    "bruto": 1.7582400000000002,
+    "final": 2
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Emboço/reboco",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área líquida × faces",
+    "dimensoes": "área líquida 159,84 m² × 2 face(s) = 319,68 m²",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 319.68,
+    "final": 320
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "área × espessura 2.5 cm × (1 + perda) × kg/m³ ÷ kg/saco (Emboço/reboco)",
+    "dimensoes": "área líquida 159,84 m² × 2 face(s) = 319,68 m²; argamassa 8,791 m³",
+    "coef": "250 kg/m³",
+    "perda": 10,
+    "bruto": 43.95600000000001,
+    "final": 44
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "argamassa (Emboço/reboco) × m³ de areia/m³",
+    "dimensoes": "argamassa 8,791 m³",
+    "coef": "1.1 m³/m³",
+    "perda": 10,
+    "bruto": 9.670320000000002,
+    "final": 10
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Revestimento cerâmico de parede",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área informada × (1 + perda)",
+    "dimensoes": "12 m²",
+    "coef": "—",
+    "perda": 10,
+    "bruto": 13.200000000000001,
+    "final": 14
+   },
+   {
+    "etapa": "Forro",
+    "material": "Forro",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área × (1 + perda)",
+    "dimensoes": "98 m²",
+    "coef": "—",
+    "perda": 5,
+    "bruto": 102.9,
+    "final": 103
+   },
+   {
+    "etapa": "Forro",
+    "material": "Perfil de sustentação (barras)",
+    "unidade": "barra",
+    "tipo": "Estimativa por composição",
+    "formula": "(área ÷ espaçamento) ÷ barra × (1 + perda)",
+    "dimensoes": "98 m²; espaçamento 0.6 m",
+    "coef": "barra 3 m",
+    "perda": 5,
+    "bruto": 57.16666666666667,
+    "final": 58
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Massa corrida PVA",
+    "unidade": "lata",
+    "tipo": "Estimativa por composição",
+    "formula": "área com massa × demãos ÷ rendimento por lata",
+    "dimensoes": "área líquida 159,84 m² × 1 face(s) = 159,84 m²; 100% com massa = 159,84 m²; 2 demão(s)",
+    "coef": "50 m²/lata/demão",
+    "perda": 0,
+    "bruto": 6.3936,
+    "final": 7
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Selador",
+    "unidade": "lata",
+    "tipo": "Estimativa por composição",
+    "formula": "área × demãos ÷ rendimento ÷ litros da lata",
+    "dimensoes": "área líquida 159,84 m² × 1 face(s) = 159,84 m²; 100% com selador; 1 demão(s)",
+    "coef": "12 m²/L/demão; lata 18 L",
+    "perda": 0,
+    "bruto": 0.74,
+    "final": 1
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Tinta",
+    "unidade": "lata",
+    "tipo": "Estimativa por composição",
+    "formula": "área × demãos ÷ rendimento ÷ litros da lata",
+    "dimensoes": "área líquida 159,84 m² × 1 face(s) = 159,84 m²; área desta cor 159,84 m²; 2 demão(s)",
+    "coef": "10 m²/L/demão; lata 18 L",
+    "perda": 0,
+    "bruto": 1.776,
+    "final": 2
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Lixa",
+    "unidade": "folha",
+    "tipo": "Estimativa por composição",
+    "formula": "(área × demãos de massa + área a pintar) ÷ área por folha",
+    "dimensoes": "área líquida 159,84 m² × 1 face(s) = 159,84 m²",
+    "coef": "15 m²/folha",
+    "perda": 0,
+    "bruto": 31.968,
+    "final": 32
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Rolo de pintura",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "maior entre nº de cores e (área × demãos ÷ m² por rolo)",
+    "dimensoes": "área líquida 159,84 m² × 1 face(s) = 159,84 m²",
+    "coef": "100 m²/rolo",
+    "perda": 0,
+    "bruto": 3.1968,
+    "final": 4
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Pincel",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "maior entre nº de cores e (área ÷ m² por pincel)",
+    "dimensoes": "área líquida 159,84 m² × 1 face(s) = 159,84 m²",
+    "coef": "200 m²/pincel",
+    "perda": 0,
+    "bruto": 1,
+    "final": 1
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Fita crepe",
+    "unidade": "rolo",
+    "tipo": "Estimativa por composição",
+    "formula": "perímetro das aberturas ÷ metros por rolo",
+    "dimensoes": "perímetro 29,2 m",
+    "coef": "50 m/rolo",
+    "perda": 0,
+    "bruto": 0.5840000000000001,
+    "final": 1
+   },
+   {
+    "etapa": "Instalações elétricas",
+    "material": "Tomada",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "quantidade informada",
+    "dimensoes": "8 un",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 8,
+    "final": 8
+   },
+   {
+    "etapa": "Instalações elétricas",
+    "material": "Interruptor",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "quantidade informada",
+    "dimensoes": "3 un",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 3,
+    "final": 3
+   },
+   {
+    "etapa": "Instalações elétricas",
+    "material": "Ponto de iluminação",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "quantidade informada",
+    "dimensoes": "4 un",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 4,
+    "final": 4
+   },
+   {
+    "etapa": "Instalações elétricas",
+    "material": "Caixa 4×2",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "tomadas + interruptores",
+    "dimensoes": "8 + 3",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 11,
+    "final": 11
+   },
+   {
+    "etapa": "Instalações elétricas",
+    "material": "Caixa octogonal",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "pontos de iluminação",
+    "dimensoes": "4",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 4,
+    "final": 4
+   },
+   {
+    "etapa": "Instalações elétricas",
+    "material": "Disjuntor (tipo e corrente conforme projeto)",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "quantidade informada",
+    "dimensoes": "4 un",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 4,
+    "final": 4
+   },
+   {
+    "etapa": "Instalações elétricas",
+    "material": "Quadro de distribuição",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "1 quando há disjuntores",
+    "dimensoes": "4 disjuntor(es)",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 1,
+    "final": 1
+   },
+   {
+    "etapa": "Instalações elétricas",
+    "material": "Eletroduto (barras)",
+    "unidade": "barra",
+    "tipo": "Estimativa por composição",
+    "formula": "pontos × m por ponto ÷ barra × (1 + perda)",
+    "dimensoes": "15 pontos × 6 m",
+    "coef": "barra 3 m",
+    "perda": 10,
+    "bruto": 33,
+    "final": 33
+   },
+   {
+    "etapa": "Instalações elétricas",
+    "material": "Cabo (bitola conforme projeto)",
+    "unidade": "m",
+    "tipo": "Estimativa por composição",
+    "formula": "pontos × m de cabo por ponto × (1 + perda)",
+    "dimensoes": "15 pontos × 12 m",
+    "coef": "12 m/ponto",
+    "perda": 10,
+    "bruto": 198.00000000000003,
+    "final": 198
+   },
+   {
+    "etapa": "Cobertura e madeiramento",
+    "material": "Telha",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "área inclinada × rendimento × (1 + perda)",
+    "dimensoes": "2 água(s); 14,8 × 7,8 m (c/ beiral 0.4 m); inclinação 30% (fator 1,044); água inclinada 4,072 m; área inclinada 120,523 m²",
+    "coef": "16 un/m²",
+    "perda": 5,
+    "bruto": 2024.7846920929053,
+    "final": 2025
+   },
+   {
+    "etapa": "Cobertura e madeiramento",
+    "material": "Fixação do telhado (parafusos/ganchos)",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "área inclinada × fixações por m² × (1 + perda)",
+    "dimensoes": "área inclinada 120,523 m²",
+    "coef": "2 un/m²",
+    "perda": 5,
+    "bruto": 253.09808651161316,
+    "final": 254
+   },
+   {
+    "etapa": "Cobertura e madeiramento",
+    "material": "Terça (barras)",
+    "unidade": "barra",
+    "tipo": "Geométrico",
+    "formula": "peças/água = ⌈inclinado ÷ espaçamento⌉ + 1; metros ÷ barra comercial × (1 + perda)",
+    "dimensoes": "2 água(s); 14,8 × 7,8 m (c/ beiral 0.4 m); inclinação 30% (fator 1,044); água inclinada 4,072 m; 8 peça(s) de 14,8 m = 118,4 m; espaçamento 1.5 m",
+    "coef": "barra 3 m",
+    "perda": 10,
+    "bruto": 43.41333333333334,
+    "final": 44
+   },
+   {
+    "etapa": "Cobertura e madeiramento",
+    "material": "Caibro (barras)",
+    "unidade": "barra",
+    "tipo": "Geométrico",
+    "formula": "peças/água = ⌈comprimento ÷ espaçamento⌉ + 1; metros ÷ barra comercial × (1 + perda)",
+    "dimensoes": "2 água(s); 14,8 × 7,8 m (c/ beiral 0.4 m); inclinação 30% (fator 1,044); água inclinada 4,072 m; 62 peça(s) de 4,072 m = 252,447 m; espaçamento 0.5 m",
+    "coef": "barra 3 m",
+    "perda": 10,
+    "bruto": 92.56375750800096,
+    "final": 93
+   },
+   {
+    "etapa": "Cobertura e madeiramento",
+    "material": "Ripa (barras)",
+    "unidade": "barra",
+    "tipo": "Geométrico",
+    "formula": "peças/água = ⌈inclinado ÷ espaçamento⌉ + 1; metros ÷ barra comercial × (1 + perda)",
+    "dimensoes": "2 água(s); 14,8 × 7,8 m (c/ beiral 0.4 m); inclinação 30% (fator 1,044); água inclinada 4,072 m; 28 peça(s) de 14,8 m = 414,4 m; espaçamento 0.33 m",
+    "coef": "barra 3 m",
+    "perda": 10,
+    "bruto": 151.94666666666672,
+    "final": 152
+   },
+   {
+    "etapa": "Cobertura e madeiramento",
+    "material": "Cumeeira",
+    "unidade": "un",
+    "tipo": "Geométrico",
+    "formula": "comprimento ÷ peça × (1 + perda)",
+    "dimensoes": "14,8 m; peça 0.4 m",
+    "coef": "0.4 m/un",
+    "perda": 5,
+    "bruto": 38.85,
+    "final": 39
+   },
+   {
+    "etapa": "Cobertura e madeiramento",
+    "material": "Tesoura (quantidade informada)",
+    "unidade": "un",
+    "tipo": "Geométrico",
+    "formula": "quantidade informada pelo usuário; dimensionamento exige profissional",
+    "dimensoes": "—",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 3,
+    "final": 3
+   }
+  ],
+  "consolidado": [
+   {
+    "material": "Limpeza do terreno",
+    "unidade": "m²",
+    "etapas": "Preparação do terreno",
+    "bruto": 98,
+    "final": 98
+   },
+   {
+    "material": "Bloco",
+    "unidade": "un",
+    "etapas": "Alvenaria",
+    "bruto": 2264.939271255061,
+    "final": 2265
+   },
+   {
+    "material": "Argamassa de assentamento",
+    "unidade": "m³",
+    "etapas": "Alvenaria",
+    "bruto": 2.109888,
+    "final": 3
+   },
+   {
+    "material": "Cimento",
+    "unidade": "saco",
+    "etapas": "Alvenaria, Contrapiso e piso, Revestimentos",
+    "bruto": 104.72772000000003,
+    "final": 105
+   },
+   {
+    "material": "Areia",
+    "unidade": "m³",
+    "etapas": "Alvenaria, Contrapiso e piso, Revestimentos",
+    "bruto": 17.2504476,
+    "final": 18
+   },
+   {
+    "material": "Concreto de vergas e contravergas",
+    "unidade": "m³",
+    "etapas": "Alvenaria",
+    "bruto": 0.25284,
+    "final": 1
+   },
+   {
+    "material": "Brita",
+    "unidade": "m³",
+    "etapas": "Alvenaria, Contrapiso e piso",
+    "bruto": 4.575522,
+    "final": 5
+   },
+   {
+    "material": "Concreto do contrapiso",
+    "unidade": "m³",
+    "etapas": "Contrapiso e piso",
+    "bruto": 5.1450000000000005,
+    "final": 6
+   },
+   {
+    "material": "Piso (área)",
+    "unidade": "m²",
+    "etapas": "Contrapiso e piso",
+    "bruto": 107.80000000000001,
+    "final": 108
+   },
+   {
+    "material": "Piso (peças)",
+    "unidade": "un",
+    "etapas": "Contrapiso e piso",
+    "bruto": 299.4444444444445,
+    "final": 300
+   },
+   {
+    "material": "Rodapé (peças)",
+    "unidade": "un",
+    "etapas": "Contrapiso e piso",
+    "bruto": 24.933333333333337,
+    "final": 25
+   },
+   {
+    "material": "Rejunte",
+    "unidade": "kg",
+    "etapas": "Contrapiso e piso",
+    "bruto": 49,
+    "final": 49
+   },
+   {
+    "material": "Espaçadores",
+    "unidade": "un",
+    "etapas": "Contrapiso e piso",
+    "bruto": 1197.777777777778,
+    "final": 1198
+   },
+   {
+    "material": "Argamassa colante",
+    "unidade": "saco",
+    "etapas": "Contrapiso e piso",
+    "bruto": 22.05,
+    "final": 23
+   },
+   {
+    "material": "Porta 0,8 × 2,1 m",
+    "unidade": "un",
+    "etapas": "Esquadrias",
+    "bruto": 2,
+    "final": 2
+   },
+   {
+    "material": "Janela 1,2 × 1 m",
+    "unidade": "un",
+    "etapas": "Esquadrias",
+    "bruto": 4,
+    "final": 4
+   },
+   {
+    "material": "Fechadura e dobradiças (jogo)",
+    "unidade": "un",
+    "etapas": "Esquadrias",
+    "bruto": 2,
+    "final": 2
+   },
+   {
+    "material": "Chapisco",
+    "unidade": "m²",
+    "etapas": "Revestimentos",
+    "bruto": 319.68,
+    "final": 320
+   },
+   {
+    "material": "Emboço/reboco",
+    "unidade": "m²",
+    "etapas": "Revestimentos",
+    "bruto": 319.68,
+    "final": 320
+   },
+   {
+    "material": "Revestimento cerâmico de parede",
+    "unidade": "m²",
+    "etapas": "Revestimentos",
+    "bruto": 13.200000000000001,
+    "final": 14
+   },
+   {
+    "material": "Forro",
+    "unidade": "m²",
+    "etapas": "Forro",
+    "bruto": 102.9,
+    "final": 103
+   },
+   {
+    "material": "Perfil de sustentação (barras)",
+    "unidade": "barra",
+    "etapas": "Forro",
+    "bruto": 57.16666666666667,
+    "final": 58
+   },
+   {
+    "material": "Massa corrida PVA",
+    "unidade": "lata",
+    "etapas": "Pintura",
+    "bruto": 6.3936,
+    "final": 7
+   },
+   {
+    "material": "Selador",
+    "unidade": "lata",
+    "etapas": "Pintura",
+    "bruto": 0.74,
+    "final": 1
+   },
+   {
+    "material": "Tinta",
+    "unidade": "lata",
+    "etapas": "Pintura",
+    "bruto": 1.776,
+    "final": 2
+   },
+   {
+    "material": "Lixa",
+    "unidade": "folha",
+    "etapas": "Pintura",
+    "bruto": 31.968,
+    "final": 32
+   },
+   {
+    "material": "Rolo de pintura",
+    "unidade": "un",
+    "etapas": "Pintura",
+    "bruto": 3.1968,
+    "final": 4
+   },
+   {
+    "material": "Pincel",
+    "unidade": "un",
+    "etapas": "Pintura",
+    "bruto": 1,
+    "final": 1
+   },
+   {
+    "material": "Fita crepe",
+    "unidade": "rolo",
+    "etapas": "Pintura",
+    "bruto": 0.5840000000000001,
+    "final": 1
+   },
+   {
+    "material": "Tomada",
+    "unidade": "un",
+    "etapas": "Instalações elétricas",
+    "bruto": 8,
+    "final": 8
+   },
+   {
+    "material": "Interruptor",
+    "unidade": "un",
+    "etapas": "Instalações elétricas",
+    "bruto": 3,
+    "final": 3
+   },
+   {
+    "material": "Ponto de iluminação",
+    "unidade": "un",
+    "etapas": "Instalações elétricas",
+    "bruto": 4,
+    "final": 4
+   },
+   {
+    "material": "Caixa 4×2",
+    "unidade": "un",
+    "etapas": "Instalações elétricas",
+    "bruto": 11,
+    "final": 11
+   },
+   {
+    "material": "Caixa octogonal",
+    "unidade": "un",
+    "etapas": "Instalações elétricas",
+    "bruto": 4,
+    "final": 4
+   },
+   {
+    "material": "Disjuntor (tipo e corrente conforme projeto)",
+    "unidade": "un",
+    "etapas": "Instalações elétricas",
+    "bruto": 4,
+    "final": 4
+   },
+   {
+    "material": "Quadro de distribuição",
+    "unidade": "un",
+    "etapas": "Instalações elétricas",
+    "bruto": 1,
+    "final": 1
+   },
+   {
+    "material": "Eletroduto (barras)",
+    "unidade": "barra",
+    "etapas": "Instalações elétricas",
+    "bruto": 33,
+    "final": 33
+   },
+   {
+    "material": "Cabo (bitola conforme projeto)",
+    "unidade": "m",
+    "etapas": "Instalações elétricas",
+    "bruto": 198.00000000000003,
+    "final": 198
+   },
+   {
+    "material": "Telha",
+    "unidade": "un",
+    "etapas": "Cobertura e madeiramento",
+    "bruto": 2024.7846920929053,
+    "final": 2025
+   },
+   {
+    "material": "Fixação do telhado (parafusos/ganchos)",
+    "unidade": "un",
+    "etapas": "Cobertura e madeiramento",
+    "bruto": 253.09808651161316,
+    "final": 254
+   },
+   {
+    "material": "Terça (barras)",
+    "unidade": "barra",
+    "etapas": "Cobertura e madeiramento",
+    "bruto": 43.41333333333334,
+    "final": 44
+   },
+   {
+    "material": "Caibro (barras)",
+    "unidade": "barra",
+    "etapas": "Cobertura e madeiramento",
+    "bruto": 92.56375750800096,
+    "final": 93
+   },
+   {
+    "material": "Ripa (barras)",
+    "unidade": "barra",
+    "etapas": "Cobertura e madeiramento",
+    "bruto": 151.94666666666672,
+    "final": 152
+   },
+   {
+    "material": "Cumeeira",
+    "unidade": "un",
+    "etapas": "Cobertura e madeiramento",
+    "bruto": 38.85,
+    "final": 39
+   },
+   {
+    "material": "Tesoura (quantidade informada)",
+    "unidade": "un",
+    "etapas": "Cobertura e madeiramento",
+    "bruto": 3,
+    "final": 3
+   }
+  ]
+ },
+ "paramsVariados": {
+  "itens": [
+   {
+    "etapa": "Preparação do terreno",
+    "material": "Limpeza do terreno",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área construída (1 pavimento)",
+    "dimensoes": "28,46 m²",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 28.46,
+    "final": 29
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Bloco",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "área líquida ÷ (comprimento × altura do bloco) × (1 + perda)",
+    "dimensoes": "parede bruta 194,4 m² − aberturas 8,97 m² = 185,43 m²; bloco 0.39×0.19 m",
+    "coef": "13,495 un/m²",
+    "perda": 5,
+    "bruto": 2627.5506072874496,
+    "final": 2628
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Argamassa de assentamento",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "área líquida × consumo × (1 + perda)",
+    "dimensoes": "parede bruta 194,4 m² − aberturas 8,97 m² = 185,43 m²; consumo 0.012 m³/m²",
+    "coef": "0.012 m³/m²",
+    "perda": 10,
+    "bruto": 2.4476760000000004,
+    "final": 3
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de argamassa × kg de cimento/m³ ÷ kg por saco",
+    "dimensoes": "argamassa 2,448 m³",
+    "coef": "250 kg/m³; saco 50 kg",
+    "perda": 10,
+    "bruto": 12.238380000000001,
+    "final": 13
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de argamassa × m³ de areia/m³",
+    "dimensoes": "argamassa 2,448 m³",
+    "coef": "1.1 m³/m³",
+    "perda": 10,
+    "bruto": 2.6924436000000007,
+    "final": 3
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Cal hidratada",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de argamassa × kg de cal/m³ ÷ kg por saco",
+    "dimensoes": "argamassa 2,448 m³",
+    "coef": "100 kg/m³; saco 20 kg",
+    "perda": 10,
+    "bruto": 12.238380000000003,
+    "final": 13
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Concreto de vergas e contravergas",
+    "unidade": "m³",
+    "tipo": "Geométrico",
+    "formula": "volume das peças × (1 + perda)",
+    "dimensoes": "12,9 m de peças × 0.14 × 0.1 m (apoio 0.3 m por lado)",
+    "coef": "—",
+    "perda": 5,
+    "bruto": 0.18963000000000005,
+    "final": 1
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 350 kg/m³ ÷ 50 kg/saco",
+    "dimensoes": "12,9 m de peças × 0.14 × 0.1 m (apoio 0.3 m por lado); concreto com perda 0,19 m³",
+    "coef": "350 kg/m³ ÷ 50 kg/saco",
+    "perda": 5,
+    "bruto": 1.3274100000000004,
+    "final": 2
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 0.62 m³/m³",
+    "dimensoes": "12,9 m de peças × 0.14 × 0.1 m (apoio 0.3 m por lado); concreto com perda 0,19 m³",
+    "coef": "0.62 m³/m³",
+    "perda": 5,
+    "bruto": 0.11757060000000003,
+    "final": 1
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Brita",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 0.8 m³/m³",
+    "dimensoes": "12,9 m de peças × 0.14 × 0.1 m (apoio 0.3 m por lado); concreto com perda 0,19 m³",
+    "coef": "0.8 m³/m³",
+    "perda": 5,
+    "bruto": 0.15170400000000006,
+    "final": 1
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Concreto do contrapiso",
+    "unidade": "m³",
+    "tipo": "Geométrico",
+    "formula": "área × espessura × (1 + perda)",
+    "dimensoes": "área 28,46 m² × espessura 5 cm",
+    "coef": "—",
+    "perda": 5,
+    "bruto": 1.49415,
+    "final": 2
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "volume × kg de cimento/m³ ÷ kg por saco",
+    "dimensoes": "concreto 1,494 m³",
+    "coef": "300 kg/m³; saco 50 kg",
+    "perda": 5,
+    "bruto": 8.9649,
+    "final": 9
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume × m³ de areia/m³",
+    "dimensoes": "concreto 1,494 m³",
+    "coef": "0.65 m³/m³",
+    "perda": 5,
+    "bruto": 0.9711975,
+    "final": 1
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Brita",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume × m³ de brita/m³",
+    "dimensoes": "concreto 1,494 m³",
+    "coef": "0.85 m³/m³",
+    "perda": 5,
+    "bruto": 1.2700275,
+    "final": 2
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Piso (área)",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área × (1 + perda)",
+    "dimensoes": "área 28,46 m²",
+    "coef": "—",
+    "perda": 10,
+    "bruto": 31.306000000000004,
+    "final": 32
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Piso (peças)",
+    "unidade": "un",
+    "tipo": "Geométrico",
+    "formula": "área com perda ÷ (comprimento × largura da peça)",
+    "dimensoes": "área 31,306 m²; peça 0.6×0.6 m",
+    "coef": "2,778 un/m²",
+    "perda": 10,
+    "bruto": 86.96111111111112,
+    "final": 87
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Rodapé (peças)",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "(perímetro − largura das portas) ÷ peça × (1 + perda)",
+    "dimensoes": "perímetro 36 m − portas 2,7 m",
+    "coef": "peça 2.4 m",
+    "perda": 10,
+    "bruto": 15.262500000000001,
+    "final": 16
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Rejunte",
+    "unidade": "kg",
+    "tipo": "Estimativa por composição",
+    "formula": "área × consumo",
+    "dimensoes": "área 28,46 m²",
+    "coef": "0.5 kg/m²",
+    "perda": 0,
+    "bruto": 14.23,
+    "final": 15
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Espaçadores",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "peças × espaçadores por peça",
+    "dimensoes": "86,961 peças",
+    "coef": "4 un/peça",
+    "perda": 0,
+    "bruto": 347.8444444444445,
+    "final": 348
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Argamassa colante",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "área × consumo ÷ kg por saco",
+    "dimensoes": "área 28,46 m²",
+    "coef": "4.5 kg/m²; saco 20 kg",
+    "perda": 0,
+    "bruto": 6.403499999999999,
+    "final": 7
+   },
+   {
+    "etapa": "Esquadrias",
+    "material": "Porta 0,9 × 2,1 m",
+    "unidade": "un",
+    "tipo": "Geométrico",
+    "formula": "quantidade cadastrada",
+    "dimensoes": "3 un",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 3,
+    "final": 3
+   },
+   {
+    "etapa": "Esquadrias",
+    "material": "Janela 1,5 × 1,1 m",
+    "unidade": "un",
+    "tipo": "Geométrico",
+    "formula": "quantidade cadastrada",
+    "dimensoes": "2 un",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 2,
+    "final": 2
+   },
+   {
+    "etapa": "Esquadrias",
+    "material": "Fechadura e dobradiças (jogo)",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "1 jogo por porta",
+    "dimensoes": "3 porta(s)",
+    "coef": "1 jogo/porta",
+    "perda": 0,
+    "bruto": 3,
+    "final": 3
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Chapisco",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área líquida × faces",
+    "dimensoes": "área líquida 185,43 m² × 1 face(s) = 185,43 m²",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 185.43,
+    "final": 186
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "área × espessura 0.5 cm × (1 + perda) × kg/m³ ÷ kg/saco (Chapisco)",
+    "dimensoes": "área líquida 185,43 m² × 1 face(s) = 185,43 m²; argamassa 1,02 m³",
+    "coef": "500 kg/m³",
+    "perda": 10,
+    "bruto": 10.19865,
+    "final": 11
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "argamassa (Chapisco) × m³ de areia/m³",
+    "dimensoes": "argamassa 1,02 m³",
+    "coef": "1 m³/m³",
+    "perda": 10,
+    "bruto": 1.019865,
+    "final": 2
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Cal hidratada",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "argamassa (Chapisco) × kg de cal/m³ ÷ kg por saco",
+    "dimensoes": "argamassa 1,02 m³",
+    "coef": "80 kg/m³; saco 20 kg",
+    "perda": 10,
+    "bruto": 4.07946,
+    "final": 5
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Emboço/reboco",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área líquida × faces",
+    "dimensoes": "área líquida 185,43 m² × 1 face(s) = 185,43 m²",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 185.43,
+    "final": 186
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "área × espessura 2.5 cm × (1 + perda) × kg/m³ ÷ kg/saco (Emboço/reboco)",
+    "dimensoes": "área líquida 185,43 m² × 1 face(s) = 185,43 m²; argamassa 5,099 m³",
+    "coef": "250 kg/m³",
+    "perda": 10,
+    "bruto": 25.49662500000001,
+    "final": 26
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "argamassa (Emboço/reboco) × m³ de areia/m³",
+    "dimensoes": "argamassa 5,099 m³",
+    "coef": "1.1 m³/m³",
+    "perda": 10,
+    "bruto": 5.609257500000002,
+    "final": 6
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Revestimento cerâmico de parede",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área informada × (1 + perda)",
+    "dimensoes": "8 m²",
+    "coef": "—",
+    "perda": 10,
+    "bruto": 8.8,
+    "final": 9
+   },
+   {
+    "etapa": "Forro",
+    "material": "Forro",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área × (1 + perda)",
+    "dimensoes": "28,46 m²",
+    "coef": "—",
+    "perda": 5,
+    "bruto": 29.883000000000003,
+    "final": 30
+   },
+   {
+    "etapa": "Forro",
+    "material": "Perfil de sustentação (barras)",
+    "unidade": "barra",
+    "tipo": "Estimativa por composição",
+    "formula": "(área ÷ espaçamento) ÷ barra × (1 + perda)",
+    "dimensoes": "28,46 m²; espaçamento 0.6 m",
+    "coef": "barra 3 m",
+    "perda": 5,
+    "bruto": 16.601666666666667,
+    "final": 17
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Massa acrílica",
+    "unidade": "lata",
+    "tipo": "Estimativa por composição",
+    "formula": "área com massa × demãos ÷ rendimento por lata",
+    "dimensoes": "área líquida 185,43 m² × 2 face(s) = 370,86 m²; 100% com massa = 370,86 m²; 2 demão(s)",
+    "coef": "50 m²/lata/demão",
+    "perda": 0,
+    "bruto": 14.8344,
+    "final": 15
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Selador",
+    "unidade": "lata",
+    "tipo": "Estimativa por composição",
+    "formula": "área × demãos ÷ rendimento ÷ litros da lata",
+    "dimensoes": "área líquida 185,43 m² × 2 face(s) = 370,86 m²; 100% com selador; 1 demão(s)",
+    "coef": "12 m²/L/demão; lata 18 L",
+    "perda": 0,
+    "bruto": 1.7169444444444446,
+    "final": 2
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Tinta (cor 1)",
+    "unidade": "lata",
+    "tipo": "Estimativa por composição",
+    "formula": "área × demãos ÷ rendimento ÷ litros da lata",
+    "dimensoes": "área líquida 185,43 m² × 2 face(s) = 370,86 m²; área desta cor 259,602 m²; 2 demão(s)",
+    "coef": "10 m²/L/demão; lata 18 L",
+    "perda": 0,
+    "bruto": 2.8844666666666665,
+    "final": 3
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Tinta (cor 2)",
+    "unidade": "lata",
+    "tipo": "Estimativa por composição",
+    "formula": "área × demãos ÷ rendimento ÷ litros da lata",
+    "dimensoes": "área líquida 185,43 m² × 2 face(s) = 370,86 m²; área desta cor 111,258 m²; 2 demão(s)",
+    "coef": "10 m²/L/demão; lata 18 L",
+    "perda": 0,
+    "bruto": 1.2362,
+    "final": 2
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Lixa",
+    "unidade": "folha",
+    "tipo": "Estimativa por composição",
+    "formula": "(área × demãos de massa + área a pintar) ÷ área por folha",
+    "dimensoes": "área líquida 185,43 m² × 2 face(s) = 370,86 m²",
+    "coef": "15 m²/folha",
+    "perda": 0,
+    "bruto": 74.172,
+    "final": 75
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Rolo de pintura",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "maior entre nº de cores e (área × demãos ÷ m² por rolo)",
+    "dimensoes": "área líquida 185,43 m² × 2 face(s) = 370,86 m²",
+    "coef": "100 m²/rolo",
+    "perda": 0,
+    "bruto": 7.4172,
+    "final": 8
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Pincel",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "maior entre nº de cores e (área ÷ m² por pincel)",
+    "dimensoes": "área líquida 185,43 m² × 2 face(s) = 370,86 m²",
+    "coef": "200 m²/pincel",
+    "perda": 0,
+    "bruto": 2,
+    "final": 2
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Fita crepe",
+    "unidade": "rolo",
+    "tipo": "Estimativa por composição",
+    "formula": "perímetro das aberturas ÷ metros por rolo",
+    "dimensoes": "perímetro 28,4 m",
+    "coef": "50 m/rolo",
+    "perda": 0,
+    "bruto": 0.568,
+    "final": 1
+   },
+   {
+    "etapa": "Aditivos",
+    "material": "Plastificante / redutor de água (concreto)",
+    "unidade": "kg",
+    "tipo": "Estimativa por composição",
+    "formula": "cimento do escopo × % do aditivo",
+    "dimensoes": "514,616 kg de cimento × 1%",
+    "coef": "1% do peso do cimento (conferir a bula)",
+    "perda": 0,
+    "bruto": 5.146155,
+    "final": 6
+   },
+   {
+    "etapa": "Aditivos",
+    "material": "Adesivo PVA / resina para argamassa (argamassas)",
+    "unidade": "kg",
+    "tipo": "Estimativa por composição",
+    "formula": "cimento do escopo × % do aditivo",
+    "dimensoes": "2.396,683 kg de cimento × 2%",
+    "coef": "2% do peso do cimento (conferir a bula)",
+    "perda": 0,
+    "bruto": 47.933655000000016,
+    "final": 48
+   },
+   {
+    "etapa": "Acabamento",
+    "material": "Verniz",
+    "unidade": "L",
+    "tipo": "Estimativa por composição",
+    "formula": "área líquida de parede (m²) × coeficiente × (1 + perda)",
+    "dimensoes": "base 185,43",
+    "coef": "0.1 L por unidade da base",
+    "perda": 5,
+    "bruto": 19.470150000000004,
+    "final": 20
+   },
+   {
+    "etapa": "Acabamento",
+    "material": "Manta",
+    "unidade": "m²",
+    "tipo": "Estimativa por composição",
+    "formula": "área construída (m²) × coeficiente × (1 + perda)",
+    "dimensoes": "base 28,46",
+    "coef": "1 m² por unidade da base",
+    "perda": 10,
+    "bruto": 31.306000000000004,
+    "final": 32
+   },
+   {
+    "etapa": "Outros",
+    "material": "Kit",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "quantidade fixa × coeficiente × (1 + perda)",
+    "dimensoes": "base 1",
+    "coef": "2 un por unidade da base",
+    "perda": 0,
+    "bruto": 2,
+    "final": 2
+   }
+  ],
+  "consolidado": [
+   {
+    "material": "Limpeza do terreno",
+    "unidade": "m²",
+    "etapas": "Preparação do terreno",
+    "bruto": 28.46,
+    "final": 29
+   },
+   {
+    "material": "Bloco",
+    "unidade": "un",
+    "etapas": "Alvenaria",
+    "bruto": 2627.5506072874496,
+    "final": 2628
+   },
+   {
+    "material": "Argamassa de assentamento",
+    "unidade": "m³",
+    "etapas": "Alvenaria",
+    "bruto": 2.4476760000000004,
+    "final": 3
+   },
+   {
+    "material": "Cimento",
+    "unidade": "saco",
+    "etapas": "Alvenaria, Contrapiso e piso, Revestimentos",
+    "bruto": 58.22596500000001,
+    "final": 59
+   },
+   {
+    "material": "Areia",
+    "unidade": "m³",
+    "etapas": "Alvenaria, Contrapiso e piso, Revestimentos",
+    "bruto": 10.410334200000003,
+    "final": 11
+   },
+   {
+    "material": "Cal hidratada",
+    "unidade": "saco",
+    "etapas": "Alvenaria, Revestimentos",
+    "bruto": 16.317840000000004,
+    "final": 17
+   },
+   {
+    "material": "Concreto de vergas e contravergas",
+    "unidade": "m³",
+    "etapas": "Alvenaria",
+    "bruto": 0.18963000000000005,
+    "final": 1
+   },
+   {
+    "material": "Brita",
+    "unidade": "m³",
+    "etapas": "Alvenaria, Contrapiso e piso",
+    "bruto": 1.4217315000000001,
+    "final": 2
+   },
+   {
+    "material": "Concreto do contrapiso",
+    "unidade": "m³",
+    "etapas": "Contrapiso e piso",
+    "bruto": 1.49415,
+    "final": 2
+   },
+   {
+    "material": "Piso (área)",
+    "unidade": "m²",
+    "etapas": "Contrapiso e piso",
+    "bruto": 31.306000000000004,
+    "final": 32
+   },
+   {
+    "material": "Piso (peças)",
+    "unidade": "un",
+    "etapas": "Contrapiso e piso",
+    "bruto": 86.96111111111112,
+    "final": 87
+   },
+   {
+    "material": "Rodapé (peças)",
+    "unidade": "un",
+    "etapas": "Contrapiso e piso",
+    "bruto": 15.262500000000001,
+    "final": 16
+   },
+   {
+    "material": "Rejunte",
+    "unidade": "kg",
+    "etapas": "Contrapiso e piso",
+    "bruto": 14.23,
+    "final": 15
+   },
+   {
+    "material": "Espaçadores",
+    "unidade": "un",
+    "etapas": "Contrapiso e piso",
+    "bruto": 347.8444444444445,
+    "final": 348
+   },
+   {
+    "material": "Argamassa colante",
+    "unidade": "saco",
+    "etapas": "Contrapiso e piso",
+    "bruto": 6.403499999999999,
+    "final": 7
+   },
+   {
+    "material": "Porta 0,9 × 2,1 m",
+    "unidade": "un",
+    "etapas": "Esquadrias",
+    "bruto": 3,
+    "final": 3
+   },
+   {
+    "material": "Janela 1,5 × 1,1 m",
+    "unidade": "un",
+    "etapas": "Esquadrias",
+    "bruto": 2,
+    "final": 2
+   },
+   {
+    "material": "Fechadura e dobradiças (jogo)",
+    "unidade": "un",
+    "etapas": "Esquadrias",
+    "bruto": 3,
+    "final": 3
+   },
+   {
+    "material": "Chapisco",
+    "unidade": "m²",
+    "etapas": "Revestimentos",
+    "bruto": 185.43,
+    "final": 186
+   },
+   {
+    "material": "Emboço/reboco",
+    "unidade": "m²",
+    "etapas": "Revestimentos",
+    "bruto": 185.43,
+    "final": 186
+   },
+   {
+    "material": "Revestimento cerâmico de parede",
+    "unidade": "m²",
+    "etapas": "Revestimentos",
+    "bruto": 8.8,
+    "final": 9
+   },
+   {
+    "material": "Forro",
+    "unidade": "m²",
+    "etapas": "Forro",
+    "bruto": 29.883000000000003,
+    "final": 30
+   },
+   {
+    "material": "Perfil de sustentação (barras)",
+    "unidade": "barra",
+    "etapas": "Forro",
+    "bruto": 16.601666666666667,
+    "final": 17
+   },
+   {
+    "material": "Massa acrílica",
+    "unidade": "lata",
+    "etapas": "Pintura",
+    "bruto": 14.8344,
+    "final": 15
+   },
+   {
+    "material": "Selador",
+    "unidade": "lata",
+    "etapas": "Pintura",
+    "bruto": 1.7169444444444446,
+    "final": 2
+   },
+   {
+    "material": "Tinta (cor 1)",
+    "unidade": "lata",
+    "etapas": "Pintura",
+    "bruto": 2.8844666666666665,
+    "final": 3
+   },
+   {
+    "material": "Tinta (cor 2)",
+    "unidade": "lata",
+    "etapas": "Pintura",
+    "bruto": 1.2362,
+    "final": 2
+   },
+   {
+    "material": "Lixa",
+    "unidade": "folha",
+    "etapas": "Pintura",
+    "bruto": 74.172,
+    "final": 75
+   },
+   {
+    "material": "Rolo de pintura",
+    "unidade": "un",
+    "etapas": "Pintura",
+    "bruto": 7.4172,
+    "final": 8
+   },
+   {
+    "material": "Pincel",
+    "unidade": "un",
+    "etapas": "Pintura",
+    "bruto": 2,
+    "final": 2
+   },
+   {
+    "material": "Fita crepe",
+    "unidade": "rolo",
+    "etapas": "Pintura",
+    "bruto": 0.568,
+    "final": 1
+   },
+   {
+    "material": "Plastificante / redutor de água (concreto)",
+    "unidade": "kg",
+    "etapas": "Aditivos",
+    "bruto": 5.146155,
+    "final": 6
+   },
+   {
+    "material": "Adesivo PVA / resina para argamassa (argamassas)",
+    "unidade": "kg",
+    "etapas": "Aditivos",
+    "bruto": 47.933655000000016,
+    "final": 48
+   },
+   {
+    "material": "Verniz",
+    "unidade": "L",
+    "etapas": "Acabamento",
+    "bruto": 19.470150000000004,
+    "final": 20
+   },
+   {
+    "material": "Manta",
+    "unidade": "m²",
+    "etapas": "Acabamento",
+    "bruto": 31.306000000000004,
+    "final": 32
+   },
+   {
+    "material": "Kit",
+    "unidade": "un",
+    "etapas": "Outros",
+    "bruto": 2,
+    "final": 2
+   }
+  ]
+ },
+ "terrenoEstrutura": {
+  "itens": [
+   {
+    "etapa": "Preparação do terreno",
+    "material": "Limpeza do terreno",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área construída (1 pavimento)",
+    "dimensoes": "48 m²",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 48,
+    "final": 48
+   },
+   {
+    "etapa": "Preparação do terreno",
+    "material": "Aterro",
+    "unidade": "m³",
+    "tipo": "Geométrico",
+    "formula": "área × altura média × (1 + empolamento/compactação)",
+    "dimensoes": "48 m² × 0.4 m",
+    "coef": "—",
+    "perda": 20,
+    "bruto": 23.040000000000003,
+    "final": 24
+   },
+   {
+    "etapa": "Preparação do terreno",
+    "material": "Compactação",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área do aterro",
+    "dimensoes": "48 m²",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 48,
+    "final": 48
+   },
+   {
+    "etapa": "Preparação do terreno",
+    "material": "Escavação",
+    "unidade": "m³",
+    "tipo": "Geométrico",
+    "formula": "área × profundidade média",
+    "dimensoes": "48 m² × 0.3 m",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 14.399999999999999,
+    "final": 15
+   },
+   {
+    "etapa": "Preparação do terreno",
+    "material": "Transporte de terra (viagens)",
+    "unidade": "viagem",
+    "tipo": "Estimativa por composição",
+    "formula": "(aterro + escavação, com empolamento) ÷ capacidade do caminhão",
+    "dimensoes": "aterro 23,04 m³ + escavação 17,28 m³",
+    "coef": "caminhão 6 m³",
+    "perda": 20,
+    "bruto": 6.72,
+    "final": 7
+   },
+   {
+    "etapa": "Fundação",
+    "material": "Concreto da fundação",
+    "unidade": "m³",
+    "tipo": "Geométrico",
+    "formula": "volume das peças × (1 + perda)",
+    "dimensoes": "28 × 0.3 × 0.5 m",
+    "coef": "—",
+    "perda": 5,
+    "bruto": 4.41,
+    "final": 5
+   },
+   {
+    "etapa": "Fundação",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 350 kg/m³ ÷ 50 kg/saco",
+    "dimensoes": "28 × 0.3 × 0.5 m; concreto com perda 4,41 m³",
+    "coef": "350 kg/m³ ÷ 50 kg/saco",
+    "perda": 5,
+    "bruto": 30.87,
+    "final": 31
+   },
+   {
+    "etapa": "Fundação",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 0.62 m³/m³",
+    "dimensoes": "28 × 0.3 × 0.5 m; concreto com perda 4,41 m³",
+    "coef": "0.62 m³/m³",
+    "perda": 5,
+    "bruto": 2.7342,
+    "final": 3
+   },
+   {
+    "etapa": "Fundação",
+    "material": "Brita",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 0.8 m³/m³",
+    "dimensoes": "28 × 0.3 × 0.5 m; concreto com perda 4,41 m³",
+    "coef": "0.8 m³/m³",
+    "perda": 5,
+    "bruto": 3.5280000000000005,
+    "final": 4
+   },
+   {
+    "etapa": "Fundação",
+    "material": "Aço (taxa informada do projeto)",
+    "unidade": "kg",
+    "tipo": "Estimativa por composição",
+    "formula": "volume líquido × taxa de aço informada",
+    "dimensoes": "4,2 m³",
+    "coef": "90 kg/m³",
+    "perda": 0,
+    "bruto": 378,
+    "final": 378
+   },
+   {
+    "etapa": "Fundação",
+    "material": "Forma (área de contato)",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área das faces concretadas",
+    "dimensoes": "laterais: 28 m × 0.5 m × 2",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 28,
+    "final": 28
+   },
+   {
+    "etapa": "Estrutura",
+    "material": "Concreto estrutural",
+    "unidade": "m³",
+    "tipo": "Geométrico",
+    "formula": "volume das peças × (1 + perda)",
+    "dimensoes": "8 pilar(es) 0.14×0.3×2,8 m + vigas 28 m 0.14×0.3 m",
+    "coef": "—",
+    "perda": 5,
+    "bruto": 2.22264,
+    "final": 3
+   },
+   {
+    "etapa": "Estrutura",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 350 kg/m³ ÷ 50 kg/saco",
+    "dimensoes": "8 pilar(es) 0.14×0.3×2,8 m + vigas 28 m 0.14×0.3 m; concreto com perda 2,223 m³",
+    "coef": "350 kg/m³ ÷ 50 kg/saco",
+    "perda": 5,
+    "bruto": 15.558480000000001,
+    "final": 16
+   },
+   {
+    "etapa": "Estrutura",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 0.62 m³/m³",
+    "dimensoes": "8 pilar(es) 0.14×0.3×2,8 m + vigas 28 m 0.14×0.3 m; concreto com perda 2,223 m³",
+    "coef": "0.62 m³/m³",
+    "perda": 5,
+    "bruto": 1.3780368,
+    "final": 2
+   },
+   {
+    "etapa": "Estrutura",
+    "material": "Brita",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 0.8 m³/m³",
+    "dimensoes": "8 pilar(es) 0.14×0.3×2,8 m + vigas 28 m 0.14×0.3 m; concreto com perda 2,223 m³",
+    "coef": "0.8 m³/m³",
+    "perda": 5,
+    "bruto": 1.7781120000000001,
+    "final": 2
+   },
+   {
+    "etapa": "Estrutura",
+    "material": "Aço (taxa informada do projeto)",
+    "unidade": "kg",
+    "tipo": "Estimativa por composição",
+    "formula": "volume líquido × taxa de aço informada",
+    "dimensoes": "2,117 m³",
+    "coef": "90 kg/m³",
+    "perda": 0,
+    "bruto": 190.512,
+    "final": 191
+   },
+   {
+    "etapa": "Estrutura",
+    "material": "Forma (área de contato)",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área das faces concretadas",
+    "dimensoes": "pilares: perímetro × altura; vigas: (2 × altura + largura) × comprimento",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 40.432,
+    "final": 41
+   },
+   {
+    "etapa": "Muro",
+    "material": "Bloco",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "área do muro ÷ (comprimento × altura do bloco) × (1 + perda)",
+    "dimensoes": "12 m × 2 m = 24 m²; bloco 0.39×0.19 m",
+    "coef": "13,495 un/m²",
+    "perda": 5,
+    "bruto": 340.08097165991904,
+    "final": 341
+   },
+   {
+    "etapa": "Muro",
+    "material": "Argamassa de assentamento",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "área × consumo × (1 + perda)",
+    "dimensoes": "12 m × 2 m = 24 m²",
+    "coef": "0.012 m³/m²",
+    "perda": 10,
+    "bruto": 0.3168000000000001,
+    "final": 1
+   },
+   {
+    "etapa": "Muro",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "argamassa × kg de cimento/m³ ÷ kg por saco",
+    "dimensoes": "argamassa 0,317 m³",
+    "coef": "250 kg/m³",
+    "perda": 10,
+    "bruto": 1.5840000000000003,
+    "final": 2
+   },
+   {
+    "etapa": "Muro",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "argamassa × m³ de areia/m³",
+    "dimensoes": "argamassa 0,317 m³",
+    "coef": "1.1 m³/m³",
+    "perda": 10,
+    "bruto": 0.3484800000000001,
+    "final": 1
+   },
+   {
+    "etapa": "Muro",
+    "material": "Concreto do muro (fundação e pilaretes)",
+    "unidade": "m³",
+    "tipo": "Geométrico",
+    "formula": "volume das peças × (1 + perda)",
+    "dimensoes": "fundação 12×0.3×0.4 m + 5 pilaretes 0.14×0.14×2 m",
+    "coef": "—",
+    "perda": 5,
+    "bruto": 1.7178,
+    "final": 2
+   },
+   {
+    "etapa": "Muro",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 350 kg/m³ ÷ 50 kg/saco",
+    "dimensoes": "fundação 12×0.3×0.4 m + 5 pilaretes 0.14×0.14×2 m; concreto com perda 1,718 m³",
+    "coef": "350 kg/m³ ÷ 50 kg/saco",
+    "perda": 5,
+    "bruto": 12.0246,
+    "final": 13
+   },
+   {
+    "etapa": "Muro",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 0.62 m³/m³",
+    "dimensoes": "fundação 12×0.3×0.4 m + 5 pilaretes 0.14×0.14×2 m; concreto com perda 1,718 m³",
+    "coef": "0.62 m³/m³",
+    "perda": 5,
+    "bruto": 1.065036,
+    "final": 2
+   },
+   {
+    "etapa": "Muro",
+    "material": "Brita",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 0.8 m³/m³",
+    "dimensoes": "fundação 12×0.3×0.4 m + 5 pilaretes 0.14×0.14×2 m; concreto com perda 1,718 m³",
+    "coef": "0.8 m³/m³",
+    "perda": 5,
+    "bruto": 1.3742400000000001,
+    "final": 2
+   },
+   {
+    "etapa": "Muro",
+    "material": "Aço (taxa informada do projeto)",
+    "unidade": "kg",
+    "tipo": "Estimativa por composição",
+    "formula": "volume líquido × taxa de aço informada",
+    "dimensoes": "1,636 m³",
+    "coef": "90 kg/m³",
+    "perda": 0,
+    "bruto": 147.23999999999998,
+    "final": 148
+   },
+   {
+    "etapa": "Muro",
+    "material": "Forma (área de contato)",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área das faces concretadas",
+    "dimensoes": "laterais da fundação + pilaretes",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 15.200000000000003,
+    "final": 16
+   },
+   {
+    "etapa": "Calçada e áreas externas",
+    "material": "Concreto da calçada",
+    "unidade": "m³",
+    "tipo": "Geométrico",
+    "formula": "área × espessura × (1 + perda)",
+    "dimensoes": "15 m² × 7 cm",
+    "coef": "—",
+    "perda": 5,
+    "bruto": 1.1025,
+    "final": 2
+   },
+   {
+    "etapa": "Calçada e áreas externas",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "concreto × kg de cimento/m³ ÷ kg por saco",
+    "dimensoes": "15 m² × 7 cm; concreto 1,103 m³",
+    "coef": "300 kg/m³",
+    "perda": 5,
+    "bruto": 6.615,
+    "final": 7
+   },
+   {
+    "etapa": "Calçada e áreas externas",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "concreto × m³ de areia/m³",
+    "dimensoes": "15 m² × 7 cm; concreto 1,103 m³",
+    "coef": "0.65 m³/m³",
+    "perda": 5,
+    "bruto": 0.7166250000000001,
+    "final": 1
+   },
+   {
+    "etapa": "Calçada e áreas externas",
+    "material": "Brita",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "concreto × m³ de brita/m³",
+    "dimensoes": "15 m² × 7 cm; concreto 1,103 m³",
+    "coef": "0.85 m³/m³",
+    "perda": 5,
+    "bruto": 0.937125,
+    "final": 1
+   },
+   {
+    "etapa": "Calçada e áreas externas",
+    "material": "Brita de lastro",
+    "unidade": "m³",
+    "tipo": "Geométrico",
+    "formula": "área × espessura do lastro × (1 + perda)",
+    "dimensoes": "15 m² × 5 cm",
+    "coef": "—",
+    "perda": 5,
+    "bruto": 0.7875000000000001,
+    "final": 1
+   },
+   {
+    "etapa": "Escada",
+    "material": "Concreto da escada",
+    "unidade": "m³",
+    "tipo": "Geométrico",
+    "formula": "volume das peças × (1 + perda)",
+    "dimensoes": "escada reta; 16 degraus (16); largura 1 m; laje 0.12 m; patamar 0 m²",
+    "coef": "—",
+    "perda": 5,
+    "bruto": 1.0944185405163993,
+    "final": 2
+   },
+   {
+    "etapa": "Escada",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 350 kg/m³ ÷ 50 kg/saco",
+    "dimensoes": "escada reta; 16 degraus (16); largura 1 m; laje 0.12 m; patamar 0 m²; concreto com perda 1,094 m³",
+    "coef": "350 kg/m³ ÷ 50 kg/saco",
+    "perda": 5,
+    "bruto": 7.660929783614795,
+    "final": 8
+   },
+   {
+    "etapa": "Escada",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 0.62 m³/m³",
+    "dimensoes": "escada reta; 16 degraus (16); largura 1 m; laje 0.12 m; patamar 0 m²; concreto com perda 1,094 m³",
+    "coef": "0.62 m³/m³",
+    "perda": 5,
+    "bruto": 0.6785394951201675,
+    "final": 1
+   },
+   {
+    "etapa": "Escada",
+    "material": "Brita",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 0.8 m³/m³",
+    "dimensoes": "escada reta; 16 degraus (16); largura 1 m; laje 0.12 m; patamar 0 m²; concreto com perda 1,094 m³",
+    "coef": "0.8 m³/m³",
+    "perda": 5,
+    "bruto": 0.8755348324131195,
+    "final": 1
+   },
+   {
+    "etapa": "Escada",
+    "material": "Aço (taxa informada do projeto)",
+    "unidade": "kg",
+    "tipo": "Estimativa por composição",
+    "formula": "volume líquido × taxa de aço informada",
+    "dimensoes": "1,042 m³",
+    "coef": "90 kg/m³",
+    "perda": 0,
+    "bruto": 93.80730347283422,
+    "final": 94
+   },
+   {
+    "etapa": "Escada",
+    "material": "Forma (área de contato)",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área das faces concretadas",
+    "dimensoes": "fundo das lajes e do patamar + espelhos",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 8.205861432669836,
+    "final": 9
+   },
+   {
+    "etapa": "Escada",
+    "material": "Degraus (quantidade)",
+    "unidade": "un",
+    "tipo": "Geométrico",
+    "formula": "⌈altura a vencer ÷ altura do espelho⌉",
+    "dimensoes": "2.8 m ÷ 0.18 m",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 16,
+    "final": 16
+   },
+   {
+    "etapa": "Escada",
+    "material": "Revestimento dos degraus",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "(degraus × (piso + espelho) × largura + patamar) × (1 + perda)",
+    "dimensoes": "16 × (0.28 + 0.18) × 1 m + patamar 0 m²",
+    "coef": "—",
+    "perda": 10,
+    "bruto": 8.096000000000002,
+    "final": 9
+   },
+   {
+    "etapa": "Laje pré-moldada",
+    "material": "Vigota",
+    "unidade": "m",
+    "tipo": "Estimativa por composição",
+    "formula": "área ÷ intereixo × (1 + perda)",
+    "dimensoes": "20 m²; intereixo 0.42 m",
+    "coef": "intereixo 0.42 m",
+    "perda": 5,
+    "bruto": 50,
+    "final": 50
+   },
+   {
+    "etapa": "Laje pré-moldada",
+    "material": "Lajota/EPS de enchimento",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "área ÷ (intereixo × comprimento da peça) × (1 + perda)",
+    "dimensoes": "20 m²; intereixo 0.42 m; peça 0.3 m",
+    "coef": "7,937 un/m²",
+    "perda": 5,
+    "bruto": 166.66666666666669,
+    "final": 167
+   },
+   {
+    "etapa": "Laje pré-moldada",
+    "material": "Concreto do capeamento",
+    "unidade": "m³",
+    "tipo": "Geométrico",
+    "formula": "volume das peças × (1 + perda)",
+    "dimensoes": "20 m² × 4 cm",
+    "coef": "—",
+    "perda": 5,
+    "bruto": 0.8400000000000001,
+    "final": 1
+   },
+   {
+    "etapa": "Laje pré-moldada",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 350 kg/m³ ÷ 50 kg/saco",
+    "dimensoes": "20 m² × 4 cm; concreto com perda 0,84 m³",
+    "coef": "350 kg/m³ ÷ 50 kg/saco",
+    "perda": 5,
+    "bruto": 5.88,
+    "final": 6
+   },
+   {
+    "etapa": "Laje pré-moldada",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 0.62 m³/m³",
+    "dimensoes": "20 m² × 4 cm; concreto com perda 0,84 m³",
+    "coef": "0.62 m³/m³",
+    "perda": 5,
+    "bruto": 0.5208,
+    "final": 1
+   },
+   {
+    "etapa": "Laje pré-moldada",
+    "material": "Brita",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 0.8 m³/m³",
+    "dimensoes": "20 m² × 4 cm; concreto com perda 0,84 m³",
+    "coef": "0.8 m³/m³",
+    "perda": 5,
+    "bruto": 0.6720000000000002,
+    "final": 1
+   },
+   {
+    "etapa": "Laje pré-moldada",
+    "material": "Aço (taxa informada do projeto)",
+    "unidade": "kg",
+    "tipo": "Estimativa por composição",
+    "formula": "volume líquido × taxa de aço informada",
+    "dimensoes": "0,8 m³",
+    "coef": "90 kg/m³",
+    "perda": 0,
+    "bruto": 72,
+    "final": 72
+   },
+   {
+    "etapa": "Laje pré-moldada",
+    "material": "Tela soldada",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área × (1 + perda)",
+    "dimensoes": "20 m²",
+    "coef": "—",
+    "perda": 5,
+    "bruto": 21,
+    "final": 21
+   },
+   {
+    "etapa": "Laje pré-moldada",
+    "material": "Escora de laje",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "área × escoras por m²",
+    "dimensoes": "20 m²",
+    "coef": "1.2 un/m²",
+    "perda": 0,
+    "bruto": 24,
+    "final": 24
+   },
+   {
+    "etapa": "Fossa séptica e sumidouro",
+    "material": "Bloco",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "área de parede ÷ (comprimento × altura do bloco) × (1 + perda)",
+    "dimensoes": "fossa 2×1×1.5 m, parede 0.14 m; bloco 0.39×0.19 m",
+    "coef": "13,495 un/m²",
+    "perda": 5,
+    "bruto": 151.336032388664,
+    "final": 152
+   },
+   {
+    "etapa": "Fossa séptica e sumidouro",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "argamassa de assentamento × kg de cimento/m³ ÷ kg por saco",
+    "dimensoes": "fossa 2×1×1.5 m, parede 0.14 m; argamassa 0,141 m³",
+    "coef": "250 kg/m³",
+    "perda": 10,
+    "bruto": 0.7048800000000003,
+    "final": 1
+   },
+   {
+    "etapa": "Fossa séptica e sumidouro",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "argamassa de assentamento × m³ de areia/m³",
+    "dimensoes": "fossa 2×1×1.5 m, parede 0.14 m; argamassa 0,141 m³",
+    "coef": "1.1 m³/m³",
+    "perda": 10,
+    "bruto": 0.15507360000000006,
+    "final": 1
+   },
+   {
+    "etapa": "Fossa séptica e sumidouro",
+    "material": "Concreto da fossa (fundo e tampa)",
+    "unidade": "m³",
+    "tipo": "Geométrico",
+    "formula": "volume das peças × (1 + perda)",
+    "dimensoes": "fundo 10 cm + tampa 8 cm sobre 2,28×1,28 m",
+    "coef": "—",
+    "perda": 5,
+    "bruto": 0.5515776000000001,
+    "final": 1
+   },
+   {
+    "etapa": "Fossa séptica e sumidouro",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 350 kg/m³ ÷ 50 kg/saco",
+    "dimensoes": "fundo 10 cm + tampa 8 cm sobre 2,28×1,28 m; concreto com perda 0,552 m³",
+    "coef": "350 kg/m³ ÷ 50 kg/saco",
+    "perda": 5,
+    "bruto": 3.861043200000001,
+    "final": 4
+   },
+   {
+    "etapa": "Fossa séptica e sumidouro",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 0.62 m³/m³",
+    "dimensoes": "fundo 10 cm + tampa 8 cm sobre 2,28×1,28 m; concreto com perda 0,552 m³",
+    "coef": "0.62 m³/m³",
+    "perda": 5,
+    "bruto": 0.34197811200000006,
+    "final": 1
+   },
+   {
+    "etapa": "Fossa séptica e sumidouro",
+    "material": "Brita",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 0.8 m³/m³",
+    "dimensoes": "fundo 10 cm + tampa 8 cm sobre 2,28×1,28 m; concreto com perda 0,552 m³",
+    "coef": "0.8 m³/m³",
+    "perda": 5,
+    "bruto": 0.4412620800000001,
+    "final": 1
+   },
+   {
+    "etapa": "Fossa séptica e sumidouro",
+    "material": "Aço (taxa informada do projeto)",
+    "unidade": "kg",
+    "tipo": "Estimativa por composição",
+    "formula": "volume líquido × taxa de aço informada",
+    "dimensoes": "0,525 m³",
+    "coef": "90 kg/m³",
+    "perda": 0,
+    "bruto": 47.27808000000001,
+    "final": 48
+   },
+   {
+    "etapa": "Fossa séptica e sumidouro",
+    "material": "Revestimento interno impermeável (fossa)",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "paredes internas + fundo",
+    "dimensoes": "fossa 2×1×1.5 m, parede 0.14 m",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 11,
+    "final": 11
+   },
+   {
+    "etapa": "Fossa séptica e sumidouro",
+    "material": "Escavação",
+    "unidade": "m³",
+    "tipo": "Geométrico",
+    "formula": "(comprimento + 0,6) × (largura + 0,6) × (profundidade + 0,3)",
+    "dimensoes": "fossa 2×1×1.5 m, parede 0.14 m",
+    "coef": "folga 0,3 m por lado",
+    "perda": 0,
+    "bruto": 9.745920000000002,
+    "final": 10
+   },
+   {
+    "etapa": "Fossa séptica e sumidouro",
+    "material": "Bloco",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "área de parede ÷ (comprimento × altura do bloco) × (1 + perda)",
+    "dimensoes": "sumidouro Ø1.5 m × 3 m, parede 0.14 m; bloco 0.39×0.19 m",
+    "coef": "13,495 un/m²",
+    "perda": 5,
+    "bruto": 237.71808378782688,
+    "final": 238
+   },
+   {
+    "etapa": "Fossa séptica e sumidouro",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "argamassa de assentamento × kg de cimento/m³ ÷ kg por saco",
+    "dimensoes": "sumidouro Ø1.5 m × 3 m, parede 0.14 m; argamassa 0,221 m³",
+    "coef": "250 kg/m³",
+    "perda": 10,
+    "bruto": 1.107222914831187,
+    "final": 2
+   },
+   {
+    "etapa": "Fossa séptica e sumidouro",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "argamassa de assentamento × m³ de areia/m³",
+    "dimensoes": "sumidouro Ø1.5 m × 3 m, parede 0.14 m; argamassa 0,221 m³",
+    "coef": "1.1 m³/m³",
+    "perda": 10,
+    "bruto": 0.24358904126286116,
+    "final": 1
+   },
+   {
+    "etapa": "Fossa séptica e sumidouro",
+    "material": "Brita",
+    "unidade": "m³",
+    "tipo": "Geométrico",
+    "formula": "área externa do poço × camada de brita no fundo",
+    "dimensoes": "2,488 m² × 0.5 m",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 1.2442277704542377,
+    "final": 2
+   },
+   {
+    "etapa": "Fossa séptica e sumidouro",
+    "material": "Concreto da tampa do sumidouro",
+    "unidade": "m³",
+    "tipo": "Geométrico",
+    "formula": "volume das peças × (1 + perda)",
+    "dimensoes": "tampa 8 cm sobre Ø1,78 m",
+    "coef": "—",
+    "perda": 5,
+    "bruto": 0.20903026543631195,
+    "final": 1
+   },
+   {
+    "etapa": "Fossa séptica e sumidouro",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 350 kg/m³ ÷ 50 kg/saco",
+    "dimensoes": "tampa 8 cm sobre Ø1,78 m; concreto com perda 0,209 m³",
+    "coef": "350 kg/m³ ÷ 50 kg/saco",
+    "perda": 5,
+    "bruto": 1.4632118580541837,
+    "final": 2
+   },
+   {
+    "etapa": "Fossa séptica e sumidouro",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 0.62 m³/m³",
+    "dimensoes": "tampa 8 cm sobre Ø1,78 m; concreto com perda 0,209 m³",
+    "coef": "0.62 m³/m³",
+    "perda": 5,
+    "bruto": 0.12959876457051342,
+    "final": 1
+   },
+   {
+    "etapa": "Fossa séptica e sumidouro",
+    "material": "Brita",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 0.8 m³/m³",
+    "dimensoes": "tampa 8 cm sobre Ø1,78 m; concreto com perda 0,209 m³",
+    "coef": "0.8 m³/m³",
+    "perda": 5,
+    "bruto": 0.16722421234904958,
+    "final": 1
+   },
+   {
+    "etapa": "Fossa séptica e sumidouro",
+    "material": "Aço (taxa informada do projeto)",
+    "unidade": "kg",
+    "tipo": "Estimativa por composição",
+    "formula": "volume líquido × taxa de aço informada",
+    "dimensoes": "0,199 m³",
+    "coef": "90 kg/m³",
+    "perda": 0,
+    "bruto": 17.916879894541022,
+    "final": 18
+   },
+   {
+    "etapa": "Fossa séptica e sumidouro",
+    "material": "Escavação",
+    "unidade": "m³",
+    "tipo": "Geométrico",
+    "formula": "π × (raio externo + 0,3)² × (profundidade + brita)",
+    "dimensoes": "sumidouro Ø1.5 m × 3 m, parede 0.14 m",
+    "coef": "folga 0,3 m",
+    "perda": 0,
+    "bruto": 15.570832748619772,
+    "final": 16
+   },
+   {
+    "etapa": "Piscina",
+    "material": "Concreto da piscina (fundo e paredes)",
+    "unidade": "m³",
+    "tipo": "Geométrico",
+    "formula": "volume das peças × (1 + perda)",
+    "dimensoes": "4×2×1.4 m, paredes e fundo 0.15 m (volume de água ≈ 11,2 m³)",
+    "coef": "—",
+    "perda": 5,
+    "bruto": 4.468275,
+    "final": 5
+   },
+   {
+    "etapa": "Piscina",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 350 kg/m³ ÷ 50 kg/saco",
+    "dimensoes": "4×2×1.4 m, paredes e fundo 0.15 m (volume de água ≈ 11,2 m³); concreto com perda 4,468 m³",
+    "coef": "350 kg/m³ ÷ 50 kg/saco",
+    "perda": 5,
+    "bruto": 31.277925,
+    "final": 32
+   },
+   {
+    "etapa": "Piscina",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 0.62 m³/m³",
+    "dimensoes": "4×2×1.4 m, paredes e fundo 0.15 m (volume de água ≈ 11,2 m³); concreto com perda 4,468 m³",
+    "coef": "0.62 m³/m³",
+    "perda": 5,
+    "bruto": 2.7703305,
+    "final": 3
+   },
+   {
+    "etapa": "Piscina",
+    "material": "Brita",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 0.8 m³/m³",
+    "dimensoes": "4×2×1.4 m, paredes e fundo 0.15 m (volume de água ≈ 11,2 m³); concreto com perda 4,468 m³",
+    "coef": "0.8 m³/m³",
+    "perda": 5,
+    "bruto": 3.5746200000000004,
+    "final": 4
+   },
+   {
+    "etapa": "Piscina",
+    "material": "Aço (taxa informada do projeto)",
+    "unidade": "kg",
+    "tipo": "Estimativa por composição",
+    "formula": "volume líquido × taxa de aço informada",
+    "dimensoes": "4,256 m³",
+    "coef": "90 kg/m³",
+    "perda": 0,
+    "bruto": 382.99499999999995,
+    "final": 383
+   },
+   {
+    "etapa": "Piscina",
+    "material": "Forma (área de contato)",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área das faces concretadas",
+    "dimensoes": "paredes internas e externas + fundo",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 45.169999999999995,
+    "final": 46
+   },
+   {
+    "etapa": "Piscina",
+    "material": "Impermeabilizante",
+    "unidade": "kg",
+    "tipo": "Estimativa por composição",
+    "formula": "área interna × consumo",
+    "dimensoes": "área interna 24,8 m²",
+    "coef": "3 kg/m²",
+    "perda": 0,
+    "bruto": 74.39999999999999,
+    "final": 75
+   },
+   {
+    "etapa": "Piscina",
+    "material": "Revestimento da piscina",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área interna × (1 + perda)",
+    "dimensoes": "área interna 24,8 m²",
+    "coef": "—",
+    "perda": 10,
+    "bruto": 27.279999999999998,
+    "final": 28
+   },
+   {
+    "etapa": "Piscina",
+    "material": "Escavação",
+    "unidade": "m³",
+    "tipo": "Geométrico",
+    "formula": "(comp. + 2e + 2 folgas) × (larg. + 2e + 2 folgas) × (profundidade + e + 0,1)",
+    "dimensoes": "4×2×1.4 m, paredes e fundo 0.15 m (volume de água ≈ 11,2 m³)",
+    "coef": "folga 0.5 m",
+    "perda": 0,
+    "bruto": 28.858499999999996,
+    "final": 29
+   },
+   {
+    "etapa": "Piscina",
+    "material": "Skimmer",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "⌈espelho d’água ÷ 25 m²⌉",
+    "dimensoes": "8 m²",
+    "coef": "1 por 25 m²",
+    "perda": 0,
+    "bruto": 1,
+    "final": 1
+   },
+   {
+    "etapa": "Piscina",
+    "material": "Dispositivo de retorno",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "⌈espelho d’água ÷ 20 m²⌉",
+    "dimensoes": "8 m²",
+    "coef": "1 por 20 m²",
+    "perda": 0,
+    "bruto": 1,
+    "final": 1
+   },
+   {
+    "etapa": "Piscina",
+    "material": "Conjunto filtro e motobomba (dimensionar pelo volume)",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "1 conjunto; dimensionamento conforme projeto",
+    "dimensoes": "4×2×1.4 m, paredes e fundo 0.15 m (volume de água ≈ 11,2 m³)",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 1,
+    "final": 1
+   },
+   {
+    "etapa": "Laje",
+    "material": "Concreto da laje",
+    "unidade": "m³",
+    "tipo": "Geométrico",
+    "formula": "volume das peças × (1 + perda)",
+    "dimensoes": "48 m² × 10 cm",
+    "coef": "—",
+    "perda": 5,
+    "bruto": 5.040000000000001,
+    "final": 6
+   },
+   {
+    "etapa": "Laje",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 350 kg/m³ ÷ 50 kg/saco",
+    "dimensoes": "48 m² × 10 cm; concreto com perda 5,04 m³",
+    "coef": "350 kg/m³ ÷ 50 kg/saco",
+    "perda": 5,
+    "bruto": 35.28,
+    "final": 36
+   },
+   {
+    "etapa": "Laje",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 0.62 m³/m³",
+    "dimensoes": "48 m² × 10 cm; concreto com perda 5,04 m³",
+    "coef": "0.62 m³/m³",
+    "perda": 5,
+    "bruto": 3.1248000000000005,
+    "final": 4
+   },
+   {
+    "etapa": "Laje",
+    "material": "Brita",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de concreto × 0.8 m³/m³",
+    "dimensoes": "48 m² × 10 cm; concreto com perda 5,04 m³",
+    "coef": "0.8 m³/m³",
+    "perda": 5,
+    "bruto": 4.032000000000001,
+    "final": 5
+   },
+   {
+    "etapa": "Laje",
+    "material": "Aço (taxa informada do projeto)",
+    "unidade": "kg",
+    "tipo": "Estimativa por composição",
+    "formula": "volume líquido × taxa de aço informada",
+    "dimensoes": "4,8 m³",
+    "coef": "90 kg/m³",
+    "perda": 0,
+    "bruto": 432.00000000000006,
+    "final": 432
+   },
+   {
+    "etapa": "Laje",
+    "material": "Forma (área de contato)",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área das faces concretadas",
+    "dimensoes": "fundo da laje 48 m²",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 48,
+    "final": 48
+   },
+   {
+    "etapa": "Laje",
+    "material": "Escora de laje",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "área × escoras por m²",
+    "dimensoes": "48 m²",
+    "coef": "1.2 un/m²",
+    "perda": 0,
+    "bruto": 57.599999999999994,
+    "final": 58
+   },
+   {
+    "etapa": "Formas e escoramento",
+    "material": "Compensado resinado (chapa 1,22 × 2,44 m)",
+    "unidade": "chapa",
+    "tipo": "Estimativa por composição",
+    "formula": "área de forma ÷ área da chapa ÷ reaproveitamentos × (1 + perda)",
+    "dimensoes": "185,008 m² de forma; 3 reaproveitamento(s)",
+    "coef": "2,977 m²/chapa",
+    "perda": 10,
+    "bruto": 22.78830148436093,
+    "final": 23
+   },
+   {
+    "etapa": "Formas e escoramento",
+    "material": "Sarrafo de travamento",
+    "unidade": "m",
+    "tipo": "Estimativa por composição",
+    "formula": "área de forma × m por m² ÷ reaproveitamentos × (1 + perda)",
+    "dimensoes": "185,008 m² de forma; 3 reaproveitamento(s)",
+    "coef": "1.5 m/m²",
+    "perda": 10,
+    "bruto": 101.75432378796842,
+    "final": 102
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Bloco",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "área líquida ÷ (comprimento × altura do bloco) × (1 + perda)",
+    "dimensoes": "parede bruta 78,4 m² − aberturas 0 m² = 78,4 m²; bloco 0.39×0.19 m",
+    "coef": "13,495 un/m²",
+    "perda": 5,
+    "bruto": 1110.9311740890687,
+    "final": 1111
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Argamassa de assentamento",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "área líquida × consumo × (1 + perda)",
+    "dimensoes": "parede bruta 78,4 m² − aberturas 0 m² = 78,4 m²; consumo 0.012 m³/m²",
+    "coef": "0.012 m³/m²",
+    "perda": 10,
+    "bruto": 1.03488,
+    "final": 2
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de argamassa × kg de cimento/m³ ÷ kg por saco",
+    "dimensoes": "argamassa 1,035 m³",
+    "coef": "250 kg/m³; saco 50 kg",
+    "perda": 10,
+    "bruto": 5.1744,
+    "final": 6
+   },
+   {
+    "etapa": "Alvenaria",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume de argamassa × m³ de areia/m³",
+    "dimensoes": "argamassa 1,035 m³",
+    "coef": "1.1 m³/m³",
+    "perda": 10,
+    "bruto": 1.138368,
+    "final": 2
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Concreto do contrapiso",
+    "unidade": "m³",
+    "tipo": "Geométrico",
+    "formula": "área × espessura × (1 + perda)",
+    "dimensoes": "área 48 m² × espessura 5 cm",
+    "coef": "—",
+    "perda": 5,
+    "bruto": 2.5200000000000005,
+    "final": 3
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "volume × kg de cimento/m³ ÷ kg por saco",
+    "dimensoes": "concreto 2,52 m³",
+    "coef": "300 kg/m³; saco 50 kg",
+    "perda": 5,
+    "bruto": 15.120000000000003,
+    "final": 16
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume × m³ de areia/m³",
+    "dimensoes": "concreto 2,52 m³",
+    "coef": "0.65 m³/m³",
+    "perda": 5,
+    "bruto": 1.6380000000000003,
+    "final": 2
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Brita",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "volume × m³ de brita/m³",
+    "dimensoes": "concreto 2,52 m³",
+    "coef": "0.85 m³/m³",
+    "perda": 5,
+    "bruto": 2.1420000000000003,
+    "final": 3
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Piso (área)",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área × (1 + perda)",
+    "dimensoes": "área 48 m²",
+    "coef": "—",
+    "perda": 10,
+    "bruto": 52.800000000000004,
+    "final": 53
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Piso (peças)",
+    "unidade": "un",
+    "tipo": "Geométrico",
+    "formula": "área com perda ÷ (comprimento × largura da peça)",
+    "dimensoes": "área 52,8 m²; peça 0.6×0.6 m",
+    "coef": "2,778 un/m²",
+    "perda": 10,
+    "bruto": 146.66666666666669,
+    "final": 147
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Rodapé (peças)",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "(perímetro − largura das portas) ÷ peça × (1 + perda)",
+    "dimensoes": "perímetro 28 m − portas 0 m",
+    "coef": "peça 2.4 m",
+    "perda": 10,
+    "bruto": 12.833333333333336,
+    "final": 13
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Rejunte",
+    "unidade": "kg",
+    "tipo": "Estimativa por composição",
+    "formula": "área × consumo",
+    "dimensoes": "área 48 m²",
+    "coef": "0.5 kg/m²",
+    "perda": 0,
+    "bruto": 24,
+    "final": 24
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Espaçadores",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "peças × espaçadores por peça",
+    "dimensoes": "146,667 peças",
+    "coef": "4 un/peça",
+    "perda": 0,
+    "bruto": 586.6666666666667,
+    "final": 587
+   },
+   {
+    "etapa": "Contrapiso e piso",
+    "material": "Argamassa colante",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "área × consumo ÷ kg por saco",
+    "dimensoes": "área 48 m²",
+    "coef": "4.5 kg/m²; saco 20 kg",
+    "perda": 0,
+    "bruto": 10.8,
+    "final": 11
+   },
+   {
+    "etapa": "Gesso e drywall",
+    "material": "Chapa de drywall",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "área das faces ÷ área da chapa × (1 + perda)",
+    "dimensoes": "parede 5 m × 2.7 m; 2 face(s) = 27 m²; chapa 2.4×1.2 m",
+    "coef": "0,347 un/m²",
+    "perda": 10,
+    "bruto": 10.3125,
+    "final": 11
+   },
+   {
+    "etapa": "Gesso e drywall",
+    "material": "Montante (barras)",
+    "unidade": "barra",
+    "tipo": "Geométrico",
+    "formula": "(⌈comprimento ÷ espaçamento⌉ + 1) × altura ÷ barra × (1 + perda)",
+    "dimensoes": "10 montantes de 2.7 m; espaçamento 0.6 m",
+    "coef": "barra 3 m",
+    "perda": 10,
+    "bruto": 9.9,
+    "final": 10
+   },
+   {
+    "etapa": "Gesso e drywall",
+    "material": "Guia (barras)",
+    "unidade": "barra",
+    "tipo": "Geométrico",
+    "formula": "2 × comprimento (piso e teto) ÷ barra × (1 + perda)",
+    "dimensoes": "5 m × 2",
+    "coef": "barra 3 m",
+    "perda": 10,
+    "bruto": 3.666666666666667,
+    "final": 4
+   },
+   {
+    "etapa": "Gesso e drywall",
+    "material": "Parafuso para drywall",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "área de chapa × parafusos por m² × (1 + perda)",
+    "dimensoes": "parede 5 m × 2.7 m; 2 face(s) = 27 m²",
+    "coef": "20 un/m²",
+    "perda": 10,
+    "bruto": 594,
+    "final": 594
+   },
+   {
+    "etapa": "Gesso e drywall",
+    "material": "Fita para junta",
+    "unidade": "m",
+    "tipo": "Estimativa por composição",
+    "formula": "área de chapa × m de fita por m² × (1 + perda)",
+    "dimensoes": "parede 5 m × 2.7 m; 2 face(s) = 27 m²",
+    "coef": "1.5 m/m²",
+    "perda": 10,
+    "bruto": 44.550000000000004,
+    "final": 45
+   },
+   {
+    "etapa": "Gesso e drywall",
+    "material": "Massa para junta",
+    "unidade": "kg",
+    "tipo": "Estimativa por composição",
+    "formula": "área de chapa × consumo",
+    "dimensoes": "parede 5 m × 2.7 m; 2 face(s) = 27 m²",
+    "coef": "0.5 kg/m²",
+    "perda": 0,
+    "bruto": 13.5,
+    "final": 14
+   },
+   {
+    "etapa": "Gesso e drywall",
+    "material": "Chapa de drywall",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "área do forro ÷ área da chapa × (1 + perda)",
+    "dimensoes": "forro 10 m²; chapa 2.4×1.2 m",
+    "coef": "0,347 un/m²",
+    "perda": 10,
+    "bruto": 3.8194444444444446,
+    "final": 4
+   },
+   {
+    "etapa": "Gesso e drywall",
+    "material": "Perfil de forro (barras)",
+    "unidade": "barra",
+    "tipo": "Estimativa por composição",
+    "formula": "área × m de perfil por m² ÷ barra × (1 + perda)",
+    "dimensoes": "forro 10 m²",
+    "coef": "2 m/m²; barra 3 m",
+    "perda": 10,
+    "bruto": 7.333333333333334,
+    "final": 8
+   },
+   {
+    "etapa": "Gesso e drywall",
+    "material": "Pendural",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "área × penduras por m²",
+    "dimensoes": "forro 10 m²",
+    "coef": "1.2 un/m²",
+    "perda": 0,
+    "bruto": 12,
+    "final": 12
+   },
+   {
+    "etapa": "Gesso e drywall",
+    "material": "Parafuso para drywall",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "área de chapa × parafusos por m² × (1 + perda)",
+    "dimensoes": "forro 10 m²",
+    "coef": "20 un/m²",
+    "perda": 10,
+    "bruto": 220.00000000000003,
+    "final": 220
+   },
+   {
+    "etapa": "Gesso e drywall",
+    "material": "Fita para junta",
+    "unidade": "m",
+    "tipo": "Estimativa por composição",
+    "formula": "área de chapa × m de fita por m² × (1 + perda)",
+    "dimensoes": "forro 10 m²",
+    "coef": "1.5 m/m²",
+    "perda": 10,
+    "bruto": 16.5,
+    "final": 17
+   },
+   {
+    "etapa": "Gesso e drywall",
+    "material": "Massa para junta",
+    "unidade": "kg",
+    "tipo": "Estimativa por composição",
+    "formula": "área de chapa × consumo",
+    "dimensoes": "forro 10 m²",
+    "coef": "0.5 kg/m²",
+    "perda": 0,
+    "bruto": 5,
+    "final": 5
+   },
+   {
+    "etapa": "Estrutura metálica",
+    "material": "Perfil metálico (bitola conforme projeto)",
+    "unidade": "barra",
+    "tipo": "Geométrico",
+    "formula": "comprimento total ÷ barra × (1 + perda)",
+    "dimensoes": "12 m de perfis; 3 kg/m (conforme projeto)",
+    "coef": "barra 6 m",
+    "perda": 5,
+    "bruto": 2.1,
+    "final": 3
+   },
+   {
+    "etapa": "Estrutura metálica",
+    "material": "Peso do aço estrutural",
+    "unidade": "kg",
+    "tipo": "Geométrico",
+    "formula": "comprimento × kg/m",
+    "dimensoes": "12 m de perfis; 3 kg/m (conforme projeto)",
+    "coef": "3 kg/m",
+    "perda": 0,
+    "bruto": 36,
+    "final": 36
+   },
+   {
+    "etapa": "Estrutura metálica",
+    "material": "Eletrodo de solda",
+    "unidade": "kg",
+    "tipo": "Estimativa por composição",
+    "formula": "peso do aço × consumo",
+    "dimensoes": "36 kg de aço",
+    "coef": "0.01 kg/kg",
+    "perda": 0,
+    "bruto": 0.36,
+    "final": 1
+   },
+   {
+    "etapa": "Estrutura metálica",
+    "material": "Tinta de fundo anticorrosiva",
+    "unidade": "lata",
+    "tipo": "Estimativa por composição",
+    "formula": "comprimento × m² por metro × demãos ÷ rendimento ÷ litros da lata",
+    "dimensoes": "6 m² de superfície; 2 demão(s)",
+    "coef": "8 m²/L/demão; lata 18 L",
+    "perda": 0,
+    "bruto": 0.08333333333333333,
+    "final": 1
+   },
+   {
+    "etapa": "Estrutura de madeira",
+    "material": "Madeira estrutural (bitola conforme projeto)",
+    "unidade": "barra",
+    "tipo": "Geométrico",
+    "formula": "comprimento total ÷ barra × (1 + perda)",
+    "dimensoes": "20 m de peças (bitola conforme projeto)",
+    "coef": "barra 3 m",
+    "perda": 10,
+    "bruto": 7.333333333333334,
+    "final": 8
+   },
+   {
+    "etapa": "Estrutura de madeira",
+    "material": "Prego/parafuso para madeira",
+    "unidade": "kg",
+    "tipo": "Estimativa por composição",
+    "formula": "comprimento × consumo",
+    "dimensoes": "20 m de peças (bitola conforme projeto)",
+    "coef": "0.02 kg/m",
+    "perda": 0,
+    "bruto": 0.4,
+    "final": 1
+   },
+   {
+    "etapa": "Impermeabilização",
+    "material": "Área impermeabilizada",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "áreas informadas + comprimento × (largura + 2 × altura) do baldrame",
+    "dimensoes": "6 m² informados + 36,4 m² de baldrame",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 42.4,
+    "final": 43
+   },
+   {
+    "etapa": "Impermeabilização",
+    "material": "Impermeabilizante",
+    "unidade": "kg",
+    "tipo": "Estimativa por composição",
+    "formula": "área × consumo (já com as demãos)",
+    "dimensoes": "6 m² informados + 36,4 m² de baldrame",
+    "coef": "3 kg/m²",
+    "perda": 0,
+    "bruto": 127.19999999999999,
+    "final": 128
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Chapisco",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área líquida × faces",
+    "dimensoes": "área líquida 78,4 m² × 2 face(s) = 156,8 m²",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 156.79999999999998,
+    "final": 157
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "área × espessura 0.5 cm × (1 + perda) × kg/m³ ÷ kg/saco (Chapisco)",
+    "dimensoes": "área líquida 78,4 m² × 2 face(s) = 156,8 m²; argamassa 0,862 m³",
+    "coef": "500 kg/m³",
+    "perda": 10,
+    "bruto": 8.624,
+    "final": 9
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "argamassa (Chapisco) × m³ de areia/m³",
+    "dimensoes": "argamassa 0,862 m³",
+    "coef": "1 m³/m³",
+    "perda": 10,
+    "bruto": 0.8623999999999999,
+    "final": 1
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Emboço/reboco",
+    "unidade": "m²",
+    "tipo": "Geométrico",
+    "formula": "área líquida × faces",
+    "dimensoes": "área líquida 78,4 m² × 2 face(s) = 156,8 m²",
+    "coef": "—",
+    "perda": 0,
+    "bruto": 156.79999999999998,
+    "final": 157
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Cimento",
+    "unidade": "saco",
+    "tipo": "Estimativa por composição",
+    "formula": "área × espessura 2.5 cm × (1 + perda) × kg/m³ ÷ kg/saco (Emboço/reboco)",
+    "dimensoes": "área líquida 78,4 m² × 2 face(s) = 156,8 m²; argamassa 4,312 m³",
+    "coef": "250 kg/m³",
+    "perda": 10,
+    "bruto": 21.559999999999995,
+    "final": 22
+   },
+   {
+    "etapa": "Revestimentos",
+    "material": "Areia",
+    "unidade": "m³",
+    "tipo": "Estimativa por composição",
+    "formula": "argamassa (Emboço/reboco) × m³ de areia/m³",
+    "dimensoes": "argamassa 4,312 m³",
+    "coef": "1.1 m³/m³",
+    "perda": 10,
+    "bruto": 4.7432,
+    "final": 5
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Massa corrida PVA",
+    "unidade": "lata",
+    "tipo": "Estimativa por composição",
+    "formula": "área com massa × demãos ÷ rendimento por lata",
+    "dimensoes": "área líquida 78,4 m² × 1 face(s) = 78,4 m²; 100% com massa = 78,4 m²; 2 demão(s)",
+    "coef": "50 m²/lata/demão",
+    "perda": 0,
+    "bruto": 3.1359999999999997,
+    "final": 4
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Selador",
+    "unidade": "lata",
+    "tipo": "Estimativa por composição",
+    "formula": "área × demãos ÷ rendimento ÷ litros da lata",
+    "dimensoes": "área líquida 78,4 m² × 1 face(s) = 78,4 m²; 100% com selador; 1 demão(s)",
+    "coef": "12 m²/L/demão; lata 18 L",
+    "perda": 0,
+    "bruto": 0.36296296296296293,
+    "final": 1
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Tinta",
+    "unidade": "lata",
+    "tipo": "Estimativa por composição",
+    "formula": "área × demãos ÷ rendimento ÷ litros da lata",
+    "dimensoes": "área líquida 78,4 m² × 1 face(s) = 78,4 m²; área desta cor 78,4 m²; 2 demão(s)",
+    "coef": "10 m²/L/demão; lata 18 L",
+    "perda": 0,
+    "bruto": 0.871111111111111,
+    "final": 1
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Lixa",
+    "unidade": "folha",
+    "tipo": "Estimativa por composição",
+    "formula": "(área × demãos de massa + área a pintar) ÷ área por folha",
+    "dimensoes": "área líquida 78,4 m² × 1 face(s) = 78,4 m²",
+    "coef": "15 m²/folha",
+    "perda": 0,
+    "bruto": 15.68,
+    "final": 16
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Rolo de pintura",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "maior entre nº de cores e (área × demãos ÷ m² por rolo)",
+    "dimensoes": "área líquida 78,4 m² × 1 face(s) = 78,4 m²",
+    "coef": "100 m²/rolo",
+    "perda": 0,
+    "bruto": 1.5679999999999998,
+    "final": 2
+   },
+   {
+    "etapa": "Pintura",
+    "material": "Pincel",
+    "unidade": "un",
+    "tipo": "Estimativa por composição",
+    "formula": "maior entre nº de cores e (área ÷ m² por pincel)",
+    "dimensoes": "área líquida 78,4 m² × 1 face(s) = 78,4 m²",
+    "coef": "200 m²/pincel",
+    "perda": 0,
+    "bruto": 1,
+    "final": 1
+   }
+  ],
+  "consolidado": [
+   {
+    "material": "Limpeza do terreno",
+    "unidade": "m²",
+    "etapas": "Preparação do terreno",
+    "bruto": 48,
+    "final": 48
+   },
+   {
+    "material": "Aterro",
+    "unidade": "m³",
+    "etapas": "Preparação do terreno",
+    "bruto": 23.040000000000003,
+    "final": 24
+   },
+   {
+    "material": "Compactação",
+    "unidade": "m²",
+    "etapas": "Preparação do terreno",
+    "bruto": 48,
+    "final": 48
+   },
+   {
+    "material": "Escavação",
+    "unidade": "m³",
+    "etapas": "Preparação do terreno, Fossa séptica e sumidouro, Piscina",
+    "bruto": 68.57525274861976,
+    "final": 69
+   },
+   {
+    "material": "Transporte de terra (viagens)",
+    "unidade": "viagem",
+    "etapas": "Preparação do terreno",
+    "bruto": 6.72,
+    "final": 7
+   },
+   {
+    "material": "Concreto da fundação",
+    "unidade": "m³",
+    "etapas": "Fundação",
+    "bruto": 4.41,
+    "final": 5
+   },
+   {
+    "material": "Cimento",
+    "unidade": "saco",
+    "etapas": "Fundação, Estrutura, Muro, Calçada e áreas externas, Escada, Laje pré-moldada, Fossa séptica e sumidouro, Piscina, Laje, Alvenaria, Contrapiso e piso, Revestimentos",
+    "bruto": 204.36569275650012,
+    "final": 205
+   },
+   {
+    "material": "Areia",
+    "unidade": "m³",
+    "etapas": "Fundação, Estrutura, Muro, Calçada e áreas externas, Escada, Laje pré-moldada, Fossa séptica e sumidouro, Piscina, Laje, Alvenaria, Contrapiso e piso, Revestimentos",
+    "bruto": 22.589055312953548,
+    "final": 23
+   },
+   {
+    "material": "Brita",
+    "unidade": "m³",
+    "etapas": "Fundação, Estrutura, Muro, Calçada e áreas externas, Escada, Laje pré-moldada, Fossa séptica e sumidouro, Piscina, Laje, Contrapiso e piso",
+    "bruto": 20.766345895216407,
+    "final": 21
+   },
+   {
+    "material": "Aço (taxa informada do projeto)",
+    "unidade": "kg",
+    "etapas": "Fundação, Estrutura, Muro, Escada, Laje pré-moldada, Fossa séptica e sumidouro, Piscina, Laje",
+    "bruto": 1761.749263367375,
+    "final": 1762
+   },
+   {
+    "material": "Forma (área de contato)",
+    "unidade": "m²",
+    "etapas": "Fundação, Estrutura, Muro, Escada, Piscina, Laje",
+    "bruto": 185.00786143266984,
+    "final": 186
+   },
+   {
+    "material": "Concreto estrutural",
+    "unidade": "m³",
+    "etapas": "Estrutura",
+    "bruto": 2.22264,
+    "final": 3
+   },
+   {
+    "material": "Bloco",
+    "unidade": "un",
+    "etapas": "Muro, Fossa séptica e sumidouro, Alvenaria",
+    "bruto": 1840.0662619254786,
+    "final": 1841
+   },
+   {
+    "material": "Argamassa de assentamento",
+    "unidade": "m³",
+    "etapas": "Muro, Alvenaria",
+    "bruto": 1.35168,
+    "final": 2
+   },
+   {
+    "material": "Concreto do muro (fundação e pilaretes)",
+    "unidade": "m³",
+    "etapas": "Muro",
+    "bruto": 1.7178,
+    "final": 2
+   },
+   {
+    "material": "Concreto da calçada",
+    "unidade": "m³",
+    "etapas": "Calçada e áreas externas",
+    "bruto": 1.1025,
+    "final": 2
+   },
+   {
+    "material": "Brita de lastro",
+    "unidade": "m³",
+    "etapas": "Calçada e áreas externas",
+    "bruto": 0.7875000000000001,
+    "final": 1
+   },
+   {
+    "material": "Concreto da escada",
+    "unidade": "m³",
+    "etapas": "Escada",
+    "bruto": 1.0944185405163993,
+    "final": 2
+   },
+   {
+    "material": "Degraus (quantidade)",
+    "unidade": "un",
+    "etapas": "Escada",
+    "bruto": 16,
+    "final": 16
+   },
+   {
+    "material": "Revestimento dos degraus",
+    "unidade": "m²",
+    "etapas": "Escada",
+    "bruto": 8.096000000000002,
+    "final": 9
+   },
+   {
+    "material": "Vigota",
+    "unidade": "m",
+    "etapas": "Laje pré-moldada",
+    "bruto": 50,
+    "final": 50
+   },
+   {
+    "material": "Lajota/EPS de enchimento",
+    "unidade": "un",
+    "etapas": "Laje pré-moldada",
+    "bruto": 166.66666666666669,
+    "final": 167
+   },
+   {
+    "material": "Concreto do capeamento",
+    "unidade": "m³",
+    "etapas": "Laje pré-moldada",
+    "bruto": 0.8400000000000001,
+    "final": 1
+   },
+   {
+    "material": "Tela soldada",
+    "unidade": "m²",
+    "etapas": "Laje pré-moldada",
+    "bruto": 21,
+    "final": 21
+   },
+   {
+    "material": "Escora de laje",
+    "unidade": "un",
+    "etapas": "Laje pré-moldada, Laje",
+    "bruto": 81.6,
+    "final": 82
+   },
+   {
+    "material": "Concreto da fossa (fundo e tampa)",
+    "unidade": "m³",
+    "etapas": "Fossa séptica e sumidouro",
+    "bruto": 0.5515776000000001,
+    "final": 1
+   },
+   {
+    "material": "Revestimento interno impermeável (fossa)",
+    "unidade": "m²",
+    "etapas": "Fossa séptica e sumidouro",
+    "bruto": 11,
+    "final": 11
+   },
+   {
+    "material": "Concreto da tampa do sumidouro",
+    "unidade": "m³",
+    "etapas": "Fossa séptica e sumidouro",
+    "bruto": 0.20903026543631195,
+    "final": 1
+   },
+   {
+    "material": "Concreto da piscina (fundo e paredes)",
+    "unidade": "m³",
+    "etapas": "Piscina",
+    "bruto": 4.468275,
+    "final": 5
+   },
+   {
+    "material": "Impermeabilizante",
+    "unidade": "kg",
+    "etapas": "Piscina, Impermeabilização",
+    "bruto": 201.59999999999997,
+    "final": 202
+   },
+   {
+    "material": "Revestimento da piscina",
+    "unidade": "m²",
+    "etapas": "Piscina",
+    "bruto": 27.279999999999998,
+    "final": 28
+   },
+   {
+    "material": "Skimmer",
+    "unidade": "un",
+    "etapas": "Piscina",
+    "bruto": 1,
+    "final": 1
+   },
+   {
+    "material": "Dispositivo de retorno",
+    "unidade": "un",
+    "etapas": "Piscina",
+    "bruto": 1,
+    "final": 1
+   },
+   {
+    "material": "Conjunto filtro e motobomba (dimensionar pelo volume)",
+    "unidade": "un",
+    "etapas": "Piscina",
+    "bruto": 1,
+    "final": 1
+   },
+   {
+    "material": "Concreto da laje",
+    "unidade": "m³",
+    "etapas": "Laje",
+    "bruto": 5.040000000000001,
+    "final": 6
+   },
+   {
+    "material": "Compensado resinado (chapa 1,22 × 2,44 m)",
+    "unidade": "chapa",
+    "etapas": "Formas e escoramento",
+    "bruto": 22.78830148436093,
+    "final": 23
+   },
+   {
+    "material": "Sarrafo de travamento",
+    "unidade": "m",
+    "etapas": "Formas e escoramento",
+    "bruto": 101.75432378796842,
+    "final": 102
+   },
+   {
+    "material": "Concreto do contrapiso",
+    "unidade": "m³",
+    "etapas": "Contrapiso e piso",
+    "bruto": 2.5200000000000005,
+    "final": 3
+   },
+   {
+    "material": "Piso (área)",
+    "unidade": "m²",
+    "etapas": "Contrapiso e piso",
+    "bruto": 52.800000000000004,
+    "final": 53
+   },
+   {
+    "material": "Piso (peças)",
+    "unidade": "un",
+    "etapas": "Contrapiso e piso",
+    "bruto": 146.66666666666669,
+    "final": 147
+   },
+   {
+    "material": "Rodapé (peças)",
+    "unidade": "un",
+    "etapas": "Contrapiso e piso",
+    "bruto": 12.833333333333336,
+    "final": 13
+   },
+   {
+    "material": "Rejunte",
+    "unidade": "kg",
+    "etapas": "Contrapiso e piso",
+    "bruto": 24,
+    "final": 24
+   },
+   {
+    "material": "Espaçadores",
+    "unidade": "un",
+    "etapas": "Contrapiso e piso",
+    "bruto": 586.6666666666667,
+    "final": 587
+   },
+   {
+    "material": "Argamassa colante",
+    "unidade": "saco",
+    "etapas": "Contrapiso e piso",
+    "bruto": 10.8,
+    "final": 11
+   },
+   {
+    "material": "Chapa de drywall",
+    "unidade": "un",
+    "etapas": "Gesso e drywall",
+    "bruto": 14.131944444444445,
+    "final": 15
+   },
+   {
+    "material": "Montante (barras)",
+    "unidade": "barra",
+    "etapas": "Gesso e drywall",
+    "bruto": 9.9,
+    "final": 10
+   },
+   {
+    "material": "Guia (barras)",
+    "unidade": "barra",
+    "etapas": "Gesso e drywall",
+    "bruto": 3.666666666666667,
+    "final": 4
+   },
+   {
+    "material": "Parafuso para drywall",
+    "unidade": "un",
+    "etapas": "Gesso e drywall",
+    "bruto": 814,
+    "final": 814
+   },
+   {
+    "material": "Fita para junta",
+    "unidade": "m",
+    "etapas": "Gesso e drywall",
+    "bruto": 61.050000000000004,
+    "final": 62
+   },
+   {
+    "material": "Massa para junta",
+    "unidade": "kg",
+    "etapas": "Gesso e drywall",
+    "bruto": 18.5,
+    "final": 19
+   },
+   {
+    "material": "Perfil de forro (barras)",
+    "unidade": "barra",
+    "etapas": "Gesso e drywall",
+    "bruto": 7.333333333333334,
+    "final": 8
+   },
+   {
+    "material": "Pendural",
+    "unidade": "un",
+    "etapas": "Gesso e drywall",
+    "bruto": 12,
+    "final": 12
+   },
+   {
+    "material": "Perfil metálico (bitola conforme projeto)",
+    "unidade": "barra",
+    "etapas": "Estrutura metálica",
+    "bruto": 2.1,
+    "final": 3
+   },
+   {
+    "material": "Peso do aço estrutural",
+    "unidade": "kg",
+    "etapas": "Estrutura metálica",
+    "bruto": 36,
+    "final": 36
+   },
+   {
+    "material": "Eletrodo de solda",
+    "unidade": "kg",
+    "etapas": "Estrutura metálica",
+    "bruto": 0.36,
+    "final": 1
+   },
+   {
+    "material": "Tinta de fundo anticorrosiva",
+    "unidade": "lata",
+    "etapas": "Estrutura metálica",
+    "bruto": 0.08333333333333333,
+    "final": 1
+   },
+   {
+    "material": "Madeira estrutural (bitola conforme projeto)",
+    "unidade": "barra",
+    "etapas": "Estrutura de madeira",
+    "bruto": 7.333333333333334,
+    "final": 8
+   },
+   {
+    "material": "Prego/parafuso para madeira",
+    "unidade": "kg",
+    "etapas": "Estrutura de madeira",
+    "bruto": 0.4,
+    "final": 1
+   },
+   {
+    "material": "Área impermeabilizada",
+    "unidade": "m²",
+    "etapas": "Impermeabilização",
+    "bruto": 42.4,
+    "final": 43
+   },
+   {
+    "material": "Chapisco",
+    "unidade": "m²",
+    "etapas": "Revestimentos",
+    "bruto": 156.79999999999998,
+    "final": 157
+   },
+   {
+    "material": "Emboço/reboco",
+    "unidade": "m²",
+    "etapas": "Revestimentos",
+    "bruto": 156.79999999999998,
+    "final": 157
+   },
+   {
+    "material": "Massa corrida PVA",
+    "unidade": "lata",
+    "etapas": "Pintura",
+    "bruto": 3.1359999999999997,
+    "final": 4
+   },
+   {
+    "material": "Selador",
+    "unidade": "lata",
+    "etapas": "Pintura",
+    "bruto": 0.36296296296296293,
+    "final": 1
+   },
+   {
+    "material": "Tinta",
+    "unidade": "lata",
+    "etapas": "Pintura",
+    "bruto": 0.871111111111111,
+    "final": 1
+   },
+   {
+    "material": "Lixa",
+    "unidade": "folha",
+    "etapas": "Pintura",
+    "bruto": 15.68,
+    "final": 16
+   },
+   {
+    "material": "Rolo de pintura",
+    "unidade": "un",
+    "etapas": "Pintura",
+    "bruto": 1.5679999999999998,
+    "final": 2
+   },
+   {
+    "material": "Pincel",
+    "unidade": "un",
+    "etapas": "Pintura",
+    "bruto": 1,
+    "final": 1
+   }
+  ]
+ }
+}

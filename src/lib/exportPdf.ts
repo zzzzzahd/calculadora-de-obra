@@ -1,7 +1,9 @@
 import { jsPDF } from 'jspdf'
 import autoTable from 'jspdf-autotable'
-import type { Ambiente, Obra } from '../types'
+import { TIPOS_AMBIENTE, type Ambiente, type Obra } from '../types'
 import { areaAmbiente } from './geometry'
+import { descreverAcoes, descreverDivisas } from './cadastro'
+import { resolverLevantamento } from './paredes'
 import { toMetros } from './units'
 import { consolidar, type Item } from './engine'
 
@@ -21,11 +23,15 @@ export function gerarPdf(obra: Obra, ambientes: Ambiente[], itens: Item[], preco
   doc.setFontSize(10)
   doc.text(`Obra: ${obra.nome || 'Sem identificação'}  |  Gerado em ${new Date().toLocaleDateString('pt-BR')}`, 14, 23)
   doc.text(`Tipo: ${obra.tipo}  |  Pavimentos: ${obra.pavimentos}  |  Altura das paredes: ${n2(toMetros(obra.alturaParede, obra.unidadeAltura))} m  |  Área (1 pav.): ${n2(area1)} m²`, 14, 29)
-  autoTable(doc, { startY: 34, head: [['Ambiente', 'Comprimento (m)', 'Largura (m)', 'Área (m²)']], headStyles: { fillColor: [217, 119, 6] },
-    body: ambientes.map((a) => [a.nome, n2(toMetros(a.comprimento, a.unidade)), n2(toMetros(a.largura, a.unidade)), n2(areaAmbiente(a))]) })
+  const lev = resolverLevantamento(obra, ambientes, [])
+  autoTable(doc, { startY: 34, head: [['Ambiente', 'Comprimento (m)', 'Largura (m)', 'Área (m²)', 'Tipo', 'Pé-direito (m)', 'Paredes compartilhadas', 'O que será feito']], headStyles: { fillColor: [217, 119, 6] }, styles: { fontSize: 8 },
+    body: ambientes.map((a, k) => [a.nome, n2(toMetros(a.comprimento, a.unidade)), n2(toMetros(a.largura, a.unidade)), n2(areaAmbiente(a)), a.tipo ? TIPOS_AMBIENTE[a.tipo] : '', n2(lev.ambientes[k].altura), descreverDivisas(a, ambientes), descreverAcoes(a) || 'construir tudo']) })
+  if (lev.compartilhadaM > 0) doc.text(`Paredes (1 pavimento): ${n2(lev.externaM)} m externas + ${n2(lev.compartilhadaM)} m compartilhadas (contadas uma vez)`, 14, fim())
+  let desloc = lev.compartilhadaM > 0 ? 6 : 0 // espaço para a linha de paredes, só na primeira tabela seguinte
   for (const e of [...new Set(itens.map((i) => i.etapa))]) {
-    autoTable(doc, { startY: fim(), head: [[e, 'Tipo', 'Antes de arredondar', 'Compra', 'Un.']], headStyles: { fillColor: [217, 119, 6] },
+    autoTable(doc, { startY: fim() + desloc, head: [[e, 'Tipo', 'Antes de arredondar', 'Compra', 'Un.']], headStyles: { fillColor: [217, 119, 6] },
       body: itens.filter((i) => i.etapa === e).map((i) => [i.material, i.tipo, n2(i.bruto), n2(i.final), i.unidade]) })
+    desloc = 0
   }
   const lista = consolidar(itens)
   const comPreco = lista.some((l) => precos[`${l.material}|${l.unidade}`] > 0)

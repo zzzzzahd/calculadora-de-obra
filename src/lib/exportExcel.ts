@@ -1,6 +1,8 @@
 import ExcelJS from 'exceljs'
-import type { Ambiente, Obra } from '../types'
-import { areaAmbiente, areaParedeBruta } from './geometry'
+import { TIPOS_AMBIENTE, type Ambiente, type Obra } from '../types'
+import { areaAmbiente } from './geometry'
+import { descreverAcoes, descreverDivisas } from './cadastro'
+import { resolverLevantamento } from './paredes'
 import { toMetros } from './units'
 import { consolidar, type Item } from './engine'
 
@@ -48,14 +50,21 @@ export async function gerarXlsx(obra: Obra, ambientes: Ambiente[], itens: Item[]
 
   const h = toMetros(obra.alturaParede, obra.unidadeAltura)
   const area1 = ambientes.reduce((s, a) => s + areaAmbiente(a), 0)
-  const parede = ambientes.reduce((s, a) => s + areaParedeBruta(a, h), 0) * obra.pavimentos
+  const lev = resolverLevantamento(obra, ambientes, [])
+  const parede = lev.alvBruta
   const r = wb.addWorksheet('Resumo geral')
   ;[['Obra', obra.nome || 'Sem identificação'], ['Tipo de construção', obra.tipo], ['Data de geração', new Date().toLocaleDateString('pt-BR')],
     ['Altura das paredes (m)', h], ['Pavimentos', obra.pavimentos], ['Área construída, 1 pavimento (m²)', area1],
     ['Área total (m²)', area1 * obra.pavimentos], ['Parede bruta, sem aberturas (m²)', parede], ['Terreno', obra.terreno], ['Aviso', AVISO]]
     .forEach((l) => ws0(r, l))
-  r.addRow([]); r.addRow(['Ambientes', 'Comprimento (m)', 'Largura (m)', 'Área (m²)']).font = { bold: true }
-  ambientes.forEach((a) => r.addRow([a.nome, toMetros(a.comprimento, a.unidade), toMetros(a.largura, a.unidade), areaAmbiente(a)]))
+  r.addRow([]); r.addRow(['Ambientes', 'Comprimento (m)', 'Largura (m)', 'Área (m²)', 'Tipo', 'Pé-direito (m)', 'Paredes compartilhadas', 'O que será feito']).font = { bold: true }
+  ambientes.forEach((a, k) => r.addRow([a.nome, toMetros(a.comprimento, a.unidade), toMetros(a.largura, a.unidade), areaAmbiente(a),
+    a.tipo ? TIPOS_AMBIENTE[a.tipo] : '', lev.ambientes[k].altura, descreverDivisas(a, ambientes), descreverAcoes(a) || 'construir tudo']))
+  if (lev.compartilhadaM > 0) {
+    r.addRow([]); r.addRow(['Paredes (1 pavimento)', 'Comprimento (m)']).font = { bold: true }
+    r.addRow(['Parede externa', lev.externaM]); r.addRow(['Parede compartilhada (contada uma vez)', lev.compartilhadaM])
+  }
+  lev.avisos.forEach((t) => r.addRow(['Aviso do cadastro', t]))
   const porEtapa = [...new Set(itens.map((i) => i.etapa))].map((e) => [e, itens.filter((i) => i.etapa === e).reduce((s, i) => s + i.bruto * preco(precos, i.material, i.unidade), 0)] as [string, number])
   const custoTotal = porEtapa.reduce((s, [, v]) => s + v, 0)
   if (custoTotal > 0) {
@@ -64,7 +73,7 @@ export async function gerarXlsx(obra: Obra, ambientes: Ambiente[], itens: Item[]
     r.addRow(['Custo total estimado (R$)', custoTotal]).font = { bold: true }
     if (area1 > 0) r.addRow(['Custo estimado por m² (R$)', custoTotal / (area1 * obra.pavimentos)])
   }
-  r.getColumn(1).width = 36; r.getColumn(2).width = 40; r.getColumn(3).width = 14; r.getColumn(4).width = 14
+  r.getColumn(1).width = 36; r.getColumn(2).width = 40; r.getColumn(3).width = 14; r.getColumn(4).width = 14; r.getColumn(5).width = 16; r.getColumn(6).width = 16; r.getColumn(7).width = 36; r.getColumn(8).width = 34
   r.getCell('B10').alignment = { wrapText: true }
 
   for (const etapa of [...new Set(itens.map((i) => i.etapa))]) {

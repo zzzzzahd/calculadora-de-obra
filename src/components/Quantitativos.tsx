@@ -8,37 +8,9 @@ import { BLOCOS, PISOS, TELHAS } from '../lib/presets'
 import { ADITIVOS, TRACOS } from '../lib/tracos'
 import { aplicarFlags, campoVisivel, flagsIniciais, grupoVisivel, PERGUNTAS, type Flags } from '../lib/assistente'
 import { uid } from '../lib/uid'
+import { resolverLevantamento } from '../lib/paredes'
+import { GRUPOS, type Num } from '../lib/campos'
 
-type Num = Exclude<keyof Params, 'aberturas' | 'composicoes'>
-const GRUPOS: { titulo: string; campos: [Num, string][] }[] = [
-  { titulo: 'Alvenaria', campos: [['blocoC', 'Bloco: comprimento (m)'], ['blocoA', 'Bloco: altura (m)'], ['perdaBloco', 'Perda de blocos (%)'], ['argM3m2', 'Argamassa (m³/m²)'], ['argCimentoKg', 'Cimento na argamassa (kg/m³)'], ['argAreiaM3', 'Areia na argamassa (m³/m³)'], ['perdaArg', 'Perda de argamassa (%)'], ['calKgM3', 'Cal na argamassa (kg/m³, 0 = não)'], ['calSacoKg', 'Kg por saco de cal']] },
-  { titulo: 'Vergas e contravergas (usa as portas e janelas)', campos: [['vergas', 'Calcular vergas (1 = sim, 0 = não)'], ['vergaApoio', 'Apoio de cada lado (m)'], ['vergaL', 'Largura = espessura da parede (m)'], ['vergaH', 'Altura da verga (m)']] },
-  { titulo: 'Contrapiso e piso', campos: [['espContrapisoCm', 'Espessura do contrapiso (cm)'], ['ctCimentoKg', 'Cimento (kg/m³)'], ['ctAreiaM3', 'Areia (m³/m³)'], ['ctBritaM3', 'Brita (m³/m³)'], ['perdaConcreto', 'Perda do concreto (%)'], ['pisoC', 'Peça: comprimento (m)'], ['pisoL', 'Peça: largura (m)'], ['perdaPiso', 'Perda do piso (%)']] },
-  { titulo: 'Terreno (0 = não calcular)', campos: [['aterroH', 'Altura média do aterro (m)'], ['escavH', 'Profundidade da escavação (m)'], ['perdaAterro', 'Empolamento/compactação (%)'], ['transporte', 'Transporte de terra (1 = sim)'], ['caminhaoM3', 'Capacidade do caminhão (m³)']] },
-  { titulo: 'Fundação (só com dimensões)', campos: [['fundComp', 'Comprimento total (m)'], ['fundLarg', 'Largura (m)'], ['fundAlt', 'Altura (m)'], ['radierArea', 'Radier: área (m²)'], ['radierEsp', 'Radier: espessura (m)'], ['fundPerim', 'Radier: perímetro das bordas (m)'], ['radierTela', 'Radier: tela soldada (1 = sim)'], ['sapN', 'Sapatas isoladas (qtd.)'], ['sapL', 'Sapata: comprimento (m)'], ['sapB', 'Sapata: largura (m)'], ['sapH', 'Sapata: altura (m)'], ['estN', 'Estacas (qtd.)'], ['estDiam', 'Estaca: diâmetro (m)'], ['estProf', 'Estaca: profundidade (m)']] },
-  { titulo: 'Estrutura (só com dimensões)', campos: [['pilarN', 'Pilares (qtd.)'], ['pilarL', 'Pilar: lado A (m)'], ['pilarB', 'Pilar: lado B (m)'], ['vigaComp', 'Vigas: comprimento total (m)'], ['vigaL', 'Viga: largura (m)'], ['vigaH', 'Viga: altura (m)'], ['estCimentoKg', 'Cimento (kg/m³)'], ['estAreiaM3', 'Areia (m³/m³)'], ['estBritaM3', 'Brita (m³/m³)'], ['acoKgM3', 'Aço do projeto (kg/m³, 0 = não)']] },
-  { titulo: 'Revestimentos e forro', campos: [['revFaces', 'Faces revestidas'], ['espChapCm', 'Chapisco: espessura (cm)'], ['chapCimentoKg', 'Chapisco: cimento (kg/m³)'], ['chapAreiaM3', 'Chapisco: areia (m³/m³)'], ['espEmbCm', 'Emboço/reboco: espessura (cm)'], ['embCimentoKg', 'Emboço: cimento (kg/m³)'], ['embAreiaM3', 'Emboço: areia (m³/m³)'], ['perdaRev', 'Perda de revestimento (%)'], ['cerArea', 'Cerâmica de parede (m², 0 = não)'], ['forro', 'Forro (1 = sim, 0 = não)'], ['perdaForro', 'Perda do forro (%)'], ['espPerfil', 'Espaç. perfis do forro (m)'], ['barraPerfilM', 'Barra de perfil (m)']] },
-  { titulo: 'Esquadrias (usa as portas e janelas)', campos: [['esquadrias', 'Listar portas e janelas para compra (1 = sim)']] },
-  { titulo: 'Muro', campos: [['muroComp', 'Comprimento do muro (m)'], ['muroAlt', 'Altura (m)'], ['muroFundL', 'Fundação: largura (m)'], ['muroFundH', 'Fundação: altura (m)'], ['muroPilarEsp', 'Espaçamento dos pilaretes (m)'], ['muroPilarSec', 'Pilarete: lado (m)']] },
-  { titulo: 'Calçada e áreas externas', campos: [['calcArea', 'Área (m²)'], ['calcEsp', 'Espessura do concreto (cm)'], ['calcLastroCm', 'Lastro de brita (cm)'], ['calcTela', 'Tela soldada (1 = sim)']] },
-  { titulo: 'Escada de concreto', campos: [['escLarg', 'Largura (m)'], ['escAlt', 'Altura a vencer (m)'], ['escEspelho', 'Altura do espelho (m)'], ['escPiso', 'Profundidade do piso (m)'], ['escEspLaje', 'Espessura da laje (m)'], ['escFolga', 'Vão central da escada em U (m)']] },
-  { titulo: 'Gesso e drywall', campos: [['dwComp', 'Paredes: comprimento total (m)'], ['dwAlt', 'Paredes: altura (m)'], ['dwFaces', 'Faces com chapa (1 ou 2)'], ['dwEspMont', 'Espaçamento dos montantes (m)'], ['dwBarraM', 'Barra de perfil (m)'], ['perdaDw', 'Perda (%)'], ['dwChapaC', 'Chapa: comprimento (m)'], ['dwChapaL', 'Chapa: largura (m)'], ['dwForroArea', 'Forro de gesso: área (m²)'], ['dwForroPerfilM2', 'Perfil do forro (m/m²)'], ['dwPendM2', 'Penduras (un/m²)'], ['dwParafM2', 'Parafusos (un/m² de chapa)'], ['dwFitaMM2', 'Fita (m/m² de chapa)'], ['dwMassaKgM2', 'Massa de junta (kg/m²)']] },
-  { titulo: 'Estrutura metálica (perfis informados)', campos: [['metComp', 'Comprimento total de perfis (m)'], ['metKgM', 'Peso do perfil (kg/m, do projeto)'], ['metBarraM', 'Barra comercial (m)'], ['perdaMet', 'Perda (%)'], ['metSupM', 'Superfície (m² por metro de perfil)'], ['metDemaos', 'Demãos de fundo'], ['metRend', 'Rendimento do fundo (m²/L/demão)'], ['metSoldaKgKg', 'Eletrodo (kg por kg de aço)']] },
-  { titulo: 'Estrutura de madeira (peças informadas)', campos: [['madComp', 'Comprimento total de peças (m)'], ['madBarraM', 'Barra comercial (m)'], ['madPregoKgM', 'Pregos/parafusos (kg por m)']] },
-  { titulo: 'Laje pré-moldada', campos: [['preLajeArea', 'Área da laje (m²)'], ['preInter', 'Intereixo (m)'], ['preLajotaC', 'Comprimento da lajota/EPS (m)'], ['preCapEsp', 'Capeamento (cm)'], ['preTela', 'Tela soldada (1 = sim)']] },
-  { titulo: 'Fossa séptica e sumidouro', campos: [['fosCompr', 'Fossa: comprimento interno (m)'], ['fosLarg', 'Fossa: largura interna (m)'], ['fosProf', 'Fossa: profundidade (m)'], ['fosEsp', 'Fossa: parede (m)'], ['sumDiam', 'Sumidouro: diâmetro interno (m)'], ['sumProf', 'Sumidouro: profundidade (m)'], ['sumEsp', 'Sumidouro: parede (m)'], ['sumBritaFundo', 'Brita no fundo (m)']] },
-  { titulo: 'Piscina', campos: [['pisC', 'Comprimento interno (m)'], ['pisL', 'Largura interna (m)'], ['pisProf', 'Profundidade média (m)'], ['pisEsp', 'Espessura de fundo e paredes (m)'], ['pisFolga', 'Folga de escavação (m por lado)']] },
-  { titulo: 'Laje', campos: [['lajeArea', 'Área da laje (m²)'], ['lajeEsp', 'Espessura (cm)'], ['escorasPorM2', 'Escoras por m²']] },
-  { titulo: 'Formas e escoramento', campos: [['reusoForma', 'Reaproveitamentos da forma'], ['sarrafoMPorM2', 'Sarrafo (m por m² de forma)']] },
-  { titulo: 'Impermeabilização', campos: [['imperArea', 'Área a impermeabilizar (m²)'], ['imperBaldrame', 'Incluir baldrame (1 = sim)'], ['imperKgM2', 'Consumo (kg/m², com demãos)']] },
-  { titulo: 'Piso: acessórios', campos: [['rodape', 'Rodapé (1 = sim, 0 = não)'], ['rodapeBarraM', 'Peça de rodapé (m)'], ['perdaRodape', 'Perda do rodapé (%)'], ['rejunteKgM2', 'Rejunte (kg/m²)'], ['espPorPeca', 'Espaçadores por peça'], ['colanteKgM2', 'Argamassa colante (kg/m²)'], ['colanteSacoKg', 'Kg por saco de colante']] },
-  { titulo: 'Instalações elétricas (pontos)', campos: [['eltTomadas', 'Tomadas (qtd.)'], ['eltInterruptores', 'Interruptores (qtd.)'], ['eltPontosLuz', 'Pontos de iluminação'], ['eltDisjuntores', 'Disjuntores (qtd. do projeto)'], ['eltMPorPonto', 'Eletroduto (m por ponto)'], ['eltCaboMPorPonto', 'Cabo (m por ponto)'], ['barraEletrodutoM', 'Barra de eletroduto (m)'], ['perdaInst', 'Perda das instalações (%)']] },
-  { titulo: 'Hidráulica e sanitária (pontos)', campos: [['hidPontosAgua', 'Pontos de água'], ['sanPontos', 'Pontos de esgoto'], ['hidRegistros', 'Registros'], ['caixasSifonadas', 'Caixas sifonadas'], ['ralos', 'Ralos'], ['caixasInspecao', 'Caixas de inspeção'], ['vasos', 'Vasos sanitários'], ['lavatorios', 'Lavatórios'], ['pias', 'Pias'], ['chuveiros', 'Chuveiros'], ['reservatorios', 'Reservatórios'], ['hidMPorPonto', 'Tubo de água (m por ponto)'], ['sanMPorPonto', 'Tubo de esgoto (m por ponto)'], ['conexPorPonto', 'Conexões por ponto'], ['barraTuboM', 'Barra de tubo (m)']] },
-  { titulo: 'Drenagem', campos: [['drenTuboM', 'Tubo de drenagem (m)'], ['drenCaixas', 'Caixas'], ['drenRalos', 'Ralos'], ['canaletaM', 'Canaletas (m)'], ['drenBritaM3m', 'Brita de envelopamento (m³/m)']] },
-  { titulo: 'Cobertura (informe comprimento e largura)', campos: [['roofC', 'Comprimento do telhado (m)'], ['roofL', 'Largura no sentido do caimento (m)'], ['aguas', 'Águas (1, 2 ou 4)'], ['inclinacao', 'Inclinação (%)'], ['beiral', 'Beiral (m)'], ['telhaRend', 'Telhas por m²'], ['perdaTelha', 'Perda de telhas (%)'], ['espTerca', 'Espaç. terças (m)'], ['espCaibro', 'Espaç. caibros (m)'], ['espRipa', 'Espaç. ripas (m)'], ['tesouras', 'Tesouras (qtd.)'], ['barraM', 'Barra de madeira (m)'], ['perdaMadeira', 'Perda de madeira (%)'], ['cumeeiraM', 'Peça de cumeeira (m)'], ['calha', 'Calha (1 = sim, 0 = não)'], ['calhaBarraM', 'Barra de calha (m)'], ['condutorN', 'Condutores (qtd.)'], ['condutorAltM', 'Altura de cada condutor (m)'], ['condutorBarraM', 'Barra de condutor (m)'], ['rufoM', 'Rufo (m)'], ['espigaoExtraM', 'Espigões/rincões informados (m)'], ['fixPorM2', 'Fixação do telhado (un/m²)'], ['mantaCob', 'Manta de subcobertura (1 = sim)'], ['telhaMetalica', 'Telha metálica (1 = sim; escolha acima)'], ['sobreMetal', 'Sobreposição da telha metálica (%)']] },
-  { titulo: 'Pintura', campos: [['faces', 'Faces a pintar'], ['massaTipo', 'Massa: 0 = não, 1 = PVA, 2 = acrílica'], ['massaPct', '% da área com massa'], ['demaosMassa', 'Demãos de massa'], ['rendMassa', 'Massa (m²/lata/demão)'], ['seladorPct', '% da área com selador'], ['demaosSelador', 'Demãos de selador'], ['rendSelador', 'Selador (m²/L/demão)'], ['latSeladorL', 'Litros por lata de selador'], ['demaos', 'Demãos de tinta'], ['rendTinta', 'Tinta (m²/L/demão)'], ['latL', 'Litros por lata de tinta'], ['cor2Pct', '% da área na 2ª cor (0 = cor única)'], ['lixaM2', 'Lixa (m² por folha)'], ['roloM2', 'Rolo (m² por rolo)'], ['pincelM2', 'Pincel (m² por pincel)'], ['fitaM', 'Fita crepe (m por rolo)']] },
-  { titulo: 'Compra', campos: [['sacoKg', 'Kg por saco de cimento']] },
-]
 const BOOLS = new Set<string>(['esquadrias', 'vergas', 'radierTela', 'preTela', 'imperBaldrame', 'calcTela', 'mantaCob', 'telhaMetalica', 'transporte', 'rodape'])
 const ESCOLHAS: Record<string, [number, string][]> = {
   massaTipo: [[0, 'Não'], [1, 'Massa corrida PVA'], [2, 'Massa acrílica']], aguas: [[1, 'Uma água'], [2, 'Duas águas'], [4, 'Quatro águas']], dwFaces: [[1, 'Uma face'], [2, 'Duas faces']],
@@ -59,9 +31,12 @@ function CampoParam({ k, rot, p, setP }: { k: Num; rot: string; p: Params; setP:
 
 const fmt = (n: number) => n.toLocaleString('pt-BR', { maximumFractionDigits: 3 })
 
-export default function Quantitativos({ obra, ambientes, aberturasIniciais = [] }: { obra: Obra; ambientes: Ambiente[]; aberturasIniciais?: Abertura[] }) {
-  const [p, setP] = useState<Params>(() => ({ ...carregarParams(), aberturas: aberturasIniciais }))
-  const [flags, setFlags] = useState<Flags>(() => flagsIniciais(p))
+/** Ajustes iniciais (ex.: vindos do assistente de texto livre): parâmetros e respostas Sim/Não que valem ao abrir a tela. */
+export interface Ajustes { params?: Partial<Params>; flags?: Partial<Flags> }
+
+export default function Quantitativos({ obra, ambientes, aberturasIniciais = [], ajustes }: { obra: Obra; ambientes: Ambiente[]; aberturasIniciais?: Abertura[]; ajustes?: Ajustes }) {
+  const [p, setP] = useState<Params>(() => ({ ...carregarParams(), ...ajustes?.params, aberturas: aberturasIniciais }))
+  const [flags, setFlags] = useState<Flags>(() => ({ ...flagsIniciais(p), ...ajustes?.flags }))
   const pe = useMemo(() => aplicarFlags(p, flags), [p, flags])
   const [esc, setEsc] = useState({ telha: -1, bloco: -1, piso: -1 })
   const [tr, setTr] = useState<Record<string, number>>({})
@@ -73,6 +48,7 @@ export default function Quantitativos({ obra, ambientes, aberturasIniciais = [] 
   const importar = async (f?: File) => { if (!f) return; try { setP({ ...importarConfig(await f.text()), aberturas: p.aberturas }) } catch (e) { alert((e as Error).message) } }
   const itens = useMemo(() => calcular(obra, ambientes, pe), [obra, ambientes, pe])
   const lista = useMemo(() => consolidar(itens), [itens])
+  const temDemolicao = useMemo(() => Object.values(resolverLevantamento(obra, ambientes, p.aberturas).demolir).some((v) => v > 0), [obra, ambientes, p.aberturas])
   const etapas = [...new Set(itens.map((i) => i.etapa))]
   const exportar = async (completo: boolean) => {
     const { gerarXlsx, baixar } = await import('../lib/exportExcel')
@@ -130,7 +106,7 @@ export default function Quantitativos({ obra, ambientes, aberturasIniciais = [] 
 
       <section className="cartao">
         <div className="mb-3 flex items-center justify-between">
-          <h2 className="font-semibold">Portas e janelas (descontadas da alvenaria)</h2>
+          <h2 className="font-semibold">Portas e janelas sem ambiente definido (lista geral)</h2>
           <button className="btn btn-sec" onClick={() => setP({ ...p, aberturas: [...p.aberturas, { id: uid(), tipo: 'Porta', largura: 0.8, altura: 2.1, qtd: 1 }] })}><Plus size={16} /> Adicionar</button>
         </div>
         {p.aberturas.map((a) => (
@@ -142,7 +118,7 @@ export default function Quantitativos({ obra, ambientes, aberturasIniciais = [] 
             <button className="btn btn-sec" aria-label="Remover" onClick={() => setP({ ...p, aberturas: p.aberturas.filter((x) => x.id !== a.id) })}><Trash2 size={16} /></button>
           </div>
         ))}
-        <p className="text-xs text-slate-500 dark:text-slate-400">Colunas: tipo · largura (m) · altura (m) · quantidade.</p>
+        <p className="text-xs text-slate-500 dark:text-slate-400">Colunas: tipo · largura (m) · altura (m) · quantidade. Descontadas da alvenaria como parede externa. Prefira cadastrar as aberturas dentro de cada ambiente (em "Detalhes do ambiente"), onde também se informa o lado; as das duas listas são somadas.</p>
       </section>
 
       {flags.cobertura && <section className="cartao border-amber-500">
@@ -158,7 +134,7 @@ export default function Quantitativos({ obra, ambientes, aberturasIniciais = [] 
       <section className="cartao">
         <h2 className="mb-3 font-semibold">Parâmetros técnicos (editáveis)</h2>
         <div className="grid gap-4 md:grid-cols-3">
-          {GRUPOS.filter((g) => !g.titulo.startsWith('Cobertura') && grupoVisivel(g.titulo, flags, obra)).map((g) => (
+          {GRUPOS.filter((g) => !g.titulo.startsWith('Cobertura') && grupoVisivel(g.titulo, flags, obra) && (!g.titulo.startsWith('Demolição') || temDemolicao)).map((g) => (
             <div key={g.titulo} className="space-y-2">
               <h3 className="text-sm font-medium text-amber-600">{g.titulo}</h3>
               {g.campos.filter(([k]) => campoVisivel(k, flags, p)).map(([k, rot]) => (

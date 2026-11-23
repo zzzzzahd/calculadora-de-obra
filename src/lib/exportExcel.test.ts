@@ -29,3 +29,21 @@ describe('exportação Excel', () => {
     expect(r).toEqual(expect.arrayContaining(['Custo por etapa (R$)', 'Custo total estimado (R$)', 'Custo estimado por m² (R$)']))
   })
 })
+
+describe('exportação Excel com o cadastro central', () => {
+  const amb2: Ambiente[] = [
+    { id: 's1', nome: 'Sala 1', comprimento: 7, largura: 7, unidade: 'm', tipo: 'sala', divisas: { 1: { com: 's2' } } },
+    { id: 's2', nome: 'Sala 2', comprimento: 7, largura: 7, unidade: 'm', tipo: 'sala', peDireito: 3, divisas: { 3: { com: 's1' } } },
+  ]
+  it('resumo traz tipo, pé-direito, paredes compartilhadas e o total de parede sem dupla contagem', async () => {
+    const o = { ...obra, alturaParede: 3 }
+    const wb = await abrir(await gerarXlsx(o, amb2, calcular(o, amb2, PARAMS_PADRAO), true))
+    const linhas: unknown[][] = []
+    wb.getWorksheet('Resumo geral')!.eachRow((row) => linhas.push(row.values as unknown[]))
+    const cab = linhas.find((l) => l[1] === 'Ambientes')!
+    expect(cab).toEqual(expect.arrayContaining(['Tipo', 'Pé-direito (m)', 'Paredes compartilhadas']))
+    expect(linhas.find((l) => l[1] === 'Sala 1')).toEqual(expect.arrayContaining(['Sala', 3, 'Lado 2: Sala 2']))
+    expect(linhas.find((l) => l[1] === 'Parede bruta, sem aberturas (m²)')![2]).toBeCloseTo(147, 6)
+    expect(linhas.find((l) => l[1] === 'Parede compartilhada (contada uma vez)')![2]).toBeCloseTo(7, 6)
+  })
+})

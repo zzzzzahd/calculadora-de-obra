@@ -23,7 +23,8 @@ export default function LeitorPlanta({ onConfirmar }: { onConfirmar: (c: Confirm
   }
   const upd = (id: string, d: object) => r && setR({ ...r, ambientes: r.ambientes.map((a) => (a.id === id ? { ...a, ...d } : a)) })
   const confirmar = () => r && onConfirmar({
-    ambientes: r.ambientes.map((a) => ({ id: a.id, nome: a.nome, comprimento: a.comprimento, largura: a.largura, unidade: 'm' as const })),
+    ambientes: r.ambientes.map((a) => ({ id: a.id, nome: a.nome, comprimento: a.comprimento, largura: a.largura, unidade: 'm' as const,
+      origem: { fonte: 'planta' as const, confianca: a.confianca, observacao: [a.origem === 'cota' ? 'medida de cota' : 'medida estimada', a.observacao].filter(Boolean).join('; ') } })),
     altura: r.alturaParede, aberturas: r.aberturas,
   })
 
