@@ -16,3 +16,8 @@ it('parâmetros de demolição só aparecem quando há algo a demolir', () => {
   const h = render({ paredes: 'demolir' })
   for (const t of ['Demolição e entulho', 'Espessura da parede demolida', 'Empolamento do entulho']) expect(h).toContain(t)
 })
+
+it('composições próprias oferecem as bases "Pontos de água fria" e "Pontos de esgoto", sem assumir bitolas', () => {
+  const h = renderToString(<Quantitativos obra={obra} ambientes={[{ id: '1', nome: 'Sala', comprimento: 7, largura: 5, unidade: 'm' }]} />).replace(/<!-- -->/g, '')
+  expect(h).toContain('Pontos de água fria'); expect(h).toContain('Pontos de esgoto'); expect(h).toContain('não assume bitolas nem quantidades de conexões')
+})

@@ -42,3 +42,16 @@ describe('ações (construir, manter, demolir…) na tela', () => {
     expect(html([base[1]])).not.toContain('Parede a demolir')
   })
 })
+
+describe('pontos hidráulicos na tela', () => {
+  const com: Ambiente[] = [{ id: 'b', nome: 'Banheiro', comprimento: 2, largura: 3, unidade: 'm', pontos: { vaso: 1, chuveiro: 1, ralo: 2 } }, { id: 'c', nome: 'Cozinha', comprimento: 3, largura: 4, unidade: 'm' }]
+  it('mostra os campos por peça, a explicação e o resumo de pontos de água e esgoto', () => {
+    const h = html(com)
+    for (const t of ['Pontos hidráulicos deste ambiente', 'Vaso sanitário', 'Caixa sifonada', 'Torneira externa ou de jardim', 'Pontos de água / esgoto (ambientes)']) expect(h).toContain(t)
+    expect(h).toContain('>2 / 3<') // água: vaso + chuveiro; esgoto: vaso + 2 ralos
+    expect(h).toContain('Tubos e conexões são estimados por composições com os seus coeficientes')
+  })
+  it('sem pontos nos ambientes não aparece o resumo hidráulico', () => {
+    expect(html([com[1]])).not.toContain('Pontos de água / esgoto (ambientes)')
+  })
+})

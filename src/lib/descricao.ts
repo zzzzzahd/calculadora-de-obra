@@ -9,7 +9,7 @@
  *  - montarLevantamento: converte os fatos em obra, ambientes, parâmetros e opções do cálculo.
  * Nada é inventado: o que não foi dito fica em branco e aparece em "usouPadrao" (o que o programa assumiu ou deixou de calcular).
  */
-import { ACOES, TIPOS_AMBIENTE, PISOS as PISOS_LABEL, REVESTIMENTOS, type Abertura, type Acao, type Acoes, type Ambiente, type LadoIdx, type Obra, type PisoTipo, type RevParede, type TipoAmbiente } from '../types'
+import { ACOES, PONTOS_HIDRO, TIPOS_AMBIENTE, PISOS as PISOS_LABEL, REVESTIMENTOS, type Abertura, type Acao, type Acoes, type Ambiente, type LadoIdx, type Obra, type PisoTipo, type PontoHidro, type Pontos, type RevParede, type TipoAmbiente } from '../types'
 import { BLOCOS, PISOS as PISOS_PRESET, TELHAS } from './presets'
 import { definirDivisa } from './cadastro'
 import { PARAMS_PADRAO, type Params } from './engine'
@@ -75,6 +75,8 @@ const arr = (v: unknown): unknown[] => (Array.isArray(v) ? v : [])
 const TIPOS_OBRA = { residencial: 'Residencial', comercial: 'Comercial', galpao: 'Galpão', edicula: 'Edícula', muro: 'Muro', outro: 'Outro' } as const
 const ACAO_LISTA = Object.keys(ACOES) as Acao[]
 const TIPOS_AMB = Object.keys(TIPOS_AMBIENTE) as TipoAmbiente[]
+const PONTOS_TIPOS = Object.keys(PONTOS_HIDRO) as PontoHidro[]
+const CHAVE_IA: Record<PontoHidro, string> = { vaso: 'vaso', lavatorio: 'lavatorio', chuveiro: 'chuveiro', pia: 'pia', tanque: 'tanque', maquinaLavar: 'maquina_lavar', torneira: 'torneira', ralo: 'ralo', caixaSifonada: 'caixa_sifonada', registro: 'registro' }
 const TELHA_PRESET: Record<string, number> = { ceramica_romana: 0, ceramica_colonial: 1, concreto: 2, fibrocimento: 3, metalica: 4 }
 const medidaBloco = (s: string) => s.replace(/\s+/g, '').replace(/[×x]/gi, 'x')
 /** Índice do bloco em BLOCOS pelo material e/ou pela medida (cm); -1 quando não identifica um só. */
@@ -106,6 +108,8 @@ export function validarExtracao(texto: string): Extracao {
     set(kAmb(nome, 'peDireito'), num(a.pe_direito_m, 20)); set(kAmb(nome, 'piso'), em(a.piso, ['ceramico', 'porcelanato', 'cimentado', 'nenhum'] as const))
     set(kAmb(nome, 'revParede'), em(a.revestimento_parede, ['emboco_pintura', 'ceramica', 'nenhum'] as const)); set(kAmb(nome, 'alturaCeramica'), num(a.altura_ceramica_m, 20))
     set(kAmb(nome, 'forro'), bool(a.forro))
+    const ph = obj(a.pontos_hidraulicos)
+    for (const t of PONTOS_TIPOS) set(kAmb(nome, `ponto.${t}`), inteiro(ph[CHAVE_IA[t]], 50))
     const ac = obj(a.acoes)
     for (const e of ['paredes', 'revestimento', 'piso', 'forro']) set(kAmb(nome, `acao.${e}`), em(ac[e], ACAO_LISTA))
     for (const outro of arr(a.divide_parede_com)) { const n2 = txt(outro); if (n2 && norm(n2) !== norm(nome)) divisas.push([nome, n2]) }
@@ -153,7 +157,7 @@ export function rotuloFato(chave: string, ambientes: string[] = []): string {
   if (ROTULO_GERAL[chave]) return ROTULO_GERAL[chave]
   const [, k, campo] = chave.split(':')
   const nome = ambientes.find((n) => norm(n) === k) ?? k
-  const rot = campo.startsWith('acao.') ? `a ação sobre ${campo.slice(5)}` : CAMPO_AMB[campo] ?? campo
+  const rot = campo.startsWith('acao.') ? `a ação sobre ${campo.slice(5)}` : campo.startsWith('ponto.') ? `a quantidade de ${PONTOS_HIDRO[campo.slice(6) as PontoHidro]?.rotulo.toLowerCase() ?? campo}` : CAMPO_AMB[campo] ?? campo
   return `${rot} de ${nome}`
 }
 export function formatarValor(chave: string, v: Valor): string {
@@ -358,8 +362,10 @@ export function proximaPergunta(s: Sessao): Pergunta | null {
         return { id: `elt:${k}`, tipo: 'numero', texto: `Quantos ${nome} haverá?`, explicacao: `${GLOSSARIO[termo]} Se não souber, responda "não sei": esse item não será calculado.`, termos: [termo], campos: [`geral.elt${k}`], inteiro: true, min: 0, max: 500, exemplo: '8' }
   }
   if (f['geral.hidraulica'] === undefined && !R('hidraulica'))
-    return { id: 'hidraulica', tipo: 'sim_nao', texto: 'Haverá instalação hidráulica e sanitária?', explicacao: 'As quantidades de pontos de água, esgoto e peças são informadas depois, em Parâmetros.', campos: ['geral.hidraulica'] }
+    return { id: 'hidraulica', tipo: 'sim_nao', texto: 'Haverá instalação hidráulica e sanitária?', explicacao: 'Em seguida pergunto os pontos de cada ambiente (vaso, chuveiro, pia...). Tubos e conexões são estimados por composições com os seus coeficientes.', campos: ['geral.hidraulica'] }
 
+  if (f['geral.hidraulica'] === true && !Object.keys(f).some((k) => k.includes(':ponto.')) && !R('pontos'))
+    return { id: 'pontos', tipo: 'texto', texto: 'Quais pontos hidráulicos haverá em cada ambiente? (vaso, lavatório, chuveiro, pia, tanque, ralo...) Se não souber, responda "não sei".', explicacao: 'Informe só o que existe e quantos. Tubos e conexões não são calculados por mim: você os estima depois com os seus coeficientes por ponto.', exemplo: 'banheiro com 1 vaso, 1 lavatório, 1 chuveiro e 1 ralo; cozinha com 1 pia' }
   if (f['geral.revestimento'] === undefined && !R('revestimento'))
     return { id: 'revestimento', tipo: 'sim_nao', texto: 'Haverá chapisco e emboço (reboco) nas paredes?', explicacao: `${GLOSSARIO.chapisco} ${GLOSSARIO.emboço}`, termos: ['chapisco', 'emboço'], campos: ['geral.revestimento'] }
   if (f['geral.pintura'] === undefined && !R('pintura'))
@@ -494,6 +500,8 @@ export function linhasResumo(s: Sessao): string[] {
   if (f['geral.cobertura'] === false) L.push('Sem telhado')
   if (f['geral.eletrica'] === true) L.push('Instalação elétrica' + (['Tomadas', 'Interruptores', 'PontosLuz', 'Disjuntores'].some((k) => f[`geral.elt${k}`] !== undefined) ? ': ' + [['Tomadas', 'tomadas'], ['Interruptores', 'interruptores'], ['PontosLuz', 'pontos de luz'], ['Disjuntores', 'disjuntores']].filter(([k]) => f[`geral.elt${k}`] !== undefined).map(([k, n]) => `${f[`geral.elt${k}`]} ${n}`).join(', ') : ''))
   if (f['geral.eletrica'] === false) L.push('Sem instalação elétrica')
+  const pts = s.ambientes.flatMap((n) => { const t = PONTOS_TIPOS.filter((k) => typeof f[kAmb(n, `ponto.${k}`)] === 'number').map((k) => `${PONTOS_HIDRO[k].rotulo.toLowerCase()} ${f[kAmb(n, `ponto.${k}`)]}`); return t.length ? [`${n}: ${t.join(', ')}`] : [] })
+  if (pts.length) L.push('Pontos hidráulicos: ' + pts.join('; '))
   if (f['geral.hidraulica'] !== undefined) L.push(f['geral.hidraulica'] ? 'Instalação hidráulica e sanitária' : 'Sem instalação hidráulica')
   for (const [k, rot] of [['revestimento', 'chapisco e emboço'], ['pintura', 'pintura'], ['forro', 'forro']] as const) if (f[`geral.${k}`] !== undefined) L.push(`${f[`geral.${k}`] ? 'Com' : 'Sem'} ${rot}`)
   const acoes = Object.keys(f).filter((k) => k.includes(':acao.')).map((k) => `${rotuloFato(k, s.ambientes)}: ${formatarValor(k, f[k])}`)
@@ -532,6 +540,9 @@ export function montarLevantamento(s: Sessao): LevantamentoTexto {
     if (typeof g('forro') === 'boolean') acab.forro = g('forro') as boolean
     const am: Ambiente = { id, nome, comprimento: typeof c === 'number' ? c : 0, largura: typeof l === 'number' ? l : 0, unidade: 'm', origem: { fonte: 'texto', observacao: 'descrito em texto livre' } }
     if (typeof g('tipo') === 'string') am.tipo = g('tipo') as TipoAmbiente
+    const pontos: Pontos = {}
+    for (const t of PONTOS_TIPOS) { const v = g(`ponto.${t}`); if (typeof v === 'number' && v > 0) pontos[t] = v }
+    if (Object.keys(pontos).length) am.pontos = pontos
     if (typeof g('peDireito') === 'number') am.peDireito = g('peDireito') as number
     if (Object.keys(acab).length) am.acabamento = acab
     if (Object.keys(acoes).length) am.acoes = acoes
@@ -579,7 +590,10 @@ export function montarLevantamento(s: Sessao): LevantamentoTexto {
     }
   }
   if (typeof f['geral.hidraulica'] === 'boolean') flags.hidraulica = f['geral.hidraulica']
-  if (f['geral.hidraulica'] === true) usouPadrao.push('Hidráulica: marcada, mas as quantidades de pontos e peças ficam para você informar em Parâmetros.')
+  if (f['geral.hidraulica'] === true) {
+    if (!s.ambientes.some((n) => PONTOS_TIPOS.some((t) => typeof f[kAmb(n, `ponto.${t}`)] === 'number'))) usouPadrao.push('Hidráulica: marcada, mas sem pontos por ambiente; informe-os em "Detalhes do ambiente" (ou nos Parâmetros) para a hidráulica ser calculada.')
+    usouPadrao.push('Hidráulica: tubos e conexões são só estimativa por composição; informe os seus coeficientes por ponto em Parâmetros → composições próprias.')
+  }
   if (typeof f['geral.revestimento'] === 'boolean') flags.revest = f['geral.revestimento']
   if (typeof f['geral.pintura'] === 'boolean') flags.pintura = f['geral.pintura']
   if (typeof f['geral.forro'] === 'boolean') flags.forro = f['geral.forro']

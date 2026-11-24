@@ -6,10 +6,11 @@ import { carregarParams, exportarConfig, importarConfig, salvarParams } from '..
 import { areaAmbiente } from '../lib/geometry'
 import { BLOCOS, PISOS, TELHAS } from '../lib/presets'
 import { ADITIVOS, TRACOS } from '../lib/tracos'
-import { aplicarFlags, campoVisivel, flagsIniciais, grupoVisivel, PERGUNTAS, type Flags } from '../lib/assistente'
+import { aplicarFlags, avisosDeFlags, campoVisivel, flagsIniciais, grupoVisivel, PERGUNTAS, type Flags } from '../lib/assistente'
 import { uid } from '../lib/uid'
 import { resolverLevantamento } from '../lib/paredes'
 import { GRUPOS, type Num } from '../lib/campos'
+import ConexoesHidro from './ConexoesHidro'
 
 const BOOLS = new Set<string>(['esquadrias', 'vergas', 'radierTela', 'preTela', 'imperBaldrame', 'calcTela', 'mantaCob', 'telhaMetalica', 'transporte', 'rodape'])
 const ESCOLHAS: Record<string, [number, string][]> = {
@@ -36,7 +37,7 @@ export interface Ajustes { params?: Partial<Params>; flags?: Partial<Flags> }
 
 export default function Quantitativos({ obra, ambientes, aberturasIniciais = [], ajustes }: { obra: Obra; ambientes: Ambiente[]; aberturasIniciais?: Abertura[]; ajustes?: Ajustes }) {
   const [p, setP] = useState<Params>(() => ({ ...carregarParams(), ...ajustes?.params, aberturas: aberturasIniciais }))
-  const [flags, setFlags] = useState<Flags>(() => ({ ...flagsIniciais(p), ...ajustes?.flags }))
+  const [flags, setFlags] = useState<Flags>(() => ({ ...flagsIniciais(p, ambientes), ...ajustes?.flags }))
   const pe = useMemo(() => aplicarFlags(p, flags), [p, flags])
   const [esc, setEsc] = useState({ telha: -1, bloco: -1, piso: -1 })
   const [tr, setTr] = useState<Record<string, number>>({})
@@ -79,6 +80,11 @@ export default function Quantitativos({ obra, ambientes, aberturasIniciais = [],
             </div>
           ))}
         </div>
+        {avisosDeFlags(ambientes, flags).length > 0 && (
+          <ul className="mt-3 space-y-1 rounded-lg border border-amber-500 p-2 text-xs" role="alert">
+            {avisosDeFlags(ambientes, flags).map((t, i) => <li key={i}>{t}</li>)}
+          </ul>
+        )}
         <div className="mt-4 grid gap-3 sm:grid-cols-3">
           {([['Tipo de bloco', BLOCOS, 'bloco'], ['Tipo de telha', TELHAS, 'telha'], ['Tamanho da peça de piso', PISOS, 'piso']] as const).map(([rot, lista, k]) => (
             <div key={k}><label className="rotulo">{rot}</label>
@@ -152,12 +158,14 @@ export default function Quantitativos({ obra, ambientes, aberturasIniciais = [],
         <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">{falhaSalvar ? <strong className="text-red-600">Atenção: não foi possível salvar os parâmetros neste navegador; eles serão perdidos ao fechar a página. Exporte a configuração em JSON.</strong> : 'Os parâmetros ficam salvos neste navegador.'} Instalações: contagem por quantidades informadas; circuitos, bitolas e diâmetros exigem projeto e profissional habilitado. Valores iniciais são exemplos de composição: confira com a sua realidade antes de comprar.</p>
       </section>
 
+      {flags.hidraulica && <ConexoesHidro conexoes={p.conexoes} onChange={(conexoes) => setP({ ...p, conexoes })} ambientes={ambientes} params={p} />}
+
       <section className="cartao">
         <div className="mb-2 flex items-center justify-between">
           <h2 className="font-semibold">Biblioteca técnica: composições próprias</h2>
           <button className="btn btn-sec" onClick={() => setP({ ...p, composicoes: [...p.composicoes, { id: uid(), nome: 'Novo material', etapa: 'Outros', unidade: 'un', base: 'area', coef: 0, perda: 0 }] })}><Plus size={16} /> Adicionar</button>
         </div>
-        <p className="mb-3 text-xs text-slate-500 dark:text-slate-400">Crie materiais próprios: quantidade = base × coeficiente × (1 + perda). Ficam salvos no navegador e entram no backup JSON. Colunas: nome · etapa · unidade de compra · base · coeficiente · perda (%).</p>
+        <p className="mb-3 text-xs text-slate-500 dark:text-slate-400">Crie materiais próprios: quantidade = base × coeficiente × (1 + perda). Ficam salvos no navegador e entram no backup JSON. Colunas: nome · etapa · unidade de compra · base · coeficiente · perda (%). Para tubos e conexões da hidráulica, use a base "Pontos de água fria" ou "Pontos de esgoto" (os pontos dos ambientes mais os gerais) e informe o seu coeficiente por ponto; o programa não assume bitolas nem quantidades de conexões.</p>
         {p.composicoes.map((c) => {
           const up = (d: Partial<typeof c>) => setP({ ...p, composicoes: p.composicoes.map((x) => (x.id === c.id ? { ...x, ...d } : x)) })
           return (
@@ -166,7 +174,7 @@ export default function Quantitativos({ obra, ambientes, aberturasIniciais = [],
               <input className="campo" value={c.etapa} onChange={(e) => up({ etapa: e.target.value })} title="Etapa" />
               <input className="campo" value={c.unidade} onChange={(e) => up({ unidade: e.target.value })} title="Unidade de compra" />
               <select className="campo" value={c.base} onChange={(e) => up({ base: e.target.value as typeof c.base })} title="Base de cálculo">
-                <option value="area">Área construída</option><option value="parede">Área de parede</option><option value="fixa">Quantidade fixa</option></select>
+                <option value="area">Área construída</option><option value="parede">Área de parede</option><option value="fixa">Quantidade fixa</option><option value="pontosAgua">Pontos de água fria</option><option value="pontosEsgoto">Pontos de esgoto</option></select>
               <input className="campo" type="number" step="any" min={0} value={c.coef} onChange={(e) => up({ coef: parseFloat(e.target.value) || 0 })} title="Coeficiente" />
               <div className="flex gap-1">
                 <input className="campo" type="number" step="any" min={0} value={c.perda} onChange={(e) => up({ perda: parseFloat(e.target.value) || 0 })} title="Perda (%)" />

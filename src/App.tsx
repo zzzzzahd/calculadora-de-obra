@@ -11,7 +11,7 @@ import type { LevantamentoTexto } from './lib/descricao'
 const Licitacoes = lazy(() => import('./licitacoes/Licitacoes')) // módulo pesado (planilhas e PDF): carrega só quando aberto
 import { novoAmbiente } from './lib/cadastro'
 
-const VERSAO = 'v28'
+const VERSAO = 'v31'
 const obraVazia = (): Obra => ({ nome: '', tipo: 'Residencial', alturaParede: 2.8, unidadeAltura: 'm', pavimentos: 1, terreno: 'plano', desnivel: false, movimentoTerra: 'nenhum' })
 
 export default function App() {

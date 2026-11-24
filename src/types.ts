@@ -56,6 +56,23 @@ export interface Acabamento {
 /** O que será feito em cada elemento do ambiente (ausente = construir). */
 export interface Acoes { paredes?: Acao; revestimento?: Acao; piso?: Acao; forro?: Acao }
 
+/** Pontos hidráulicos de um ambiente. Só a contagem informada pelo usuário; tubos, conexões e diâmetros não são dimensionados aqui. */
+export type PontoHidro = 'vaso' | 'lavatorio' | 'chuveiro' | 'pia' | 'tanque' | 'maquinaLavar' | 'torneira' | 'ralo' | 'caixaSifonada' | 'registro'
+/** `agua`/`esgoto`: o ponto conta como ponto de água fria / de esgoto. `item`: aparece na lista como peça (ex.: Vaso sanitário). */
+export const PONTOS_HIDRO: Record<PontoHidro, { rotulo: string; agua: boolean; esgoto: boolean; item?: string }> = {
+  vaso: { rotulo: 'Vaso sanitário', agua: true, esgoto: true, item: 'Vaso sanitário' },
+  lavatorio: { rotulo: 'Lavatório', agua: true, esgoto: true, item: 'Lavatório' },
+  chuveiro: { rotulo: 'Chuveiro', agua: true, esgoto: false, item: 'Chuveiro' },
+  pia: { rotulo: 'Pia', agua: true, esgoto: true, item: 'Pia' },
+  tanque: { rotulo: 'Tanque', agua: true, esgoto: true, item: 'Tanque' },
+  maquinaLavar: { rotulo: 'Máquina de lavar (ponto)', agua: true, esgoto: true },
+  torneira: { rotulo: 'Torneira externa ou de jardim', agua: true, esgoto: false, item: 'Torneira' },
+  ralo: { rotulo: 'Ralo', agua: false, esgoto: true, item: 'Ralo' },
+  caixaSifonada: { rotulo: 'Caixa sifonada', agua: false, esgoto: true, item: 'Caixa sifonada' },
+  registro: { rotulo: 'Registro', agua: false, esgoto: false, item: 'Registro' },
+}
+export type Pontos = Partial<Record<PontoHidro, number>>
+
 export interface OrigemDados { fonte: 'manual' | 'planta' | 'texto' | 'importado'; confianca?: number; observacao?: string }
 
 export interface Ambiente {
@@ -73,6 +90,7 @@ export interface Ambiente {
   aberturas?: Abertura[]
   acabamento?: Acabamento
   acoes?: Acoes
+  pontos?: Pontos
   origem?: OrigemDados
 }
 

@@ -56,6 +56,10 @@ export const limpar = (a: Ambiente): Ambiente => {
   if (!r.aberturas?.length) delete r.aberturas
   const ac = r.acabamento
   if (ac && !ac.piso && !ac.revParede && ac.forro === undefined) delete r.acabamento
+  if (r.pontos) {
+    const f = Object.fromEntries(Object.entries(r.pontos).filter(([, v]) => typeof v === 'number' && v > 0)) as Ambiente['pontos']
+    if (f && Object.keys(f).length) r.pontos = f; else delete r.pontos
+  }
   if (r.acoes) {
     const f = Object.fromEntries(Object.entries(r.acoes).filter(([, v]) => v !== undefined && v !== 'construir')) as Ambiente['acoes']
     if (f && Object.keys(f).length) r.acoes = f; else delete r.acoes
