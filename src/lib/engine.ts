@@ -32,7 +32,7 @@ import type { Item } from './motor/tipos'
 
 export type { Abertura }
 export { PARAMS_PADRAO, type Params } from './params'
-export type { Composicao, ConexaoHidro, Item, TipoQuant } from './motor/tipos'
+export type { Composicao, ConexaoHidro, Item, ItemEletrico, TipoQuant } from './motor/tipos'
 export { consolidar } from './motor/consolidar'
 
 export function areaAberturas(p: Params): number {

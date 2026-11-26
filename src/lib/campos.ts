@@ -4,7 +4,7 @@
  */
 import type { Params } from './engine'
 
-export type Num = Exclude<keyof Params, 'aberturas' | 'composicoes' | 'conexoes'>
+export type Num = Exclude<keyof Params, 'aberturas' | 'composicoes' | 'conexoes' | 'itensEl'>
 export const GRUPOS: { titulo: string; campos: [Num, string][] }[] = [
   { titulo: 'Alvenaria', campos: [['blocoC', 'Bloco: comprimento (m)'], ['blocoA', 'Bloco: altura (m)'], ['perdaBloco', 'Perda de blocos (%)'], ['argM3m2', 'Argamassa (m³/m²)'], ['argCimentoKg', 'Cimento na argamassa (kg/m³)'], ['argAreiaM3', 'Areia na argamassa (m³/m³)'], ['perdaArg', 'Perda de argamassa (%)'], ['calKgM3', 'Cal na argamassa (kg/m³, 0 = não)'], ['calSacoKg', 'Kg por saco de cal']] },
   { titulo: 'Vergas e contravergas (usa as portas e janelas)', campos: [['vergas', 'Calcular vergas (1 = sim, 0 = não)'], ['vergaApoio', 'Apoio de cada lado (m)'], ['vergaL', 'Largura = espessura da parede (m)'], ['vergaH', 'Altura da verga (m)']] },

@@ -8,6 +8,7 @@ export interface Flags {
 }
 
 const soma = (...n: number[]) => n.reduce((a, b) => a + b, 0)
+const temPontosEl = (ambientes: Ambiente[]) => ambientes.some((a) => Object.values(a.pontosEl ?? {}).some((v) => typeof v === 'number' && v > 0))
 const temPontos = (ambientes: Ambiente[]) => ambientes.some((a) => Object.values(a.pontos ?? {}).some((v) => typeof v === 'number' && v > 0))
 
 /**
@@ -17,6 +18,7 @@ const temPontos = (ambientes: Ambiente[]) => ambientes.some((a) => Object.values
 export function avisosDeFlags(ambientes: Ambiente[], f: Flags): string[] {
   const av: string[] = []
   if (!f.hidraulica && temPontos(ambientes)) av.push('Você respondeu "Não" para a instalação hidráulica, mas há pontos hidráulicos cadastrados nos ambientes: eles continuam sendo calculados. Para tirá-los, apague os pontos nos ambientes.')
+  if (!f.eletrica && temPontosEl(ambientes)) av.push('Você respondeu "Não" para a instalação elétrica, mas há pontos elétricos cadastrados nos ambientes: eles continuam sendo calculados. Para tirá-los, apague os pontos nos ambientes.')
   if (!f.forro && ambientes.some((a) => a.acabamento?.forro === true)) av.push('Você respondeu "Não" para o forro, mas há ambientes marcados "Com forro": eles continuam sendo calculados.')
   if (!f.revest && ambientes.some((a) => a.acabamento?.revParede === 'ceramica')) av.push('Você respondeu "Não" para chapisco e emboço, mas há ambientes com revestimento cerâmico de parede: a cerâmica continua sendo calculada.')
   return av
@@ -26,7 +28,7 @@ export function avisosDeFlags(ambientes: Ambiente[], f: Flags): string[] {
 export const flagsIniciais = (p: Params, ambientes: Ambiente[] = []): Flags => ({
   fundacao: p.fundComp > 0 || p.radierArea > 0 || p.sapN > 0 || p.estN > 0, estrutura: p.pilarN > 0 || p.vigaComp > 0, projetoAco: p.acoKgM3 > 0,
   laje: p.lajeArea > 0, imper: p.imperArea > 0, muro: p.muroComp > 0, calcada: p.calcArea > 0, escada: p.escLarg > 0 && p.escAlt > 0, prelaje: p.preLajeArea > 0, fossa: (p.fosCompr > 0 && p.fosLarg > 0) || p.sumDiam > 0, piscina: p.pisC > 0 && p.pisL > 0, drywall: p.dwComp > 0 || p.dwForroArea > 0, metalica: p.metComp > 0, madeira: p.madComp > 0, cobertura: p.roofC > 0 && p.roofL > 0, calha: p.calha > 0, forro: p.forro > 0, revest: true, pintura: true, duasCores: p.cor2Pct > 0,
-  eletrica: soma(p.eltTomadas, p.eltInterruptores, p.eltPontosLuz, p.eltDisjuntores) > 0,
+  eletrica: soma(p.eltTomadas, p.eltInterruptores, p.eltPontosLuz, p.eltDisjuntores) > 0 || temPontosEl(ambientes),
   hidraulica: soma(p.hidPontosAgua, p.sanPontos, p.hidRegistros, p.caixasSifonadas, p.ralos, p.caixasInspecao, p.vasos, p.lavatorios, p.pias, p.chuveiros, p.reservatorios) > 0 || temPontos(ambientes),
   drenagem: soma(p.drenTuboM, p.drenCaixas, p.drenRalos, p.canaletaM) > 0,
 })
@@ -55,7 +57,7 @@ export function aplicarFlags(p: Params, f: Flags): Params {
   if (!f.revest) { q.revFaces = 0; q.cerArea = 0 }
   if (!f.pintura) q.faces = 0
   if (!f.duasCores) q.cor2Pct = 0
-  if (!f.eletrica) { q.eltTomadas = 0; q.eltInterruptores = 0; q.eltPontosLuz = 0; q.eltDisjuntores = 0 }
+  if (!f.eletrica) { q.eltTomadas = 0; q.eltInterruptores = 0; q.eltPontosLuz = 0; q.eltDisjuntores = 0; q.itensEl = q.itensEl.map((x) => ({ ...x, fixa: 0 })) } // a quantidade fixa não depende do cadastro
   if (!f.hidraulica) q.conexoes = q.conexoes.map((c) => ({ ...c, fixa: 0, porPontoGeral: 0 })) // coeficientes sem ligação com o cadastro de ambientes
   if (!f.hidraulica) Object.assign(q, { hidPontosAgua: 0, sanPontos: 0, hidRegistros: 0, caixasSifonadas: 0, ralos: 0, caixasInspecao: 0, vasos: 0, lavatorios: 0, pias: 0, chuveiros: 0, reservatorios: 0 })
   if (!f.drenagem) Object.assign(q, { drenTuboM: 0, drenCaixas: 0, drenRalos: 0, canaletaM: 0 })

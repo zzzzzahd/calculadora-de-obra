@@ -1,5 +1,5 @@
 import { lazy, Suspense, useState } from 'react'
-import { ArrowLeft, FileUp, HardHat, Landmark, MessageSquareText, Moon, PencilRuler, RotateCcw, Sun, X } from 'lucide-react'
+import { ArrowLeft, DatabaseBackup, FileUp, HardHat, Landmark, MessageSquareText, Moon, PencilRuler, RotateCcw, Sun, X } from 'lucide-react'
 import type { Ambiente, Obra } from './types'
 import type { Abertura } from './lib/engine'
 import { useTema } from './lib/useTema'
@@ -7,16 +7,19 @@ import Levantamento from './components/Levantamento'
 import Quantitativos, { type Ajustes } from './components/Quantitativos'
 import LeitorPlanta from './components/LeitorPlanta'
 import DescreverObra from './components/DescreverObra'
+import Backup from './components/Backup'
+import type { Levantamento as LevantamentoBackup } from './lib/backup'
+import type { Params } from './lib/params'
 import type { LevantamentoTexto } from './lib/descricao'
 const Licitacoes = lazy(() => import('./licitacoes/Licitacoes')) // módulo pesado (planilhas e PDF): carrega só quando aberto
 import { novoAmbiente } from './lib/cadastro'
 
-const VERSAO = 'v31'
+const VERSAO = 'v33'
 const obraVazia = (): Obra => ({ nome: '', tipo: 'Residencial', alturaParede: 2.8, unidadeAltura: 'm', pavimentos: 1, terreno: 'plano', desnivel: false, movimentoTerra: 'nenhum' })
 
 export default function App() {
   const { escuro, alternar } = useTema()
-  const [modo, setModo] = useState<null | 'manual' | 'planta' | 'texto' | 'licitacoes'>(null)
+  const [modo, setModo] = useState<null | 'manual' | 'planta' | 'texto' | 'licitacoes' | 'backup'>(null)
   const [obra, setObra] = useState<Obra>(obraVazia)
   const [ambientes, setAmbientes] = useState<Ambiente[]>([])
   const [aberturas, setAberturas] = useState<Abertura[]>([])
@@ -26,6 +29,10 @@ export default function App() {
   const [iniciado, setIniciado] = useState(false) // levantamento já começado (permanece ao voltar ao menu)
 
   const novo = () => { setModo(null); setObra(obraVazia()); setAmbientes([]); setAberturas([]); setAjustes(undefined); setNotas([]); setIniciado(false); setChave((c) => c + 1) }
+  const restaurarBackup = (r: { configuracoes?: Params; levantamento?: LevantamentoBackup }) => {
+    if (r.levantamento) { setObra(r.levantamento.obra); setAmbientes(r.levantamento.ambientes); setAberturas(r.levantamento.aberturas); setAjustes(undefined); setNotas([]); setIniciado(true) }
+    setChave((c) => c + 1) // a tela de Quantitativos recarrega os parâmetros salvos
+  }
   const aplicarTexto = (l: LevantamentoTexto) => {
     if (iniciado && ambientes.some((a) => a.comprimento > 0 || a.largura > 0) && !confirm('Isto substitui os ambientes e dados do levantamento atual. Continuar?')) return
     setObra({ ...obraVazia(), ...l.obra }); setAmbientes(l.ambientes); setAberturas(l.aberturasGerais)
@@ -58,6 +65,10 @@ export default function App() {
             <MessageSquareText className="mb-2 text-amber-600" /><div className="font-semibold">Descrever a obra com palavras</div>
             <p className="text-sm text-slate-500 dark:text-slate-400">Conte o que vai ser feito; a IA entende e eu pergunto só o que faltar, uma pergunta por vez.</p>
           </button>
+          <button className="cartao text-left hover:border-amber-500 sm:col-span-2" onClick={() => setModo('backup')}>
+            <DatabaseBackup className="mb-2 text-amber-600" /><div className="font-semibold">Backup e restauração</div>
+            <p className="text-sm text-slate-500 dark:text-slate-400">Baixe ou restaure configurações, levantamento e licitações em um arquivo JSON, com prévia antes de substituir.</p>
+          </button>
           <button className="cartao text-left hover:border-amber-500 sm:col-span-2" onClick={() => setModo('licitacoes')}>
             <Landmark className="mb-2 text-amber-600" /><div className="font-semibold">Materiais licitados</div>
             <p className="text-sm text-slate-500 dark:text-slate-400">Cadastre atas, contratos e materiais da Prefeitura e acompanhe os saldos. Não precisa iniciar uma obra.</p>
@@ -76,6 +87,7 @@ export default function App() {
       )}
 
       {modo === 'texto' && <DescreverObra onAplicar={aplicarTexto} />}
+      {modo === 'backup' && <Backup versao={VERSAO} obra={obra} ambientes={ambientes} aberturas={aberturas} iniciado={iniciado} onRestaurar={restaurarBackup} />}
 
       {iniciado && (
         <div className={modo === 'manual' ? '' : 'hidden'}>

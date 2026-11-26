@@ -60,6 +60,10 @@ export const limpar = (a: Ambiente): Ambiente => {
     const f = Object.fromEntries(Object.entries(r.pontos).filter(([, v]) => typeof v === 'number' && v > 0)) as Ambiente['pontos']
     if (f && Object.keys(f).length) r.pontos = f; else delete r.pontos
   }
+  if (r.pontosEl) {
+    const f = Object.fromEntries(Object.entries(r.pontosEl).filter(([, v]) => typeof v === 'number' && v > 0)) as Ambiente['pontosEl']
+    if (f && Object.keys(f).length) r.pontosEl = f; else delete r.pontosEl
+  }
   if (r.acoes) {
     const f = Object.fromEntries(Object.entries(r.acoes).filter(([, v]) => v !== undefined && v !== 'construir')) as Ambiente['acoes']
     if (f && Object.keys(f).length) r.acoes = f; else delete r.acoes

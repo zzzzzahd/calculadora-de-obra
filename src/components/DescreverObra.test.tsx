@@ -59,6 +59,6 @@ describe('integração com o resto do app', () => {
   it('o menu inicial oferece "Descrever a obra com palavras" e mostra a versão', () => {
     vi.stubGlobal('document', { documentElement: { classList: { contains: () => false, toggle: () => {} } } }) // o teste roda sem navegador
     const h = html(<App />)
-    expect(h).toContain('Descrever a obra com palavras'); expect(h).toContain('versão v31')
+    expect(h).toContain('Descrever a obra com palavras'); expect(h).toContain('versão v33')
   })
 })

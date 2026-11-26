@@ -3,6 +3,7 @@ import { TIPOS_AMBIENTE, type Ambiente, type Obra } from '../types'
 import { areaAmbiente } from './geometry'
 import { descreverAcoes, descreverDivisas } from './cadastro'
 import { descreverPontos } from './hidraulica'
+import { descreverPontosEl } from './eletrica'
 import { resolverLevantamento } from './paredes'
 import { toMetros } from './units'
 import { consolidar, type Item } from './engine'
@@ -58,9 +59,9 @@ export async function gerarXlsx(obra: Obra, ambientes: Ambiente[], itens: Item[]
     ['Altura das paredes (m)', h], ['Pavimentos', obra.pavimentos], ['Área construída, 1 pavimento (m²)', area1],
     ['Área total (m²)', area1 * obra.pavimentos], ['Parede bruta, sem aberturas (m²)', parede], ['Terreno', obra.terreno], ['Aviso', AVISO]]
     .forEach((l) => ws0(r, l))
-  r.addRow([]); r.addRow(['Ambientes', 'Comprimento (m)', 'Largura (m)', 'Área (m²)', 'Tipo', 'Pé-direito (m)', 'Paredes compartilhadas', 'O que será feito', 'Pontos hidráulicos']).font = { bold: true }
+  r.addRow([]); r.addRow(['Ambientes', 'Comprimento (m)', 'Largura (m)', 'Área (m²)', 'Tipo', 'Pé-direito (m)', 'Paredes compartilhadas', 'O que será feito', 'Pontos hidráulicos', 'Pontos elétricos']).font = { bold: true }
   ambientes.forEach((a, k) => r.addRow([a.nome, toMetros(a.comprimento, a.unidade), toMetros(a.largura, a.unidade), areaAmbiente(a),
-    a.tipo ? TIPOS_AMBIENTE[a.tipo] : '', lev.ambientes[k].altura, descreverDivisas(a, ambientes), descreverAcoes(a) || 'construir tudo', descreverPontos(a)]))
+    a.tipo ? TIPOS_AMBIENTE[a.tipo] : '', lev.ambientes[k].altura, descreverDivisas(a, ambientes), descreverAcoes(a) || 'construir tudo', descreverPontos(a), descreverPontosEl(a)]))
   if (lev.compartilhadaM > 0) {
     r.addRow([]); r.addRow(['Paredes (1 pavimento)', 'Comprimento (m)']).font = { bold: true }
     r.addRow(['Parede externa', lev.externaM]); r.addRow(['Parede compartilhada (contada uma vez)', lev.compartilhadaM])
@@ -74,7 +75,7 @@ export async function gerarXlsx(obra: Obra, ambientes: Ambiente[], itens: Item[]
     r.addRow(['Custo total estimado (R$)', custoTotal]).font = { bold: true }
     if (area1 > 0) r.addRow(['Custo estimado por m² (R$)', custoTotal / (area1 * obra.pavimentos)])
   }
-  r.getColumn(1).width = 36; r.getColumn(2).width = 40; r.getColumn(3).width = 14; r.getColumn(4).width = 14; r.getColumn(5).width = 16; r.getColumn(6).width = 16; r.getColumn(7).width = 36; r.getColumn(8).width = 34; r.getColumn(9).width = 36
+  r.getColumn(1).width = 36; r.getColumn(2).width = 40; r.getColumn(3).width = 14; r.getColumn(4).width = 14; r.getColumn(5).width = 16; r.getColumn(6).width = 16; r.getColumn(7).width = 36; r.getColumn(8).width = 34; r.getColumn(9).width = 36; r.getColumn(10).width = 36
   r.getCell('B10').alignment = { wrapText: true }
 
   for (const etapa of [...new Set(itens.map((i) => i.etapa))]) {

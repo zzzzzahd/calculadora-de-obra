@@ -11,6 +11,8 @@ import { uid } from '../lib/uid'
 import { resolverLevantamento } from '../lib/paredes'
 import { GRUPOS, type Num } from '../lib/campos'
 import ConexoesHidro from './ConexoesHidro'
+import ItensEletricos from './ItensEletricos'
+import CruzamentoLicitacoes from './CruzamentoLicitacoes'
 
 const BOOLS = new Set<string>(['esquadrias', 'vergas', 'radierTela', 'preTela', 'imperBaldrame', 'calcTela', 'mantaCob', 'telhaMetalica', 'transporte', 'rodape'])
 const ESCOLHAS: Record<string, [number, string][]> = {
@@ -158,6 +160,7 @@ export default function Quantitativos({ obra, ambientes, aberturasIniciais = [],
         <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">{falhaSalvar ? <strong className="text-red-600">Atenção: não foi possível salvar os parâmetros neste navegador; eles serão perdidos ao fechar a página. Exporte a configuração em JSON.</strong> : 'Os parâmetros ficam salvos neste navegador.'} Instalações: contagem por quantidades informadas; circuitos, bitolas e diâmetros exigem projeto e profissional habilitado. Valores iniciais são exemplos de composição: confira com a sua realidade antes de comprar.</p>
       </section>
 
+      {flags.eletrica && <ItensEletricos itens={p.itensEl} onChange={(itensEl) => setP({ ...p, itensEl })} ambientes={ambientes} params={p} />}
       {flags.hidraulica && <ConexoesHidro conexoes={p.conexoes} onChange={(conexoes) => setP({ ...p, conexoes })} ambientes={ambientes} params={p} />}
 
       <section className="cartao">
@@ -249,6 +252,7 @@ export default function Quantitativos({ obra, ambientes, aberturasIniciais = [],
             {custoTotal > 0 && <p className="mt-3 text-sm font-semibold">Custo total estimado: R$ {fmt(custoTotal)}{area > 0 && ` · R$ ${fmt(custoTotal / area)}/m²`}</p>}
             <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">Estimativa baseada em composições, não é projeto executivo. Estruturas, instalações elétricas e hidráulicas exigem profissional habilitado.</p>
           </section>
+          <CruzamentoLicitacoes lista={lista} obraNome={obra.nome} />
         </>
       )}
     </div>

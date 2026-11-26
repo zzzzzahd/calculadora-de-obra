@@ -1,12 +1,13 @@
 import { useMemo } from 'react'
 import { AlertTriangle, Plus, Trash2 } from 'lucide-react'
-import { ACOES, LADOS, PISOS, PONTOS_HIDRO, REVESTIMENTOS, TIPOS_AMBIENTE } from '../types'
-import type { Abertura, Acao, Acoes, Ambiente, LadoIdx, Obra, PisoTipo, PontoHidro, RevParede, TipoAmbiente } from '../types'
+import { ACOES, LADOS, PISOS, PONTOS_EL, PONTOS_HIDRO, REVESTIMENTOS, TIPOS_AMBIENTE } from '../types'
+import type { Abertura, Acao, Acoes, Ambiente, LadoIdx, Obra, PisoTipo, PontoEl, PontoHidro, RevParede, TipoAmbiente } from '../types'
 import { areaAmbiente, perimetroAmbiente } from '../lib/geometry'
 import { toMetros } from '../lib/units'
 import { definirDivisa, limpar, novoAmbiente, removerAmbiente } from '../lib/cadastro'
 import { resolverLevantamento } from '../lib/paredes'
 import { totaisHidro } from '../lib/hidraulica'
+import { TIPOS_EL, totaisEl } from '../lib/eletrica'
 import Medida from './Medida'
 import { uid } from '../lib/uid'
 
@@ -26,8 +27,10 @@ export default function Levantamento({ obra, ambientes, setObra, setAmbientes }:
   const upd = (id: string, p: Partial<Ambiente>) => setAmbientes(ambientes.map((a) => (a.id === id ? limpar({ ...a, ...p }) : a)))
   const lev = useMemo(() => resolverLevantamento(obra, ambientes, []), [obra, ambientes])
   const hid = useMemo(() => totaisHidro(ambientes, { hidPontosAgua: 0, sanPontos: 0 }), [ambientes])
+  const ele = useMemo(() => totaisEl(ambientes, { eltTomadas: 0, eltInterruptores: 0, eltPontosLuz: 0 }), [ambientes])
   const updAb = (a: Ambiente, abId: string, d: Partial<Abertura>) => upd(a.id, { aberturas: (a.aberturas ?? []).map((x) => (x.id === abId ? { ...x, ...d } : x)) })
   const updPonto = (a: Ambiente, t: PontoHidro, v: number) => upd(a.id, { pontos: { ...a.pontos, [t]: v > 0 ? Math.min(99, Math.floor(v)) : undefined } })
+  const updPontoEl = (a: Ambiente, t: PontoEl, v: number) => upd(a.id, { pontosEl: { ...a.pontosEl, [t]: v > 0 ? Math.min(99, Math.floor(v)) : undefined } })
   const updAcoes = (a: Ambiente, k: keyof Acoes, v: string) => upd(a.id, { acoes: { ...a.acoes, [k]: v === 'construir' ? undefined : (v as Acao) } })
   const updAc = (a: Ambiente, d: Partial<NonNullable<Ambiente['acabamento']>>) => upd(a.id, { acabamento: { ...a.acabamento, ...d } })
 
@@ -69,7 +72,7 @@ export default function Levantamento({ obra, ambientes, setObra, setAmbientes }:
             {ambientes.map((a) => {
               const outros = ambientes.filter((x) => x.id !== a.id)
               const r = lev.ambientes.find((x) => x.id === a.id)
-              const nDet = (a.aberturas?.length ?? 0) + Object.keys(a.divisas ?? {}).length + Object.keys(a.acoes ?? {}).length + Object.values(a.pontos ?? {}).filter(Boolean).length
+              const nDet = (a.aberturas?.length ?? 0) + Object.keys(a.divisas ?? {}).length + Object.keys(a.acoes ?? {}).length + Object.values(a.pontos ?? {}).filter(Boolean).length + Object.values(a.pontosEl ?? {}).filter(Boolean).length
               return (
                 <div key={a.id} className="rounded-lg border border-slate-200 p-3 dark:border-slate-700">
                   <div className="grid gap-3 sm:grid-cols-[1fr_auto_auto_auto]">
@@ -88,7 +91,7 @@ export default function Levantamento({ obra, ambientes, setObra, setAmbientes }:
 
                   <details className="mt-2">
                     <summary className="cursor-pointer text-sm font-medium text-amber-700 dark:text-amber-500">
-                      Detalhes do ambiente: tipo, pé-direito, paredes, portas e janelas, pontos hidráulicos, acabamentos, ações (construir, manter, demolir…){nDet > 0 && ` (${nDet})`}
+                      Detalhes do ambiente: tipo, pé-direito, paredes, portas e janelas, pontos hidráulicos e elétricos, acabamentos, ações (construir, manter, demolir…){nDet > 0 && ` (${nDet})`}
                     </summary>
                     <div className="mt-3 space-y-4">
                       <div className="grid gap-3 sm:grid-cols-2">
@@ -162,6 +165,17 @@ export default function Levantamento({ obra, ambientes, setObra, setAmbientes }:
                       </div>
 
                       <div>
+                        <h3 className="mb-1 text-sm font-semibold">Pontos elétricos deste ambiente</h3>
+                        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                          {TIPOS_EL.map((t) => (
+                            <div key={t}><label className="rotulo" htmlFor={`${a.id}-el-${t}`}>{PONTOS_EL[t].rotulo}</label>
+                              <input id={`${a.id}-el-${t}`} className="campo" type="number" min={0} max={99} step={1} value={a.pontosEl?.[t] ?? ''} onChange={(e) => updPontoEl(a, t, parseInt(e.target.value) || 0)} /></div>
+                          ))}
+                        </div>
+                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">Informe só a contagem. Número de pontos, circuitos, bitolas e proteções dependem do projeto elétrico (NBR 5410): o programa não os assume. Eletrodutos, cabos, caixas e demais itens são estimados em Quantitativos, com os seus coeficientes por tipo de ponto.</p>
+                      </div>
+
+                      <div>
                         <h3 className="mb-1 text-sm font-semibold">O que será feito neste ambiente</h3>
                         <div className="grid gap-3 sm:grid-cols-2">
                           {ELEMENTOS_ACAO.map(([k, rot]) => (
@@ -217,6 +231,7 @@ export default function Levantamento({ obra, ambientes, setObra, setAmbientes }:
             <div className="flex justify-between"><dt>Parede compartilhada (contada uma vez)</dt><dd>{fmt(lev.compartilhadaM)} m</dd></div>
           </>}
           {lev.areaAberturas > 0 && <div className="flex justify-between"><dt>Aberturas dos ambientes</dt><dd>{fmt(lev.areaAberturas)} m²</dd></div>}
+          {(ele.tomadasAmb > 0 || ele.interruptoresAmb > 0 || ele.pontosLuzAmb > 0) && <div className="flex justify-between"><dt>Tomadas / interruptores / pontos de luz (ambientes)</dt><dd>{ele.tomadasAmb} / {ele.interruptoresAmb} / {ele.pontosLuzAmb}</dd></div>}
           {(hid.aguaAmbientes > 0 || hid.esgotoAmbientes > 0) && <div className="flex justify-between"><dt>Pontos de água / esgoto (ambientes)</dt><dd>{hid.aguaAmbientes} / {hid.esgotoAmbientes}</dd></div>}
           {lev.alvConstruirBruta < lev.alvBruta - 1e-9 && <div className="flex justify-between"><dt>Parede a construir</dt><dd>{fmt(lev.alvConstruirBruta)} m²</dd></div>}
           {lev.demolir.paredes > 0 && <div className="flex justify-between"><dt>Parede a demolir</dt><dd>{fmt(lev.demolir.paredes)} m²</dd></div>}

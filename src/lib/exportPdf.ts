@@ -4,6 +4,7 @@ import { TIPOS_AMBIENTE, type Ambiente, type Obra } from '../types'
 import { areaAmbiente } from './geometry'
 import { descreverAcoes, descreverDivisas } from './cadastro'
 import { descreverPontos } from './hidraulica'
+import { descreverPontosEl } from './eletrica'
 import { resolverLevantamento } from './paredes'
 import { toMetros } from './units'
 import { consolidar, type Item } from './engine'
@@ -25,8 +26,8 @@ export function gerarPdf(obra: Obra, ambientes: Ambiente[], itens: Item[], preco
   doc.text(`Obra: ${obra.nome || 'Sem identificação'}  |  Gerado em ${new Date().toLocaleDateString('pt-BR')}`, 14, 23)
   doc.text(`Tipo: ${obra.tipo}  |  Pavimentos: ${obra.pavimentos}  |  Altura das paredes: ${n2(toMetros(obra.alturaParede, obra.unidadeAltura))} m  |  Área (1 pav.): ${n2(area1)} m²`, 14, 29)
   const lev = resolverLevantamento(obra, ambientes, [])
-  autoTable(doc, { startY: 34, head: [['Ambiente', 'Comprimento (m)', 'Largura (m)', 'Área (m²)', 'Tipo', 'Pé-direito (m)', 'Paredes compartilhadas', 'O que será feito', 'Pontos hidráulicos']], headStyles: { fillColor: [217, 119, 6] }, styles: { fontSize: 8 },
-    body: ambientes.map((a, k) => [a.nome, n2(toMetros(a.comprimento, a.unidade)), n2(toMetros(a.largura, a.unidade)), n2(areaAmbiente(a)), a.tipo ? TIPOS_AMBIENTE[a.tipo] : '', n2(lev.ambientes[k].altura), descreverDivisas(a, ambientes), descreverAcoes(a) || 'construir tudo', descreverPontos(a)]) })
+  autoTable(doc, { startY: 34, head: [['Ambiente', 'Comprimento (m)', 'Largura (m)', 'Área (m²)', 'Tipo', 'Pé-direito (m)', 'Paredes compartilhadas', 'O que será feito', 'Pontos hidráulicos', 'Pontos elétricos']], headStyles: { fillColor: [217, 119, 6] }, styles: { fontSize: 8 },
+    body: ambientes.map((a, k) => [a.nome, n2(toMetros(a.comprimento, a.unidade)), n2(toMetros(a.largura, a.unidade)), n2(areaAmbiente(a)), a.tipo ? TIPOS_AMBIENTE[a.tipo] : '', n2(lev.ambientes[k].altura), descreverDivisas(a, ambientes), descreverAcoes(a) || 'construir tudo', descreverPontos(a), descreverPontosEl(a)]) })
   if (lev.compartilhadaM > 0) doc.text(`Paredes (1 pavimento): ${n2(lev.externaM)} m externas + ${n2(lev.compartilhadaM)} m compartilhadas (contadas uma vez)`, 14, fim())
   let desloc = lev.compartilhadaM > 0 ? 6 : 0 // espaço para a linha de paredes, só na primeira tabela seguinte
   for (const e of [...new Set(itens.map((i) => i.etapa))]) {

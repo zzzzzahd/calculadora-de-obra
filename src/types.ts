@@ -73,6 +73,16 @@ export const PONTOS_HIDRO: Record<PontoHidro, { rotulo: string; agua: boolean; e
 }
 export type Pontos = Partial<Record<PontoHidro, number>>
 
+/** Pontos elétricos de um ambiente: só a contagem informada. Circuitos, bitolas e quantidades mínimas por norma não são assumidos. */
+export type PontoEl = 'tug' | 'tue' | 'interruptor' | 'pontoLuz'
+export const PONTOS_EL: Record<PontoEl, { rotulo: string; grupo: 'tomada' | 'interruptor' | 'luz' }> = {
+  tug: { rotulo: 'Tomada de uso geral', grupo: 'tomada' },
+  tue: { rotulo: 'Tomada de uso específico', grupo: 'tomada' },
+  interruptor: { rotulo: 'Interruptor', grupo: 'interruptor' },
+  pontoLuz: { rotulo: 'Ponto de luz', grupo: 'luz' },
+}
+export type PontosEl = Partial<Record<PontoEl, number>>
+
 export interface OrigemDados { fonte: 'manual' | 'planta' | 'texto' | 'importado'; confianca?: number; observacao?: string }
 
 export interface Ambiente {
@@ -91,6 +101,7 @@ export interface Ambiente {
   acabamento?: Acabamento
   acoes?: Acoes
   pontos?: Pontos
+  pontosEl?: PontosEl
   origem?: OrigemDados
 }
 

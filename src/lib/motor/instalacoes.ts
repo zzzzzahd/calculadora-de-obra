@@ -1,6 +1,7 @@
 /** Etapa(s) do cálculo: Instalações elétricas, hidráulicas e sanitárias e drenagem (por quantidades informadas). Cada função recebe o contexto compartilhado e acrescenta itens por `c.add`. */
 import { type Ctx, com } from './contexto'
 import { quantidadeConexao, totaisHidro } from '../hidraulica'
+import { quantidadeItemEl, totaisEl } from '../eletrica'
 
 export function instalacoes(c: Ctx): void {
   // INSTALAÇÕES — contagem por quantidades informadas; circuitos, bitolas e diâmetros exigem projeto e profissional habilitado
@@ -10,14 +11,20 @@ export function instalacoes(c: Ctx): void {
     if (bruto > 0) add({ etapa, material, unidade, tipo: 'Estimativa por composição', formula, dimensoes, coef, perda, bruto })
   }
   const inf = (etapa: string, material: string, qtd: number) => cont(etapa, material, 'un', 'quantidade informada', `${qtd} un`, '—', 0, qtd)
-  const EL = 'Instalações elétricas', pts = p.eltTomadas + p.eltInterruptores + p.eltPontosLuz
-  inf(EL, 'Tomada', p.eltTomadas); inf(EL, 'Interruptor', p.eltInterruptores); inf(EL, 'Ponto de iluminação', p.eltPontosLuz)
-  cont(EL, 'Caixa 4×2', 'un', 'tomadas + interruptores', `${p.eltTomadas} + ${p.eltInterruptores}`, '—', 0, p.eltTomadas + p.eltInterruptores)
-  cont(EL, 'Caixa octogonal', 'un', 'pontos de iluminação', `${p.eltPontosLuz}`, '—', 0, p.eltPontosLuz)
+  // Pontos elétricos: os cadastrados nos ambientes somam aos contadores gerais dos Parâmetros
+  const te = totaisEl(ambientes, p)
+  const nTom = te.tomadas, nInt = te.interruptores, nLuz = te.pontosLuz
+  const EL = 'Instalações elétricas', pts = nTom + nInt + nLuz
+  const detEl = p.itensEl.map((x) => ({ x, ...quantidadeItemEl(x, te) }))
+  const substituida = (k: 'eletroduto' | 'cabo' | 'caixa42' | 'caixaOctogonal') => detEl.some((d) => d.x.substitui === k && d.qtd > 0)
+  inf(EL, 'Tomada', nTom); inf(EL, 'Interruptor', nInt); inf(EL, 'Ponto de iluminação', nLuz)
+  if (!substituida('caixa42')) cont(EL, 'Caixa 4×2', 'un', 'tomadas + interruptores', `${nTom} + ${nInt}`, '—', 0, nTom + nInt)
+  if (!substituida('caixaOctogonal')) cont(EL, 'Caixa octogonal', 'un', 'pontos de iluminação', `${nLuz}`, '—', 0, nLuz)
   inf(EL, 'Disjuntor (tipo e corrente conforme projeto)', p.eltDisjuntores)
   cont(EL, 'Quadro de distribuição', 'un', '1 quando há disjuntores', `${p.eltDisjuntores} disjuntor(es)`, '—', 0, p.eltDisjuntores > 0 ? 1 : 0)
-  cont(EL, 'Eletroduto (barras)', 'barra', 'pontos × m por ponto ÷ barra × (1 + perda)', `${pts} pontos × ${p.eltMPorPonto} m`, `barra ${p.barraEletrodutoM} m`, p.perdaInst, com(dv(pts * p.eltMPorPonto, p.barraEletrodutoM), p.perdaInst))
-  cont(EL, 'Cabo (bitola conforme projeto)', 'm', 'pontos × m de cabo por ponto × (1 + perda)', `${pts} pontos × ${p.eltCaboMPorPonto} m`, `${p.eltCaboMPorPonto} m/ponto`, p.perdaInst, com(pts * p.eltCaboMPorPonto, p.perdaInst))
+  if (!substituida('eletroduto')) cont(EL, 'Eletroduto (barras)', 'barra', 'pontos × m por ponto ÷ barra × (1 + perda)', `${pts} pontos × ${p.eltMPorPonto} m`, `barra ${p.barraEletrodutoM} m`, p.perdaInst, com(dv(pts * p.eltMPorPonto, p.barraEletrodutoM), p.perdaInst))
+  if (!substituida('cabo')) cont(EL, 'Cabo (bitola conforme projeto)', 'm', 'pontos × m de cabo por ponto × (1 + perda)', `${pts} pontos × ${p.eltCaboMPorPonto} m`, `${p.eltCaboMPorPonto} m/ponto`, p.perdaInst, com(pts * p.eltCaboMPorPonto, p.perdaInst))
+  for (const { x, qtd, partes } of detEl) if (qtd > 0) cont(EL, x.nome, x.unidade || 'un', 'Σ (pontos de cada tipo × quantidade por ponto) + quantidade fixa, × (1 + perda)', partes.join(' + '), `perda ${x.perda}%`, x.perda, com(qtd, x.perda))
   const HI = 'Instalações hidráulicas e sanitárias'
   // Pontos: os cadastrados nos ambientes somam aos contadores gerais dos parâmetros (sem ambiente)
   const th = totaisHidro(ambientes, p)

@@ -3,7 +3,7 @@
  * Valor 0 normalmente significa "não calcular" esse item.
  */
 import type { Abertura } from '../types'
-import type { Composicao, ConexaoHidro } from './motor/tipos'
+import type { Composicao, ConexaoHidro, ItemEletrico } from './motor/tipos'
 
 export interface Params {
   aberturas: Abertura[]
@@ -75,6 +75,8 @@ export interface Params {
   composicoes: Composicao[]
   /** Conexões hidráulicas detalhadas (vazio = usa só o coeficiente único "conexões por ponto"). */
   conexoes: ConexaoHidro[]
+  /** Itens elétricos detalhados (vazio = usa só os coeficientes únicos em metros por ponto). */
+  itensEl: ItemEletrico[]
   // Compra
   sacoKg: number
 }
@@ -126,5 +128,6 @@ export const PARAMS_PADRAO: Params = {
   chapCalKgM3: 0, embCalKgM3: 0, aditivoConc: 0, aditivoConcPct: 0, aditivoArg: 0, aditivoArgPct: 0,
   composicoes: [],
   conexoes: [],
+  itensEl: [],
   sacoKg: 50,
 }

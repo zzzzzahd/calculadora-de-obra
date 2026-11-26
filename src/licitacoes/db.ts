@@ -43,6 +43,24 @@ export async function salvarLote(store: Store, objs: { id: string }[]) {
 }
 export const limpar = (store: Store) => tx(store, 'readwrite', (s) => s.clear())
 
+/**
+ * Substitui processos, materiais e movimentos de uma vez, numa única transação: ou tudo é gravado ou nada muda.
+ * A tabela `meta` só recebe gravações (não é limpa), para não perder marcadores internos do banco.
+ */
+export async function substituirTudo(dados: { processos: { id: string }[]; materiais: { id: string }[]; movimentos: { id: string }[]; meta: { id: string }[] }): Promise<void> {
+  const db = await abrir()
+  return new Promise((res, rej) => {
+    const t = db.transaction([...STORES], 'readwrite')
+    t.oncomplete = () => res()
+    t.onerror = () => rej(t.error)
+    t.onabort = () => rej(t.error ?? new Error('Gravação cancelada: nada foi alterado.'))
+    try {
+      for (const nome of ['processos', 'materiais', 'movimentos'] as const) { const st = t.objectStore(nome); st.clear(); for (const o of dados[nome]) st.put(o) }
+      const meta = t.objectStore('meta'); for (const o of dados.meta) meta.put(o)
+    } catch (e) { try { t.abort() } catch { /* já encerrada */ } rej(e) }
+  })
+}
+
 /** Registra a versão do formato dos dados (usada pelo backup no Sprint 7). */
 export async function iniciar() {
   const meta = await listar<{ id: string; versao?: number }>('meta')

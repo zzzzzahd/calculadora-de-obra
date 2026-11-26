@@ -9,7 +9,7 @@
  *  - montarLevantamento: converte os fatos em obra, ambientes, parâmetros e opções do cálculo.
  * Nada é inventado: o que não foi dito fica em branco e aparece em "usouPadrao" (o que o programa assumiu ou deixou de calcular).
  */
-import { ACOES, PONTOS_HIDRO, TIPOS_AMBIENTE, PISOS as PISOS_LABEL, REVESTIMENTOS, type Abertura, type Acao, type Acoes, type Ambiente, type LadoIdx, type Obra, type PisoTipo, type PontoHidro, type Pontos, type RevParede, type TipoAmbiente } from '../types'
+import { ACOES, PONTOS_EL, PONTOS_HIDRO, TIPOS_AMBIENTE, PISOS as PISOS_LABEL, REVESTIMENTOS, type Abertura, type Acao, type Acoes, type Ambiente, type LadoIdx, type Obra, type PisoTipo, type PontoEl, type PontoHidro, type Pontos, type PontosEl, type RevParede, type TipoAmbiente } from '../types'
 import { BLOCOS, PISOS as PISOS_PRESET, TELHAS } from './presets'
 import { definirDivisa } from './cadastro'
 import { PARAMS_PADRAO, type Params } from './engine'
@@ -75,6 +75,8 @@ const arr = (v: unknown): unknown[] => (Array.isArray(v) ? v : [])
 const TIPOS_OBRA = { residencial: 'Residencial', comercial: 'Comercial', galpao: 'Galpão', edicula: 'Edícula', muro: 'Muro', outro: 'Outro' } as const
 const ACAO_LISTA = Object.keys(ACOES) as Acao[]
 const TIPOS_AMB = Object.keys(TIPOS_AMBIENTE) as TipoAmbiente[]
+const PONTOS_EL_TIPOS = Object.keys(PONTOS_EL) as PontoEl[]
+const CHAVE_IA_EL: Record<PontoEl, string> = { tug: 'tomada_uso_geral', tue: 'tomada_uso_especifico', interruptor: 'interruptor', pontoLuz: 'ponto_luz' }
 const PONTOS_TIPOS = Object.keys(PONTOS_HIDRO) as PontoHidro[]
 const CHAVE_IA: Record<PontoHidro, string> = { vaso: 'vaso', lavatorio: 'lavatorio', chuveiro: 'chuveiro', pia: 'pia', tanque: 'tanque', maquinaLavar: 'maquina_lavar', torneira: 'torneira', ralo: 'ralo', caixaSifonada: 'caixa_sifonada', registro: 'registro' }
 const TELHA_PRESET: Record<string, number> = { ceramica_romana: 0, ceramica_colonial: 1, concreto: 2, fibrocimento: 3, metalica: 4 }
@@ -108,6 +110,8 @@ export function validarExtracao(texto: string): Extracao {
     set(kAmb(nome, 'peDireito'), num(a.pe_direito_m, 20)); set(kAmb(nome, 'piso'), em(a.piso, ['ceramico', 'porcelanato', 'cimentado', 'nenhum'] as const))
     set(kAmb(nome, 'revParede'), em(a.revestimento_parede, ['emboco_pintura', 'ceramica', 'nenhum'] as const)); set(kAmb(nome, 'alturaCeramica'), num(a.altura_ceramica_m, 20))
     set(kAmb(nome, 'forro'), bool(a.forro))
+    const pe = obj(a.pontos_eletricos)
+    for (const t of PONTOS_EL_TIPOS) set(kAmb(nome, `pel.${t}`), inteiro(pe[CHAVE_IA_EL[t]], 100))
     const ph = obj(a.pontos_hidraulicos)
     for (const t of PONTOS_TIPOS) set(kAmb(nome, `ponto.${t}`), inteiro(ph[CHAVE_IA[t]], 50))
     const ac = obj(a.acoes)
@@ -157,7 +161,7 @@ export function rotuloFato(chave: string, ambientes: string[] = []): string {
   if (ROTULO_GERAL[chave]) return ROTULO_GERAL[chave]
   const [, k, campo] = chave.split(':')
   const nome = ambientes.find((n) => norm(n) === k) ?? k
-  const rot = campo.startsWith('acao.') ? `a ação sobre ${campo.slice(5)}` : campo.startsWith('ponto.') ? `a quantidade de ${PONTOS_HIDRO[campo.slice(6) as PontoHidro]?.rotulo.toLowerCase() ?? campo}` : CAMPO_AMB[campo] ?? campo
+  const rot = campo.startsWith('acao.') ? `a ação sobre ${campo.slice(5)}` : campo.startsWith('pel.') ? `a quantidade de ${PONTOS_EL[campo.slice(4) as PontoEl]?.rotulo.toLowerCase() ?? campo}` : campo.startsWith('ponto.') ? `a quantidade de ${PONTOS_HIDRO[campo.slice(6) as PontoHidro]?.rotulo.toLowerCase() ?? campo}` : CAMPO_AMB[campo] ?? campo
   return `${rot} de ${nome}`
 }
 export function formatarValor(chave: string, v: Valor): string {
@@ -226,7 +230,8 @@ export function mesclar(s0: Sessao, e: Extracao): Sessao {
 function verificar(s: Sessao): void {
   const f = s.fatos, ha = (id: string) => s.contradicoes.some((c) => c.id === id)
   const algum = (...ks: string[]) => ks.some((k) => f[k] !== undefined)
-  if (f['geral.eletrica'] === false && algum('geral.eltTomadas', 'geral.eltInterruptores', 'geral.eltPontosLuz', 'geral.eltDisjuntores') && !ha('regra:eletrica'))
+  const pelAmb = Object.keys(f).some((k) => k.includes(':pel.'))
+  if (f['geral.eletrica'] === false && (pelAmb || algum('geral.eltTomadas', 'geral.eltInterruptores', 'geral.eltPontosLuz', 'geral.eltDisjuntores')) && !ha('regra:eletrica'))
     s.contradicoes.push({ id: 'regra:eletrica', texto: 'Você disse que não haverá instalação elétrica, mas informou quantidades de pontos elétricos. Qual vale?', opcoes: [{ valor: 'com', rotulo: 'Haverá instalação elétrica' }, { valor: 'sem', rotulo: 'Não haverá (ignorar os pontos)' }] })
   if (f['geral.cobertura'] === false && algum('geral.telhaPreset', 'geral.coberturaC', 'geral.coberturaL') && !ha('regra:cobertura'))
     s.contradicoes.push({ id: 'regra:cobertura', texto: 'Você disse que não haverá telhado, mas informou tipo de telha ou medidas do telhado. Qual vale?', opcoes: [{ valor: 'com', rotulo: 'Haverá telhado' }, { valor: 'sem', rotulo: 'Não haverá (ignorar telha e medidas)' }] })
@@ -239,7 +244,7 @@ export function resolverContradicao(s0: Sessao, id: string, escolha: string): Se
   if (!c) return s
   s.contradicoes = s.contradicoes.filter((x) => x.id !== id)
   if (c.chave !== undefined && escolha === 'novo' && c.novo !== undefined) s.fatos[c.chave] = c.novo
-  if (id === 'regra:eletrica') { if (escolha === 'com') s.fatos['geral.eletrica'] = true; else for (const k of ['Tomadas', 'Interruptores', 'PontosLuz', 'Disjuntores']) delete s.fatos[`geral.elt${k}`] }
+  if (id === 'regra:eletrica') { if (escolha === 'com') s.fatos['geral.eletrica'] = true; else { for (const k of ['Tomadas', 'Interruptores', 'PontosLuz', 'Disjuntores']) delete s.fatos[`geral.elt${k}`]; for (const k of Object.keys(s.fatos)) if (k.includes(':pel.')) delete s.fatos[k] } }
   if (id === 'regra:cobertura') { if (escolha === 'com') s.fatos['geral.cobertura'] = true; else for (const k of ['telhaPreset', 'coberturaC', 'coberturaL']) delete s.fatos[`geral.${k}`] }
   if (id === 'regra:forro') { if (escolha === 'com') s.fatos['geral.forro'] = true; else for (const n of s.ambientes) delete s.fatos[kAmb(n, 'forro')] }
   verificar(s)
@@ -358,7 +363,7 @@ export function proximaPergunta(s: Sessao): Pergunta | null {
     return { id: 'eletrica', tipo: 'sim_nao', texto: 'Haverá instalação elétrica?', campos: ['geral.eletrica'] }
   if (f['geral.eletrica'] === true) {
     for (const [k, nome, termo] of [['Tomadas', 'tomadas', 'tomada'], ['Interruptores', 'interruptores', 'interruptor'], ['PontosLuz', 'pontos de luz', 'ponto de luz'], ['Disjuntores', 'disjuntores', 'disjuntor']] as const)
-      if (f[`geral.elt${k}`] === undefined && !R(`elt:${k}`))
+      if (f[`geral.elt${k}`] === undefined && !R(`elt:${k}`) && !(k !== 'Disjuntores' && Object.keys(f).some((x) => x.includes(':pel.'))))
         return { id: `elt:${k}`, tipo: 'numero', texto: `Quantos ${nome} haverá?`, explicacao: `${GLOSSARIO[termo]} Se não souber, responda "não sei": esse item não será calculado.`, termos: [termo], campos: [`geral.elt${k}`], inteiro: true, min: 0, max: 500, exemplo: '8' }
   }
   if (f['geral.hidraulica'] === undefined && !R('hidraulica'))
@@ -499,6 +504,8 @@ export function linhasResumo(s: Sessao): string[] {
   if (f['geral.cobertura'] === true) L.push(`Telhado: ${v('geral.telhaPreset') ?? 'tipo a definir'}${v('geral.coberturaC') && v('geral.coberturaL') ? `, ${v('geral.coberturaC')} × ${v('geral.coberturaL')}` : ''}`)
   if (f['geral.cobertura'] === false) L.push('Sem telhado')
   if (f['geral.eletrica'] === true) L.push('Instalação elétrica' + (['Tomadas', 'Interruptores', 'PontosLuz', 'Disjuntores'].some((k) => f[`geral.elt${k}`] !== undefined) ? ': ' + [['Tomadas', 'tomadas'], ['Interruptores', 'interruptores'], ['PontosLuz', 'pontos de luz'], ['Disjuntores', 'disjuntores']].filter(([k]) => f[`geral.elt${k}`] !== undefined).map(([k, n]) => `${f[`geral.elt${k}`]} ${n}`).join(', ') : ''))
+  const pel = s.ambientes.flatMap((n) => { const t = PONTOS_EL_TIPOS.filter((k) => typeof f[kAmb(n, `pel.${k}`)] === 'number').map((k) => `${PONTOS_EL[k].rotulo.toLowerCase()} ${f[kAmb(n, `pel.${k}`)]}`); return t.length ? [`${n}: ${t.join(', ')}`] : [] })
+  if (pel.length) L.push('Pontos elétricos: ' + pel.join('; '))
   if (f['geral.eletrica'] === false) L.push('Sem instalação elétrica')
   const pts = s.ambientes.flatMap((n) => { const t = PONTOS_TIPOS.filter((k) => typeof f[kAmb(n, `ponto.${k}`)] === 'number').map((k) => `${PONTOS_HIDRO[k].rotulo.toLowerCase()} ${f[kAmb(n, `ponto.${k}`)]}`); return t.length ? [`${n}: ${t.join(', ')}`] : [] })
   if (pts.length) L.push('Pontos hidráulicos: ' + pts.join('; '))
@@ -543,6 +550,9 @@ export function montarLevantamento(s: Sessao): LevantamentoTexto {
     const pontos: Pontos = {}
     for (const t of PONTOS_TIPOS) { const v = g(`ponto.${t}`); if (typeof v === 'number' && v > 0) pontos[t] = v }
     if (Object.keys(pontos).length) am.pontos = pontos
+    const pontosEl: PontosEl = {}
+    for (const t of PONTOS_EL_TIPOS) { const v = g(`pel.${t}`); if (typeof v === 'number' && v > 0) pontosEl[t] = v }
+    if (Object.keys(pontosEl).length) am.pontosEl = pontosEl
     if (typeof g('peDireito') === 'number') am.peDireito = g('peDireito') as number
     if (Object.keys(acab).length) am.acabamento = acab
     if (Object.keys(acoes).length) am.acoes = acoes
@@ -586,7 +596,8 @@ export function montarLevantamento(s: Sessao): LevantamentoTexto {
   if (f['geral.eletrica'] === true) {
     for (const [k, p] of [['Tomadas', 'eltTomadas'], ['Interruptores', 'eltInterruptores'], ['PontosLuz', 'eltPontosLuz'], ['Disjuntores', 'eltDisjuntores']] as const) {
       const v = f[`geral.elt${k}`]
-      if (typeof v === 'number') params[p] = v; else usouPadrao.push(`Elétrica: quantidade de ${k === 'PontosLuz' ? 'pontos de luz' : k.toLowerCase()} não informada; esse item não foi calculado.`)
+      const dosAmbientes = s.ambientes.some((n) => (k === 'Tomadas' ? ['tug', 'tue'] : k === 'Interruptores' ? ['interruptor'] : k === 'PontosLuz' ? ['pontoLuz'] : []).some((t) => typeof f[kAmb(n, `pel.${t}`)] === 'number'))
+      if (typeof v === 'number') params[p] = v; else if (!dosAmbientes) usouPadrao.push(`Elétrica: quantidade de ${k === 'PontosLuz' ? 'pontos de luz' : k.toLowerCase()} não informada; esse item não foi calculado.`)
     }
   }
   if (typeof f['geral.hidraulica'] === 'boolean') flags.hidraulica = f['geral.hidraulica']
